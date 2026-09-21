@@ -7,7 +7,7 @@ function houseColor(data: Dataset, houseId: HouseId | null): string {
   return house ? house.color : "none";
 }
 
-export function drawPerson(svg: SVGSVGElement, data: Dataset, person: Person, pos: Point): SVGGElement{    
+export function drawPerson(svg: SVGGElement, data: Dataset, person: Person, pos: Point): SVGGElement{    
   const g = document.createElementNS(SVG_NS, "g");
   g.style.cursor = "pointer";            
 

@@ -5,7 +5,7 @@ import { unionKey } from "../data/family";
 type LineKind = "union" | "parent";
 
 function drawLine(
-  svg: SVGSVGElement,
+  svg: SVGGElement,
   x1: number,
   y1: number,
   x2: number,
@@ -37,7 +37,7 @@ function drawLine(
   svg.appendChild(line);
 }
 
-function drawUnionPath(svg: SVGSVGElement, points: Point[]) {
+function drawUnionPath(svg: SVGGElement, points: Point[]) {
   const pts = points.map((p) => `${p.x},${p.y}`).join(" ");
 
   const outer = document.createElementNS(SVG_NS, "polyline");
@@ -54,7 +54,7 @@ function drawUnionPath(svg: SVGSVGElement, points: Point[]) {
   svg.appendChild(inner);
 }
 
-export function drawUnions(svg: SVGSVGElement, data: Dataset, positions: Map<PersonId, Point>) {
+export function drawUnions(svg: SVGGElement, data: Dataset, positions: Map<PersonId, Point>) {
   for (const union of data.unions) {
     const a = positions.get(union.a);
     const b = positions.get(union.b);
@@ -78,7 +78,7 @@ export function drawUnions(svg: SVGSVGElement, data: Dataset, positions: Map<Per
   }
 }
 
-export function drawParentage(svg: SVGSVGElement, data: Dataset, positions: Map<PersonId, Point>) {
+export function drawParentage(svg: SVGGElement, data: Dataset, positions: Map<PersonId, Point>) {
   const parentsByChild = new Map<PersonId, PersonId[]>();
   for (const p of data.parentage) {
     if (!parentsByChild.has(p.child)) parentsByChild.set(p.child, []);

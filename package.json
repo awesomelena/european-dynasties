@@ -11,6 +11,8 @@
     "transform": "tsx scripts/transform.ts"
   },
   "devDependencies": {
+    "@types/d3-selection": "^3.0.12",
+    "@types/d3-zoom": "^3.0.8",
     "@types/node": "^26.6.2",
     "tsx": "^4.23.15",
     "typescript": "~6.0.2",
@@ -18,5 +20,9 @@
   },
   "allowScripts": {
     "esbuild@0.28.2": true
+  },
+  "dependencies": {
+    "d3-selection": "^3.0.0",
+    "d3-zoom": "^3.0.0"
   }
 }
