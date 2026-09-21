@@ -1,0 +1,39 @@
+.bio {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 320px;
+  overflow-y: auto;
+  z-index: 30;
+  background: var(--argent);
+  border-left: var(--border) solid var(--sable);
+  padding: calc(var(--space) * 3);
+  font-family: var(--font-bio);
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.15);
+}
+
+.bio h2 { margin: 0 0 var(--space); padding-right: calc(var(--space) * 4); }
+.bio h3 { margin: calc(var(--space) * 2) 0 var(--space); font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; }
+.bio p  { margin: 2px 0; }
+.bio ul { list-style: none; margin: 0; padding: 0; }
+
+.bio-link {
+  background: none;
+  border: none;
+  padding: 2px 0;
+  font: inherit;
+  color: var(--azure);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.bio-close {
+  position: absolute;
+  top: var(--space);
+  right: var(--space);
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}

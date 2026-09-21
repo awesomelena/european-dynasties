@@ -1,6 +1,7 @@
 import "./styles/tokens.css";
 import "./styles/tooltip.css";
 import "./styles/menu.css";     
+import "./styles/bio.css";
 import type { PersonId } from "./types";
 import { SVG_NS, NODE_W, NODE_H } from "./constants";
 import { loadData } from "./data/loader";
@@ -12,13 +13,22 @@ import {
   showTooltip, moveTooltip, hideTooltip, personLines, houseName,
 } from "./render/tooltip";
 import { showMenu, type MenuItem } from "./ui/menu"; 
+import { showBio } from "./ui/bio";
 
 async function main() {
   const data = await loadData();
-  const { spouseOf, personById } = buildFamily(data);
+  const family = buildFamily(data);
+  const { spouseOf, personById } = family;
 
   const svg = document.createElementNS(SVG_NS, "svg");
   document.querySelector("#app")!.appendChild(svg);
+
+  function openBio(id: PersonId) {
+    showBio(data, personById.get(id)!, family, (nextId) => {
+      render(nextId);
+      openBio(nextId);
+    });
+  }
 
   function render(focusId: PersonId) {
     svg.replaceChildren();
@@ -55,6 +65,7 @@ async function main() {
 
         const items: MenuItem[] = [
           { label: "Center here", action: () => render(person.id) },
+          { label: "Biography", action: () => openBio(person.id) },
         ];
 
         const spouseId = spouseOf.get(person.id);

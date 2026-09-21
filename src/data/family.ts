@@ -34,3 +34,5 @@ export function buildFamily(data: Dataset) {
 
   return { childrenOf, spouseOf, parentsByChild, personById };
 }
+
+export type Family = ReturnType<typeof buildFamily>;
