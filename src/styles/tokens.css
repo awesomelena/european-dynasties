@@ -1,0 +1,14 @@
+:root {
+  --or:      #e8c547;
+  --argent:  #f4f4f0;
+  --gules:   #b02418;
+  --azure:   #1c4f8f;
+  --vert:    #2d6a3f;
+  --purpure: #6b2d5c;
+  --sable:   #1a1a1a;
+
+  --space:   8px;
+  --border:  2px;
+  --font-ui: 'Silkscreen', monospace;
+  --font-bio: Georgia, serif;
+}

@@ -1,0 +1,36 @@
+export type HouseId = string;
+export type PersonId = string;
+
+export interface House {
+  id: HouseId;
+  name: { sr: string; en: string };
+  color: string;          
+}
+
+export interface Person {
+  id: PersonId;
+  name: { en: string; native?: string };
+  sex: "m" | "f";
+  born: number;           // for now just a year
+  died: number | null;
+  houseBirth: HouseId;
+  houseMarriage: HouseId | null;
+}
+
+export interface Parentage {
+  parent: PersonId;
+  child: PersonId;
+}
+
+export interface Union {
+  a: PersonId;
+  b: PersonId;
+  from: number | null;
+}
+
+export interface Dataset {
+  houses: House[];
+  people: Person[];
+  parentage: Parentage[];
+  unions: Union[];
+}

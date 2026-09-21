@@ -1,0 +1,24 @@
+{
+  "houses": [
+    { "id": "hanover",     "name": { "en": "Hanover",           "native": "Hannover" },                  "color": "var(--azure)" },
+    { "id": "coburg",      "name": { "en": "Saxe-Coburg and Gotha",  "native": "Sachsen-Coburg und Gotha" },    "color": "var(--vert)" },
+    { "id": "hohenzollern","name": { "en": "Hohenzollern" },             "color": "var(--sable)" }
+  ],
+  "people": [
+    { "id": "victoria", "name": { "en": "Victoria" }, "sex": "f", "born": 1819, "died": 1901, "houseBirth": "hanover", "houseMarriage": "coburg" },
+    { "id": "albert",   "name": { "en": "Albert" },   "sex": "m", "born": 1819, "died": 1861, "houseBirth": "coburg",  "houseMarriage": null },
+    { "id": "vicky",    "name": { "en": "Victoria, Princess Royal" }, "sex": "f", "born": 1840, "died": 1901, "houseBirth": "coburg", "houseMarriage": "hohenzollern" },
+    { "id": "edward7",  "name": { "en": "Edward VII" }, "sex": "m", "born": 1841, "died": 1910, "houseBirth": "coburg", "houseMarriage": null },
+    { "id": "friedrich3","name": { "en": "Frederick III", "native": "Friedrich III" }, "sex": "m", "born": 1831, "died": 1888, "houseBirth": "hohenzollern", "houseMarriage": null }
+  ],
+  "parentage": [
+    { "parent": "victoria", "child": "vicky" },
+    { "parent": "albert",   "child": "vicky" },
+    { "parent": "victoria", "child": "edward7" },
+    { "parent": "albert",   "child": "edward7" }
+  ],
+  "unions": [
+    { "a": "victoria", "b": "albert",     "from": 1840 },
+    { "a": "vicky",    "b": "friedrich3", "from": 1858 }
+  ]
+}
