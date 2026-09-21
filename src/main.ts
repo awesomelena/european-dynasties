@@ -4,7 +4,8 @@ import "./styles/menu.css";
 import "./styles/bio.css";
 import "./styles/canvas.css";
 import type { PersonId } from "./types";
-import { SVG_NS, NODE_W, NODE_H } from "./constants";
+import { SVG_NS, NODE_H } from "./constants";
+import { nodeWidth } from "./render/measure";
 import { loadData } from "./data/loader";
 import { buildFamily } from "./data/family";  
 import { computeLayout } from "./layout/positions";
@@ -21,6 +22,7 @@ import { zoom, zoomIdentity } from "d3-zoom";
 async function main() {
   const data = await loadData();
   const family = buildFamily(data);
+  const widths = new Map<PersonId, number>(data.people.map((p) => [p.id, nodeWidth(p)]));
   const { spouseOf, personById } = family;
 
   function openBio(id: PersonId) {
@@ -71,12 +73,12 @@ async function main() {
     world.replaceChildren();
     hideTooltip();
 
-    const positions = computeLayout(data, focusId);
+    const positions = computeLayout(data, focusId, widths);
 
     let maxX = 0;
     let maxY = 0;
     for (const p of positions.values()) {
-      maxX = Math.max(maxX, p.x + NODE_W);
+      maxX = Math.max(maxX, p.x + p.w);
       maxY = Math.max(maxY, p.y + NODE_H);
     }
     lastWidth = maxX + 40;

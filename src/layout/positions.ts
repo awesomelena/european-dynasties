@@ -1,5 +1,5 @@
-import type { Dataset, Person, PersonId, Point } from "../types";
-import { NODE_W, COUPLE_GAP, SIBLING_GAP, UP, DOWN } from "../constants";
+import type { Dataset, Person, PersonId, Point, Box } from "../types";
+import { COUPLE_GAP, SIBLING_GAP, UP, DOWN } from "../constants";
 import { buildFamily } from "../data/family";
 
 function yearToY(year: number): number {
@@ -10,19 +10,20 @@ export function subtreeWidth(
   personId: PersonId,
   depth: number,
   childrenOf: Map<PersonId, PersonId[]>,
-  spouseOf: Map<PersonId, PersonId>
+  spouseOf: Map<PersonId, PersonId>,
+  widths: Map<PersonId, number>
 ): number {
-  let blockWidth = NODE_W;
-  if (spouseOf.has(personId)) {
-    blockWidth = NODE_W + COUPLE_GAP + NODE_W;
-  }
+  const spouseId = spouseOf.get(personId);
+  const blockWidth =
+    widths.get(personId)! +
+    (spouseId !== undefined ? COUPLE_GAP + widths.get(spouseId)! : 0);
 
   const children = depth > 0 ? childrenOf.get(personId) ?? [] : [];
   if (children.length === 0) return blockWidth;
 
   let childrenWidth = 0;
   for (const child of children) {
-    childrenWidth += subtreeWidth(child, depth - 1, childrenOf, spouseOf);
+    childrenWidth += subtreeWidth(child, depth - 1, childrenOf, spouseOf, widths);
   }
   childrenWidth += (children.length - 1) * SIBLING_GAP;
 
@@ -35,18 +36,20 @@ function place(
   depth: number,
   childrenOf: Map<PersonId, PersonId[]>,
   spouseOf: Map<PersonId, PersonId>,
+  widths: Map<PersonId, number>,
   xByPerson: Map<PersonId, number>,
   partnerOf: Map<PersonId, PersonId>
 ) {
-  const W = subtreeWidth(personId, depth, childrenOf, spouseOf);
+  const W = subtreeWidth(personId, depth, childrenOf, spouseOf, widths);
+  const personW = widths.get(personId)!;
   const spouseId = spouseOf.get(personId);
   const blockWidth =
-    spouseId !== undefined ? NODE_W + COUPLE_GAP + NODE_W : NODE_W;
+    personW + (spouseId !== undefined ? COUPLE_GAP + widths.get(spouseId)! : 0);
 
   const blockLeft = left + (W - blockWidth) / 2;
   xByPerson.set(personId, blockLeft);
   if (spouseId !== undefined) {
-    xByPerson.set(spouseId, blockLeft + NODE_W + COUPLE_GAP);
+    xByPerson.set(spouseId, blockLeft + personW + COUPLE_GAP);
     partnerOf.set(spouseId, personId);
   }
 
@@ -55,14 +58,14 @@ function place(
 
   let childrenWidth = 0;
   for (const child of children) {
-    childrenWidth += subtreeWidth(child, depth - 1, childrenOf, spouseOf);
+    childrenWidth += subtreeWidth(child, depth - 1, childrenOf, spouseOf, widths);
   }
   childrenWidth += (children.length - 1) * SIBLING_GAP;
 
   let currentLeft = left + (W - childrenWidth) / 2;
   for (const child of children) {
-    place(child, currentLeft, depth - 1, childrenOf, spouseOf, xByPerson, partnerOf);
-    currentLeft += subtreeWidth(child, depth - 1, childrenOf, spouseOf) + SIBLING_GAP;
+    place(child, currentLeft, depth - 1, childrenOf, spouseOf, widths, xByPerson, partnerOf);
+    currentLeft += subtreeWidth(child, depth - 1, childrenOf, spouseOf, widths) + SIBLING_GAP;
   }
 }
 
@@ -88,14 +91,14 @@ function findAnchor(
   return { anchorId: current, steps };
 }
 
-export function computeLayout(data: Dataset, focusId: PersonId): Map<PersonId, Point> {
+export function computeLayout(data: Dataset, focusId: PersonId, widths: Map<PersonId, number>): Map<PersonId, Box> {
   const { childrenOf, spouseOf, parentsByChild, personById } = buildFamily(data);
 
   const { anchorId, steps } = findAnchor(focusId, parentsByChild, personById);
 
   const xByPerson = new Map<PersonId, number>();
   const partnerOf = new Map<PersonId, PersonId>();
-  place(anchorId, 0, steps + DOWN, childrenOf, spouseOf, xByPerson, partnerOf);
+  place(anchorId, 0, steps + DOWN, childrenOf, spouseOf, widths, xByPerson, partnerOf);
 
   const yByPerson = new Map<PersonId, number>();
   for (const person of data.people) {
@@ -105,11 +108,11 @@ export function computeLayout(data: Dataset, focusId: PersonId): Map<PersonId, P
     yByPerson.set(spouseId, yByPerson.get(partnerId)!);
   }
 
-  const positions = new Map<PersonId, Point>();
+  const positions = new Map<PersonId, Box>();
   for (const person of data.people) {
     const x = xByPerson.get(person.id);
     if (x === undefined) continue;
-    positions.set(person.id, { x, y: yByPerson.get(person.id)! });
+    positions.set(person.id, { x, y: yByPerson.get(person.id)!, w: widths.get(person.id)! });
   }
 
   let minY = Infinity;

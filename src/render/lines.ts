@@ -1,5 +1,5 @@
-import type { Dataset, PersonId, Point } from "../types";
-import { SVG_NS, NODE_W, NODE_H } from "../constants";
+import type { Dataset, PersonId, Point, Box } from "../types";
+import { SVG_NS, NODE_H } from "../constants";
 import { unionKey } from "../data/family";
 
 type LineKind = "union" | "parent";
@@ -54,7 +54,7 @@ function drawUnionPath(svg: SVGGElement, points: Point[]) {
   svg.appendChild(inner);
 }
 
-export function drawUnions(svg: SVGGElement, data: Dataset, positions: Map<PersonId, Point>) {
+export function drawUnions(svg: SVGGElement, data: Dataset, positions: Map<PersonId, Box>) {
   for (const union of data.unions) {
     const a = positions.get(union.a);
     const b = positions.get(union.b);
@@ -63,7 +63,7 @@ export function drawUnions(svg: SVGGElement, data: Dataset, positions: Map<Perso
     const left = a.x < b.x ? a : b;
     const right = a.x < b.x ? b : a;
 
-    const startX = left.x + NODE_W;
+    const startX = left.x + left.w;
     const startY = left.y + NODE_H / 2;
     const endX = right.x;
     const endY = right.y + NODE_H / 2;
@@ -78,7 +78,7 @@ export function drawUnions(svg: SVGGElement, data: Dataset, positions: Map<Perso
   }
 }
 
-export function drawParentage(svg: SVGGElement, data: Dataset, positions: Map<PersonId, Point>) {
+export function drawParentage(svg: SVGGElement, data: Dataset, positions: Map<PersonId, Box>) {
   const parentsByChild = new Map<PersonId, PersonId[]>();
   for (const p of data.parentage) {
     if (!parentsByChild.has(p.child)) parentsByChild.set(p.child, []);
@@ -103,17 +103,17 @@ export function drawParentage(svg: SVGGElement, data: Dataset, positions: Map<Pe
 
     const left = a.x < b.x ? a : b;
     const right = a.x < b.x ? b : a;
-    const midX = (left.x + NODE_W + right.x) / 2;
+    const midX = (left.x + left.w + right.x) / 2;
     const midY = Math.max(left.y, right.y) + NODE_H / 2 + 3;
 
-    const children: Point[] = [];
+    const children: Box[] = [];
     for (const id of childIds) {
       const pos = positions.get(id);
       if (pos !== undefined) children.push(pos);
     }
     if (children.length === 0) continue;
 
-    const centers = children.map((c) => c.x + NODE_W / 2);
+    const centers = children.map((c) => c.x + c.w / 2);
     const barY = Math.min(...children.map((c) => c.y)) - 20;
     const barLeft = Math.min(midX, ...centers);
     const barRight = Math.max(midX, ...centers);

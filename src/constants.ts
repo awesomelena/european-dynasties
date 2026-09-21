@@ -1,6 +1,9 @@
 export const SVG_NS = "http://www.w3.org/2000/svg";
-export const NODE_W = 180;
-export const NODE_H = 40;
+export const NODE_H = 44;
+export const NODE_PAD = 10;
+export const MIN_NODE_W = 80;
+export const FONT_NAME = "15px Georgia, serif";
+export const FONT_TITLE = "italic 12px Georgia, serif";
 export const COUPLE_GAP = 50;
 export const SIBLING_GAP = 30;
 export const UP = 1;

@@ -55,10 +55,14 @@ async function main() {
     const father = fatherOf.get(id);
     const fatherHouses = father !== undefined ? housesOf.get(father) ?? [] : [];
     const houseBirth = own.find((h) => fatherHouses.includes(h)) ?? own[0] ?? "unknown";
+    const comma = rp.label.indexOf(", ");
+    const shortName = comma === -1 ? rp.label : rp.label.slice(0, comma);
+    const titleText = comma === -1 ? undefined : rp.label.slice(comma + 2);
 
     people.push({
       id,
-      name: { en: rp.label },
+      name: { en: shortName },
+      titles: titleText !== undefined ? [{ title: titleText, from: null, to: null }] : undefined,
       sex: rp.sex.includes("Q6581072") ? "f" : "m",
       born,
       died: year(rp.death[0]),
@@ -88,7 +92,7 @@ async function main() {
   }
 
   // 4. kuća braka
-  const byId = new Map(people.map((p) => [p.id, p]));
+  const byId = new Map<string, Person>(people.map((p) => [p.id, p]));
   for (const u of unions) {
     const a = byId.get(u.a)!;
     const b = byId.get(u.b)!;

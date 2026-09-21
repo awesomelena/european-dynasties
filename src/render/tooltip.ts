@@ -43,6 +43,11 @@ export function personLines(data: Dataset, person: Person): string[] {
   lines.push(`${person.born}–${died}`);
 
   for (const t of person.titles ?? []) {
+    if (t.from === null && t.to === null) {
+      lines.push(t.title);
+      continue;
+    }
+    
     const span =
       t.from === t.to ? `${t.from}` : `${t.from ?? "?"}–${t.to ?? ""}`;
     lines.push(`${t.title} (${span})`);
