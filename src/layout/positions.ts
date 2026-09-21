@@ -35,7 +35,8 @@ function place(
   depth: number,
   childrenOf: Map<PersonId, PersonId[]>,
   spouseOf: Map<PersonId, PersonId>,
-  xByPerson: Map<PersonId, number>
+  xByPerson: Map<PersonId, number>,
+  partnerOf: Map<PersonId, PersonId>
 ) {
   const W = subtreeWidth(personId, depth, childrenOf, spouseOf);
   const spouseId = spouseOf.get(personId);
@@ -46,6 +47,7 @@ function place(
   xByPerson.set(personId, blockLeft);
   if (spouseId !== undefined) {
     xByPerson.set(spouseId, blockLeft + NODE_W + COUPLE_GAP);
+    partnerOf.set(spouseId, personId);
   }
 
   const children = depth > 0 ? childrenOf.get(personId) ?? [] : [];
@@ -59,7 +61,7 @@ function place(
 
   let currentLeft = left + (W - childrenWidth) / 2;
   for (const child of children) {
-    place(child, currentLeft, depth - 1, childrenOf, spouseOf, xByPerson);
+    place(child, currentLeft, depth - 1, childrenOf, spouseOf, xByPerson, partnerOf);
     currentLeft += subtreeWidth(child, depth - 1, childrenOf, spouseOf) + SIBLING_GAP;
   }
 }
@@ -92,21 +94,15 @@ export function computeLayout(data: Dataset, focusId: PersonId): Map<PersonId, P
   const { anchorId, steps } = findAnchor(focusId, parentsByChild, personById);
 
   const xByPerson = new Map<PersonId, number>();
-  place(anchorId, 0, steps + DOWN, childrenOf, spouseOf, xByPerson);
+  const partnerOf = new Map<PersonId, PersonId>();
+  place(anchorId, 0, steps + DOWN, childrenOf, spouseOf, xByPerson, partnerOf);
 
   const yByPerson = new Map<PersonId, number>();
   for (const person of data.people) {
     yByPerson.set(person.id, yearToY(person.born));
   }
-  for (const union of data.unions) {
-    const aHasParents = parentsByChild.has(union.a);
-    const bHasParents = parentsByChild.has(union.b);
-    if (!aHasParents && bHasParents) {
-      yByPerson.set(union.a, yByPerson.get(union.b)!);
-    }
-    if (aHasParents && !bHasParents) {
-      yByPerson.set(union.b, yByPerson.get(union.a)!);
-    }
+  for (const [spouseId, partnerId] of partnerOf) {
+    yByPerson.set(spouseId, yByPerson.get(partnerId)!);
   }
 
   const positions = new Map<PersonId, Point>();

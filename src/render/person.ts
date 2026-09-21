@@ -24,7 +24,10 @@ export function drawPerson(svg: SVGSVGElement, data: Dataset, person: Person, po
   const text = document.createElementNS(SVG_NS, "text");
   text.setAttribute("x", String(pos.x + 8));
   text.setAttribute("y", String(pos.y + 25));
-  text.style.fill = "var(--argent)";
+
+  const house = data.houses.find((h) => h.id === person.houseBirth);
+  text.style.fill = house?.textColor ?? "var(--argent)"; 
+
   text.textContent = person.name.en;
   g.appendChild(text);            
 

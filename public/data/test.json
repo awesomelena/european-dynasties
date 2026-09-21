@@ -4,7 +4,8 @@
     { "id": "coburg",      "name": { "en": "Saxe-Coburg and Gotha",  "native": "Sachsen-Coburg und Gotha" },    "color": "var(--vert)" },
     { "id": "hohenzollern","name": { "en": "Hohenzollern" },             "color": "var(--sable)" },
     { "id": "glucksburg", "name": { "en": "Glücksburg" }, "color": "var(--purpure)" },
-    { "id": "hesse", "name": { "en": "Hesse", "native": "Hessen" }, "color": "var(--gules)" }
+    { "id": "hesse", "name": { "en": "Hesse", "native": "Hessen" }, "color": "var(--gules)" },
+    { "id": "saxe-weimar", "name": { "en": "Saxe-Weimar-Eisenach", "native": "Sachsen-Weimar-Eisenach" }, "color": "var(--or)", "textColor": "var(--sable)" }
   ],
   "people": [
     { "id": "victoria", "name": { "en": "Victoria" }, "sex": "f", "born": 1819, "died": 1901, "houseBirth": "hanover", "houseMarriage": "coburg",
@@ -36,7 +37,13 @@
     { "id": "wilhelm2", "name": { "en": "Wilhelm II" }, "sex": "m", "born": 1859, "died": 1941, "houseBirth": "hohenzollern", "houseMarriage": null,
     "titles": [ { "title": "German Emperor and King of Prussia", "from": 1888, "to": 1918 } ] },
     { "id": "louis4", "name": { "en": "Louis IV of Hesse", "native": "Ludwig IV" }, "sex": "m", "born": 1837, "died": 1892, "houseBirth": "hesse", "houseMarriage": null,
-    "titles": [ { "title": "Grand Duke of Hesse", "from": 1877, "to": 1892 } ] }
+    "titles": [ { "title": "Grand Duke of Hesse", "from": 1877, "to": 1892 } ] },
+    { "id": "wilhelm1", "name": { "en": "Wilhelm I" }, "sex": "m", "born": 1797, "died": 1888, "houseBirth": "hohenzollern", "houseMarriage": null,
+    "titles": [ { "title": "King of Prussia", "from": 1861, "to": 1888 }, { "title": "German Emperor", "from": 1871, "to": 1888 } ] },
+    { "id": "augusta", "name": { "en": "Augusta of Saxe-Weimar" }, "sex": "f", "born": 1811, "died": 1890, "houseBirth": "saxe-weimar", "houseMarriage": "hohenzollern",
+    "titles": [ { "title": "Queen consort of Prussia", "from": 1861, "to": 1888 }, { "title": "German Empress", "from": 1871, "to": 1888 } ] },
+    { "id": "louise_prussia", "name": { "en": "Louise of Prussia" }, "sex": "f", "born": 1838, "died": 1923, "houseBirth": "hohenzollern", "houseMarriage": null,
+    "titles": [ { "title": "Grand Duchess of Baden", "from": 1856, "to": 1907 } ] }
 ],
   "parentage": [
     { "parent": "victoria", "child": "vicky" },
@@ -60,12 +67,17 @@
     { "parent": "edward7", "child": "george5" },   
     { "parent": "alexandra", "child": "george5" },
     { "parent": "vicky", "child": "wilhelm2" },    
-    { "parent": "friedrich3", "child": "wilhelm2" }
+    { "parent": "friedrich3", "child": "wilhelm2" },
+    { "parent": "wilhelm1", "child": "friedrich3" },     
+    { "parent": "augusta", "child": "friedrich3" },
+    { "parent": "wilhelm1", "child": "louise_prussia" }, 
+    { "parent": "augusta", "child": "louise_prussia" }
   ],
   "unions": [
     { "a": "victoria", "b": "albert",     "from": 1840 },
     { "a": "vicky",    "b": "friedrich3", "from": 1858 },
     { "a": "edward7", "b": "alexandra", "from": 1863 },
-    { "a": "alice", "b": "louis4", "from": 1862 }
+    { "a": "alice", "b": "louis4", "from": 1862 },
+    { "a": "wilhelm1", "b": "augusta", "from": 1829 }
   ]
 }

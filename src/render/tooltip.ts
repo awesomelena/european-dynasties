@@ -5,7 +5,7 @@ tip.className = "tooltip";
 tip.style.display = "none";
 document.body.appendChild(tip);
 
-function houseName(data: Dataset, houseId: HouseId): string {
+export function houseName(data: Dataset, houseId: HouseId): string {
   const house = data.houses.find((h) => h.id === houseId);
   return house ? house.name.en : houseId;
 }

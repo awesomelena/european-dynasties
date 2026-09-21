@@ -1,0 +1,21 @@
+.menu {
+  position: fixed;
+  z-index: 20;
+  flex-direction: column;
+  background: var(--argent);
+  border: var(--border) solid var(--sable);
+}
+
+.menu button {
+  font-family: var(--font-bio);
+  font-size: 14px;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: var(--space) calc(var(--space) * 2);
+  cursor: pointer;
+}
+
+.menu button:hover {
+  background: var(--or);
+}

@@ -4,7 +4,8 @@ export type PersonId = string;
 export interface House {
   id: HouseId;
   name: { sr: string; en: string };
-  color: string;          
+  color: string; 
+  textColor?: string;         
 }
 
 export interface Title {

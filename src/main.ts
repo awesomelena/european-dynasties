@@ -1,20 +1,26 @@
 import "./styles/tokens.css";
 import "./styles/tooltip.css";
+import "./styles/menu.css";     
 import type { PersonId } from "./types";
-import { SVG_NS, NODE_W, NODE_H } from "./constants"; 
+import { SVG_NS, NODE_W, NODE_H } from "./constants";
 import { loadData } from "./data/loader";
-import { computeLayout } from "./layout/positions"; 
+import { buildFamily } from "./data/family";  
+import { computeLayout } from "./layout/positions";
 import { drawUnions, drawParentage } from "./render/lines";
 import { drawPerson } from "./render/person";
-import { showTooltip, moveTooltip, hideTooltip, personLines } from "./render/tooltip";
+import {
+  showTooltip, moveTooltip, hideTooltip, personLines, houseName,
+} from "./render/tooltip";
+import { showMenu, type MenuItem } from "./ui/menu"; 
 
 async function main() {
   const data = await loadData();
+  const { spouseOf, personById } = buildFamily(data);
 
   const svg = document.createElementNS(SVG_NS, "svg");
   document.querySelector("#app")!.appendChild(svg);
 
-  function render(focusId: PersonId) {     
+  function render(focusId: PersonId) {
     svg.replaceChildren();
     hideTooltip();
 
@@ -42,7 +48,26 @@ async function main() {
       );
       g.addEventListener("mousemove", (e) => moveTooltip(e.clientX, e.clientY));
       g.addEventListener("mouseleave", hideTooltip);
-      g.addEventListener("click", () => render(person.id));
+
+      g.addEventListener("click", (e) => {
+        e.stopPropagation();
+        hideTooltip();
+
+        const items: MenuItem[] = [
+          { label: "Center here", action: () => render(person.id) },
+        ];
+
+        const spouseId = spouseOf.get(person.id);
+        const spouse = spouseId !== undefined ? personById.get(spouseId) : undefined;
+        if (spouse !== undefined && spouse.houseBirth !== person.houseBirth) {
+          items.push({
+            label: `Open ${houseName(data, spouse.houseBirth)} tree`,
+            action: () => render(spouse.id),
+          });
+        }
+
+        showMenu(items, e.clientX, e.clientY);
+      });
     }
   }
 
