@@ -11,8 +11,5 @@
   "devDependencies": {
     "typescript": "~6.0.2",
     "vite": "^8.3.0"
-  },
-  "dependencies": {
-    "@dagrejs/dagre": "^3.1.1"
   }
 }

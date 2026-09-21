@@ -1,11 +1,11 @@
-import dagre from "@dagrejs/dagre";
-
 import "./styles/tokens.css";
 import type { Dataset, Person, HouseId, PersonId } from "./types";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
 const NODE_W = 180;
 const NODE_H = 40;
+const COUPLE_GAP = 50;
+const SIBLING_GAP = 30;
 
 type Point = { x: number; y: number };
 
@@ -23,23 +23,89 @@ function unionKey(a: PersonId, b: PersonId): string {
   return a < b ? `${a}|${b}` : `${b}|${a}`;
 }
 
+function buildFamily(data: Dataset) {
+  const born = new Map<PersonId, number>();
+  for (const person of data.people) born.set(person.id, person.born);
+
+  const childrenOf = new Map<PersonId, PersonId[]>();
+  for (const p of data.parentage) {
+    if (!childrenOf.has(p.parent)) childrenOf.set(p.parent, []);
+    childrenOf.get(p.parent)!.push(p.child);
+  }
+  for (const kids of childrenOf.values()) {
+    kids.sort((a, b) => born.get(a)! - born.get(b)!);
+  }
+
+  const spouseOf = new Map<PersonId, PersonId>();
+  for (const u of data.unions) {
+    if (!spouseOf.has(u.a)) spouseOf.set(u.a, u.b);
+    if (!spouseOf.has(u.b)) spouseOf.set(u.b, u.a);
+  }
+
+  return { childrenOf, spouseOf };
+}
+
+function subtreeWidth(
+  personId: PersonId,
+  childrenOf: Map<PersonId, PersonId[]>,
+  spouseOf: Map<PersonId, PersonId>
+): number {
+  let blockWidth = NODE_W;
+  if (spouseOf.has(personId)) {
+    blockWidth = NODE_W + COUPLE_GAP + NODE_W;
+  }
+
+  const children = childrenOf.get(personId) ?? [];
+  if (children.length === 0) return blockWidth;
+
+  let childrenWidth = 0;
+  for (const child of children) {
+    childrenWidth += subtreeWidth(child, childrenOf, spouseOf);
+  }
+  childrenWidth += (children.length - 1) * SIBLING_GAP;
+
+  return Math.max(blockWidth, childrenWidth);
+}
+
+function place(
+  personId: PersonId,
+  left: number,
+  childrenOf: Map<PersonId, PersonId[]>,
+  spouseOf: Map<PersonId, PersonId>,
+  xByPerson: Map<PersonId, number>
+) {
+  const W = subtreeWidth(personId, childrenOf, spouseOf);
+  const spouseId = spouseOf.get(personId);
+  const blockWidth =
+    spouseId !== undefined ? NODE_W + COUPLE_GAP + NODE_W : NODE_W;
+
+  const blockLeft = left + (W - blockWidth) / 2;
+  xByPerson.set(personId, blockLeft);
+  if (spouseId !== undefined) {
+    xByPerson.set(spouseId, blockLeft + NODE_W + COUPLE_GAP);
+  }
+
+  const children = childrenOf.get(personId) ?? [];
+  if (children.length === 0) return;
+
+  let childrenWidth = 0;
+  for (const child of children) {
+    childrenWidth += subtreeWidth(child, childrenOf, spouseOf);
+  }
+  childrenWidth += (children.length - 1) * SIBLING_GAP;
+
+  let currentLeft = left + (W - childrenWidth) / 2;
+  for (const child of children) {
+    place(child, currentLeft, childrenOf, spouseOf, xByPerson);
+    currentLeft += subtreeWidth(child, childrenOf, spouseOf) + SIBLING_GAP;
+  }
+}
+
 function computeLayout(data: Dataset): Map<PersonId, Point> {
-  const g = new dagre.graphlib.Graph();
-  g.setGraph({ rankdir: "TB", nodesep: 30, ranksep: 60 });
-  g.setDefaultEdgeLabel(() => ({}));
+  const { childrenOf, spouseOf } = buildFamily(data);
 
-  for (const person of data.people) {
-    g.setNode(person.id, { width: NODE_W, height: NODE_H });
-  }
-
-  const unionNodeByPair = new Map<string, string>();
-  for (const union of data.unions) {
-    const uid = "u:" + unionKey(union.a, union.b);
-    unionNodeByPair.set(unionKey(union.a, union.b), uid);
-    g.setNode(uid, { width: 1, height: 1 });
-    g.setEdge(union.a, uid);
-    g.setEdge(union.b, uid);
-  }
+  const xByPerson = new Map<PersonId, number>();
+  place("victoria", 0, childrenOf, spouseOf, xByPerson);
 
   const parentsByChild = new Map<PersonId, PersonId[]>();
   for (const p of data.parentage) {
@@ -47,28 +113,26 @@ function computeLayout(data: Dataset): Map<PersonId, Point> {
     parentsByChild.get(p.child)!.push(p.parent);
   }
 
-  for (const [childId, parentIds] of parentsByChild) {
-    const uid =
-      parentIds.length === 2
-        ? unionNodeByPair.get(unionKey(parentIds[0], parentIds[1]))
-        : undefined;
-
-    if (uid !== undefined) {
-      g.setEdge(uid, childId);
-    } else {
-      for (const parentId of parentIds) g.setEdge(parentId, childId);
+  const yByPerson = new Map<PersonId, number>();
+  for (const person of data.people) {
+    yByPerson.set(person.id, yearToY(person.born));
+  }
+  for (const union of data.unions) {
+    const aHasParents = parentsByChild.has(union.a);
+    const bHasParents = parentsByChild.has(union.b);
+    if (!aHasParents && bHasParents) {
+      yByPerson.set(union.a, yByPerson.get(union.b)!);
+    }
+    if (aHasParents && !bHasParents) {
+      yByPerson.set(union.b, yByPerson.get(union.a)!);
     }
   }
 
-  dagre.layout(g);
-
   const positions = new Map<PersonId, Point>();
   for (const person of data.people) {
-    const n = g.node(person.id);
-    positions.set(person.id, {
-      x: n.x - NODE_W / 2,
-      y: yearToY(person.born),
-    });
+    const x = xByPerson.get(person.id);
+    if (x === undefined) continue;
+    positions.set(person.id, { x, y: yByPerson.get(person.id)! });
   }
   return positions;
 }
@@ -216,7 +280,6 @@ function drawPerson(
 
   svg.appendChild(rect);
 
-
   const text = document.createElementNS(SVG_NS, "text");
 
   text.setAttribute("x", String(pos.x + 8));
@@ -239,24 +302,19 @@ async function main() {
 
   const svg = document.createElementNS(SVG_NS, "svg");
 
-  svg.setAttribute("width", "1000");
+  svg.setAttribute("width", "3000");
   svg.setAttribute("height", "900");
 
   document.querySelector("#app")!.appendChild(svg);
 
-
-  // 1. Layout
   const positions = computeLayout(data);
 
-
-  // 2. Sve linije
   drawUnions(svg, data, positions);
   drawParentage(svg, data, positions);
 
-
-  // 3. Osobe preko linija
   for (const person of data.people) {
-    const pos = positions.get(person.id)!;
+    const pos = positions.get(person.id);
+    if (pos === undefined) continue;
 
     drawPerson(svg, data, person, pos);
   }
