@@ -27,6 +27,29 @@ function year(date: string | undefined): number | null {
   return Number.isNaN(y) ? null : y;
 }
 
+const PREFIXES = [
+  "Crown Prince", "Crown Princess", "Hereditary Prince", "Grand Duke", "Grand Duchess",
+  "Archduke", "Archduchess", "Prince", "Princess", "Duke", "Duchess",
+  "Infante", "Infanta", "Count", "Countess",
+];
+
+function splitLabel(label: string): { name: string; title?: string } {
+  const comma = label.indexOf(", ");
+  if (comma !== -1) {
+    return { name: label.slice(0, comma), title: label.slice(comma + 2) };
+  }
+
+  for (const prefix of PREFIXES) {
+    if (!label.startsWith(prefix + " ")) continue;
+    const rest = label.slice(prefix.length + 1);
+    const of = rest.indexOf(" of ");
+    if (of === -1) return { name: rest, title: prefix };
+    return { name: rest.slice(0, of), title: `${prefix} of ${rest.slice(of + 4)}` };
+  }
+
+  return { name: label };
+}
+
 async function main() {
   const raw: Raw = JSON.parse(await readFile("scripts/raw/victoria.json", "utf8"));
 
@@ -55,9 +78,8 @@ async function main() {
     const father = fatherOf.get(id);
     const fatherHouses = father !== undefined ? housesOf.get(father) ?? [] : [];
     const houseBirth = own.find((h) => fatherHouses.includes(h)) ?? own[0] ?? "unknown";
-    const comma = rp.label.indexOf(", ");
-    const shortName = comma === -1 ? rp.label : rp.label.slice(0, comma);
-    const titleText = comma === -1 ? undefined : rp.label.slice(comma + 2);
+
+    const { name: shortName, title: titleText } = splitLabel(rp.label);
 
     people.push({
       id,
