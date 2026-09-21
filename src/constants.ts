@@ -3,3 +3,5 @@ export const NODE_W = 180;
 export const NODE_H = 40;
 export const COUPLE_GAP = 50;
 export const SIBLING_GAP = 30;
+export const UP = 1;
+export const DOWN = 2;

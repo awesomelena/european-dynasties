@@ -1,5 +1,5 @@
-import type { Dataset, PersonId, Point } from "../types";
-import { NODE_W, COUPLE_GAP, SIBLING_GAP } from "../constants";
+import type { Dataset, Person, PersonId, Point } from "../types";
+import { NODE_W, COUPLE_GAP, SIBLING_GAP, UP, DOWN } from "../constants";
 import { buildFamily } from "../data/family";
 
 function yearToY(year: number): number {
@@ -8,6 +8,7 @@ function yearToY(year: number): number {
 
 export function subtreeWidth(
   personId: PersonId,
+  depth: number,
   childrenOf: Map<PersonId, PersonId[]>,
   spouseOf: Map<PersonId, PersonId>
 ): number {
@@ -16,12 +17,12 @@ export function subtreeWidth(
     blockWidth = NODE_W + COUPLE_GAP + NODE_W;
   }
 
-  const children = childrenOf.get(personId) ?? [];
+  const children = depth > 0 ? childrenOf.get(personId) ?? [] : [];
   if (children.length === 0) return blockWidth;
 
   let childrenWidth = 0;
   for (const child of children) {
-    childrenWidth += subtreeWidth(child, childrenOf, spouseOf);
+    childrenWidth += subtreeWidth(child, depth - 1, childrenOf, spouseOf);
   }
   childrenWidth += (children.length - 1) * SIBLING_GAP;
 
@@ -31,11 +32,12 @@ export function subtreeWidth(
 function place(
   personId: PersonId,
   left: number,
+  depth: number,
   childrenOf: Map<PersonId, PersonId[]>,
   spouseOf: Map<PersonId, PersonId>,
   xByPerson: Map<PersonId, number>
 ) {
-  const W = subtreeWidth(personId, childrenOf, spouseOf);
+  const W = subtreeWidth(personId, depth, childrenOf, spouseOf);
   const spouseId = spouseOf.get(personId);
   const blockWidth =
     spouseId !== undefined ? NODE_W + COUPLE_GAP + NODE_W : NODE_W;
@@ -46,33 +48,51 @@ function place(
     xByPerson.set(spouseId, blockLeft + NODE_W + COUPLE_GAP);
   }
 
-  const children = childrenOf.get(personId) ?? [];
+  const children = depth > 0 ? childrenOf.get(personId) ?? [] : [];
   if (children.length === 0) return;
 
   let childrenWidth = 0;
   for (const child of children) {
-    childrenWidth += subtreeWidth(child, childrenOf, spouseOf);
+    childrenWidth += subtreeWidth(child, depth - 1, childrenOf, spouseOf);
   }
   childrenWidth += (children.length - 1) * SIBLING_GAP;
 
   let currentLeft = left + (W - childrenWidth) / 2;
   for (const child of children) {
-    place(child, currentLeft, childrenOf, spouseOf, xByPerson);
-    currentLeft += subtreeWidth(child, childrenOf, spouseOf) + SIBLING_GAP;
+    place(child, currentLeft, depth - 1, childrenOf, spouseOf, xByPerson);
+    currentLeft += subtreeWidth(child, depth - 1, childrenOf, spouseOf) + SIBLING_GAP;
   }
 }
 
-export function computeLayout(data: Dataset, rootId: PersonId): Map<PersonId, Point> {
-  const { childrenOf, spouseOf } = buildFamily(data);
+function findAnchor(
+  focusId: PersonId,
+  parentsByChild: Map<PersonId, PersonId[]>,
+  personById: Map<PersonId, Person>
+): { anchorId: PersonId; steps: number } {
+  let current = focusId;
+  let steps = 0;
+
+  while (steps < UP) {
+    const parents = parentsByChild.get(current);
+    if (parents === undefined || parents.length === 0) break;
+
+    const house = personById.get(current)!.houseBirth;
+    const sameHouse = parents.find((p) => personById.get(p)?.houseBirth === house);
+
+    current = sameHouse ?? parents[0];
+    steps++;
+  }
+
+  return { anchorId: current, steps };
+}
+
+export function computeLayout(data: Dataset, focusId: PersonId): Map<PersonId, Point> {
+  const { childrenOf, spouseOf, parentsByChild, personById } = buildFamily(data);
+
+  const { anchorId, steps } = findAnchor(focusId, parentsByChild, personById);
 
   const xByPerson = new Map<PersonId, number>();
-  place(rootId, 0, childrenOf, spouseOf, xByPerson);
-
-  const parentsByChild = new Map<PersonId, PersonId[]>();
-  for (const p of data.parentage) {
-    if (!parentsByChild.has(p.child)) parentsByChild.set(p.child, []);
-    parentsByChild.get(p.child)!.push(p.parent);
-  }
+  place(anchorId, 0, steps + DOWN, childrenOf, spouseOf, xByPerson);
 
   const yByPerson = new Map<PersonId, number>();
   for (const person of data.people) {
@@ -95,5 +115,10 @@ export function computeLayout(data: Dataset, rootId: PersonId): Map<PersonId, Po
     if (x === undefined) continue;
     positions.set(person.id, { x, y: yByPerson.get(person.id)! });
   }
+
+  let minY = Infinity;
+  for (const p of positions.values()) minY = Math.min(minY, p.y);
+  for (const p of positions.values()) p.y = p.y - minY + 40;
+
   return positions;
 }

@@ -1,30 +1,34 @@
 import "./styles/tokens.css";
 import "./styles/tooltip.css";
-import { SVG_NS } from "./constants";
+import type { PersonId } from "./types";
+import { SVG_NS, NODE_W, NODE_H } from "./constants"; 
 import { loadData } from "./data/loader";
-import { buildFamily } from "./data/family";
-import { computeLayout, subtreeWidth } from "./layout/positions";
+import { computeLayout } from "./layout/positions"; 
 import { drawUnions, drawParentage } from "./render/lines";
 import { drawPerson } from "./render/person";
 import { showTooltip, moveTooltip, hideTooltip, personLines } from "./render/tooltip";
-import type { PersonId } from "./types";
 
 async function main() {
   const data = await loadData();
 
   const svg = document.createElementNS(SVG_NS, "svg");
-  svg.setAttribute("height", "900");
   document.querySelector("#app")!.appendChild(svg);
 
-  function render(rootId: PersonId) {
+  function render(focusId: PersonId) {     
     svg.replaceChildren();
     hideTooltip();
 
-    const { childrenOf, spouseOf } = buildFamily(data);
-    const treeWidth = subtreeWidth(rootId, childrenOf, spouseOf);
-    svg.setAttribute("width", String(treeWidth + 40));
+    const positions = computeLayout(data, focusId);
 
-    const positions = computeLayout(data, rootId);
+    let maxX = 0;
+    let maxY = 0;
+    for (const p of positions.values()) {
+      maxX = Math.max(maxX, p.x + NODE_W);
+      maxY = Math.max(maxY, p.y + NODE_H);
+    }
+    svg.setAttribute("width", String(maxX + 40));
+    svg.setAttribute("height", String(maxY + 40));
+
     drawUnions(svg, data, positions);
     drawParentage(svg, data, positions);
 

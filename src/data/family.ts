@@ -1,4 +1,4 @@
-import type { Dataset, PersonId } from "../types";
+import type { Dataset, Person, PersonId } from "../types";
 
 export function unionKey(a: PersonId, b: PersonId): string {
   return a < b ? `${a}|${b}` : `${b}|${a}`;
@@ -23,5 +23,14 @@ export function buildFamily(data: Dataset) {
     if (!spouseOf.has(u.b)) spouseOf.set(u.b, u.a);
   }
 
-  return { childrenOf, spouseOf };
+  const parentsByChild = new Map<PersonId, PersonId[]>();
+  for (const p of data.parentage) {
+    if (!parentsByChild.has(p.child)) parentsByChild.set(p.child, []);
+    parentsByChild.get(p.child)!.push(p.parent);
+  }
+
+  const personById = new Map<PersonId, Person>();
+  for (const person of data.people) personById.set(person.id, person);
+
+  return { childrenOf, spouseOf, parentsByChild, personById };
 }
