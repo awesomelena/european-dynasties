@@ -42,3 +42,17 @@
   flex-shrink: 0;
   border: 1px solid rgba(0, 0, 0, 0.3);
 }
+
+.legend-row[data-house] {
+  cursor: pointer;
+  padding: 2px 4px;
+  margin-left: -4px;
+}
+
+.legend-row[data-house]:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.legend-row.active {
+  background: var(--or);
+}

@@ -1,0 +1,19 @@
+.person {
+  transition: opacity 0.2s;
+}
+
+.person.ghost {
+  opacity: 0.55;
+}
+
+.line {
+  transition: opacity 0.2s;
+}
+
+.highlighting .person:not(.match) {
+  opacity: 0.12;
+}
+
+.highlighting .line {
+  opacity: 0.2;
+}

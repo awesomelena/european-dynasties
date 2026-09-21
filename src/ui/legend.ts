@@ -21,7 +21,7 @@ const LINE_SAMPLES = `
   </div>
 `;
 
-export function createLegend() {
+export function createLegend(onHighlight: (house: HouseId | null) => void) {
   const details = document.createElement("details");
   details.className = "legend";
   details.open = true;
@@ -34,7 +34,22 @@ export function createLegend() {
   details.append(summary, body);
   document.body.appendChild(details);
 
+  let active: HouseId | null = null;
+
+  function setActive(house: HouseId | null) {
+    active = house;
+    for (const row of body.querySelectorAll<HTMLElement>(".legend-row[data-house]")) {
+      row.classList.toggle("active", row.dataset.house === active);
+    }
+    onHighlight(active);
+  }
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && active !== null) setActive(null);
+  });
+
   return function update(colors: Map<HouseId, HouseStyle>, data: Dataset) {
+    if (active !== null && !colors.has(active)) active = null;
     body.replaceChildren();
 
     const heading = document.createElement("h4");
@@ -50,9 +65,13 @@ export function createLegend() {
       const name = document.createElement("span");
       name.textContent = id === "unknown" ? "Unknown" : houseName(data, id);
       row.append(swatch, name);
+      row.dataset.house = id;
+      row.classList.toggle("active", id === active);
+      row.addEventListener("click", () => setActive(active === id ? null : id));
       body.appendChild(row);
     }
 
     body.insertAdjacentHTML("beforeend", LINE_SAMPLES);
+    onHighlight(active);
   };
 }

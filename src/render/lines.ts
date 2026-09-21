@@ -34,6 +34,7 @@ function drawLine(
   }
 
   line.style.strokeWidth = "2";
+  line.classList.add("line");
   svg.appendChild(line);
 }
 
@@ -47,6 +48,8 @@ function drawUnionPath(svg: SVGGElement, points: Point[]) {
   outer.style.strokeWidth = "6";
   outer.style.strokeLinejoin = "miter";
   svg.appendChild(outer);
+
+  outer.classList.add("line");
 
   const inner = outer.cloneNode() as SVGPolylineElement;
   inner.style.stroke = "white";

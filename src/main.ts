@@ -5,9 +5,10 @@ import "./styles/bio.css";
 import "./styles/canvas.css";
 import "./styles/search.css";
 import "./styles/legend.css";
+import "./styles/tree.css";
 import { assignColors } from "./render/colors";
 import { createLegend } from "./ui/legend";
-import type { Person, PersonId, Box } from "./types";
+import type { Person, PersonId, Box, HouseId } from "./types";
 import { SVG_NS, NODE_H } from "./constants";
 import { nodeWidth } from "./render/measure";
 import { loadData } from "./data/loader";
@@ -110,7 +111,15 @@ async function main() {
     });
   }
 
-  const updateLegend = createLegend();
+  function applyHighlight(house: HouseId | null) {
+    world.classList.toggle("highlighting", house !== null);
+    for (const g of world.querySelectorAll<SVGGElement>(".person")) {
+      const houses = (g.dataset.houses ?? "").split(" ");
+      g.classList.toggle("match", house !== null && houses.includes(house));
+    }
+  }
+
+  const updateLegend = createLegend(applyHighlight);
 
   function render(focusId: PersonId) {
   world.replaceChildren();
@@ -119,7 +128,6 @@ async function main() {
   const layout = computeLayout(data, focusId, widths);
 
   const colors = assignColors(layout, personById);
-  updateLegend(colors, data);
 
   let maxX = 0;
   let maxY = 0;
@@ -153,6 +161,8 @@ async function main() {
   } else {
     fitToView(lastWidth, lastHeight);
   }
+
+  updateLegend(colors, data);
   
 }
 

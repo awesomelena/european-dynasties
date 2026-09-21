@@ -11,6 +11,10 @@ export function drawPerson(
   const g = document.createElementNS(SVG_NS, "g");
   g.style.cursor = "pointer";
 
+  g.classList.add("person");
+  if (opts.ghost) g.classList.add("ghost");
+  g.dataset.houses = [person.houseBirth, person.houseMarriage ?? ""].join(" ");
+
   if (opts.focus) {
     const ring = document.createElementNS(SVG_NS, "rect");
     ring.setAttribute("x", String(pos.x - 6));
@@ -37,7 +41,6 @@ export function drawPerson(
   if (opts.ghost) {
     rect.style.stroke = "var(--sable)";
     rect.style.strokeDasharray = "6 4";
-    g.style.opacity = "0.55";
   }
   g.appendChild(rect);
 
