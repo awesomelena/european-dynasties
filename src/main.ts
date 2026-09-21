@@ -3,7 +3,8 @@ import "./styles/tooltip.css";
 import "./styles/menu.css";     
 import "./styles/bio.css";
 import "./styles/canvas.css";
-import type { Person, PersonId } from "./types";
+import "./styles/search.css";
+import type { Person, PersonId, Box } from "./types";
 import { SVG_NS, NODE_H } from "./constants";
 import { nodeWidth } from "./render/measure";
 import { loadData } from "./data/loader";
@@ -18,6 +19,7 @@ import { showMenu, type MenuItem } from "./ui/menu";
 import { showBio } from "./ui/bio";
 import { select } from "d3-selection";
 import { zoom, zoomIdentity } from "d3-zoom";
+import { createSearch } from "./ui/search";
 
 async function main() {
   const data = await loadData();
@@ -49,6 +51,13 @@ async function main() {
     const k = Math.min(1, svg.clientWidth / width, svg.clientHeight / height);
     const x = (svg.clientWidth - width * k) / 2;
     const y = (svg.clientHeight - height * k) / 2;
+    select(svg).call(zoomer.transform, zoomIdentity.translate(x, y).scale(k));
+  }
+
+  function centerOn(box: Box) {
+    const k = 1;
+    const x = svg.clientWidth / 2 - (box.x + box.w / 2) * k;
+    const y = svg.clientHeight / 2 - (box.y + NODE_H / 2) * k;
     select(svg).call(zoomer.transform, zoomIdentity.translate(x, y).scale(k));
   }
 
@@ -130,9 +139,16 @@ async function main() {
     attach(drawPerson(world, data, person, b.spouse, { ghost: true }), person);
   }
 
-  fitToView(lastWidth, lastHeight);
+  const focusBox = layout.positions.get(focusId);
+  if (focusBox !== undefined) {
+    centerOn(focusBox);
+  } else {
+    fitToView(lastWidth, lastHeight);
+  }
   
 }
+
+  createSearch(data.people, (id) => render(id));
 
   render("Q9439");
 }
