@@ -12,10 +12,22 @@ export function drawPerson(
   data: Dataset,
   person: Person,
   pos: Box,
-  ghost = false
+  opts: { ghost?: boolean; focus?: boolean } = {}
 ): SVGGElement {
   const g = document.createElementNS(SVG_NS, "g");
   g.style.cursor = "pointer";
+
+  if (opts.focus) {
+    const ring = document.createElementNS(SVG_NS, "rect");
+    ring.setAttribute("x", String(pos.x - 6));
+    ring.setAttribute("y", String(pos.y - 6));
+    ring.setAttribute("width", String(pos.w + 12));
+    ring.setAttribute("height", String(NODE_H + 12));
+    ring.style.fill = "none";
+    ring.style.stroke = "var(--or)";
+    ring.style.strokeWidth = "3";
+    g.appendChild(ring);
+  }
 
   const rect = document.createElementNS(SVG_NS, "rect");
   rect.setAttribute("x", String(pos.x));
@@ -25,7 +37,7 @@ export function drawPerson(
   rect.style.fill = houseColor(data, person.houseBirth);
   rect.style.stroke = houseColor(data, person.houseMarriage);
   rect.style.strokeWidth = "4";
-  if (ghost) {
+  if (opts.ghost) {
     rect.style.stroke = "var(--sable)";
     rect.style.strokeDasharray = "6 4";
     g.style.opacity = "0.55";

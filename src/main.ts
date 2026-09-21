@@ -121,13 +121,13 @@ async function main() {
 
   for (const [id, box] of layout.positions) {
     const person = personById.get(id)!;
-    attach(drawPerson(world, data, person, box), person);
+    attach(drawPerson(world, data, person, box, { focus: id === focusId }), person);
   }
 
   for (const b of layout.blocks) {
     if (b.spouse === null || !b.spouse.ghost) continue;
     const person = personById.get(b.spouse.id)!;
-    attach(drawPerson(world, data, person, b.spouse, true), person);
+    attach(drawPerson(world, data, person, b.spouse, { ghost: true }), person);
   }
 
   fitToView(lastWidth, lastHeight);
