@@ -42,6 +42,12 @@ export function personLines(data: Dataset, person: Person): string[] {
   const died = person.died === null ? "" : String(person.died);
   lines.push(`${person.born}–${died}`);
 
+  for (const t of person.titles ?? []) {
+    const span =
+      t.from === t.to ? `${t.from}` : `${t.from ?? "?"}–${t.to ?? ""}`;
+    lines.push(`${t.title} (${span})`);
+  }
+
   lines.push(`Born: ${houseName(data, person.houseBirth)}`);
 
   if (person.houseMarriage !== null) {

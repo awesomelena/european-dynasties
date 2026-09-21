@@ -7,6 +7,12 @@ export interface House {
   color: string;          
 }
 
+export interface Title {
+  title: string;
+  from: number | null;
+  to: number | null;
+}
+
 export interface Person {
   id: PersonId;
   name: { en: string; native?: string };
@@ -15,6 +21,7 @@ export interface Person {
   died: number | null;
   houseBirth: HouseId;
   houseMarriage: HouseId | null;
+  titles?: Title[];
 }
 
 export interface Parentage {
