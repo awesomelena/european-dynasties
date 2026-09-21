@@ -45,3 +45,4 @@ export interface Dataset {
 
 export type Point = { x: number; y: number };
 export type Box = Point & { w: number };
+export type HouseStyle = { color: string; textColor?: string };

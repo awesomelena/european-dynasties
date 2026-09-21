@@ -1,3 +1,18 @@
+import type { HouseStyle } from "./types";
+
+export const PALETTE: HouseStyle[] = [
+  { color: "var(--azure)" },
+  { color: "var(--gules)" },
+  { color: "var(--vert)" },
+  { color: "var(--purpure)" },
+  { color: "var(--sable)" },
+  { color: "var(--or)", textColor: "var(--sable)" },
+  { color: "var(--tenne)" },
+  { color: "var(--murrey)" },
+];
+
+export const UNKNOWN_STYLE: HouseStyle = { color: "#9a9a9a" };
+
 export const SVG_NS = "http://www.w3.org/2000/svg";
 export const NODE_H = 44;
 export const NODE_PAD = 10;

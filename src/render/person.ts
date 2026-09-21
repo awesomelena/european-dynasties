@@ -1,15 +1,9 @@
-import type { Dataset, HouseId, Person, Box } from "../types";
-import { SVG_NS, NODE_H, NODE_PAD, FONT_NAME, FONT_TITLE } from "../constants";
-
-function houseColor(data: Dataset, houseId: HouseId | null): string {
-  if (houseId === null) return "none";
-  const house = data.houses.find((h) => h.id === houseId);
-  return house ? house.color : "none";
-}
+import type { HouseId, Person, Box, HouseStyle } from "../types";
+import { SVG_NS, NODE_H, NODE_PAD, FONT_NAME, FONT_TITLE, UNKNOWN_STYLE } from "../constants";
 
 export function drawPerson(
   svg: SVGGElement,
-  data: Dataset,
+  colors: Map<HouseId, HouseStyle>,
   person: Person,
   pos: Box,
   opts: { ghost?: boolean; focus?: boolean } = {}
@@ -34,8 +28,11 @@ export function drawPerson(
   rect.setAttribute("y", String(pos.y));
   rect.setAttribute("width", String(pos.w));
   rect.setAttribute("height", String(NODE_H));
-  rect.style.fill = houseColor(data, person.houseBirth);
-  rect.style.stroke = houseColor(data, person.houseMarriage);
+  rect.style.fill = (colors.get(person.houseBirth) ?? UNKNOWN_STYLE).color;
+  rect.style.stroke =
+    person.houseMarriage !== null
+      ? (colors.get(person.houseMarriage) ?? UNKNOWN_STYLE).color
+      : "none";
   rect.style.strokeWidth = "4";
   if (opts.ghost) {
     rect.style.stroke = "var(--sable)";
@@ -44,8 +41,7 @@ export function drawPerson(
   }
   g.appendChild(rect);
 
-  const house = data.houses.find((h) => h.id === person.houseBirth);
-  const textColor = house?.textColor ?? "var(--argent)";
+  const textColor = colors.get(person.houseBirth)?.textColor ?? "var(--argent)";
   const title = person.titles?.[0]?.title;
 
   const name = document.createElementNS(SVG_NS, "text");

@@ -4,6 +4,9 @@ import "./styles/menu.css";
 import "./styles/bio.css";
 import "./styles/canvas.css";
 import "./styles/search.css";
+import "./styles/legend.css";
+import { assignColors } from "./render/colors";
+import { createLegend } from "./ui/legend";
 import type { Person, PersonId, Box } from "./types";
 import { SVG_NS, NODE_H } from "./constants";
 import { nodeWidth } from "./render/measure";
@@ -107,11 +110,16 @@ async function main() {
     });
   }
 
+  const updateLegend = createLegend();
+
   function render(focusId: PersonId) {
   world.replaceChildren();
   hideTooltip();
 
   const layout = computeLayout(data, focusId, widths);
+
+  const colors = assignColors(layout, personById);
+  updateLegend(colors, data);
 
   let maxX = 0;
   let maxY = 0;
@@ -130,13 +138,13 @@ async function main() {
 
   for (const [id, box] of layout.positions) {
     const person = personById.get(id)!;
-    attach(drawPerson(world, data, person, box, { focus: id === focusId }), person);
+    attach(drawPerson(world, colors, person, box, { focus: id === focusId }), person);
   }
 
   for (const b of layout.blocks) {
     if (b.spouse === null || !b.spouse.ghost) continue;
     const person = personById.get(b.spouse.id)!;
-    attach(drawPerson(world, data, person, b.spouse, { ghost: true }), person);
+    attach(drawPerson(world, colors, person, b.spouse, { ghost: true }), person);
   }
 
   const focusBox = layout.positions.get(focusId);
