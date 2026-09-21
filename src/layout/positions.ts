@@ -1,4 +1,4 @@
-import type { Dataset, Person, PersonId, Point, Box } from "../types";
+import type { Dataset, Person, PersonId, Box } from "../types";
 import { COUPLE_GAP, SIBLING_GAP, UP, DOWN } from "../constants";
 import { buildFamily } from "../data/family";
 
