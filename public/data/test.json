@@ -2,23 +2,56 @@
   "houses": [
     { "id": "hanover",     "name": { "en": "Hanover",           "native": "Hannover" },                  "color": "var(--azure)" },
     { "id": "coburg",      "name": { "en": "Saxe-Coburg and Gotha",  "native": "Sachsen-Coburg und Gotha" },    "color": "var(--vert)" },
-    { "id": "hohenzollern","name": { "en": "Hohenzollern" },             "color": "var(--sable)" }
+    { "id": "hohenzollern","name": { "en": "Hohenzollern" },             "color": "var(--sable)" },
+    { "id": "glucksburg", "name": { "en": "Glücksburg" }, "color": "var(--purpure)" },
+    { "id": "hesse", "name": { "en": "Hesse", "native": "Hessen" }, "color": "var(--gules)" }
   ],
   "people": [
     { "id": "victoria", "name": { "en": "Victoria" }, "sex": "f", "born": 1819, "died": 1901, "houseBirth": "hanover", "houseMarriage": "coburg" },
     { "id": "albert",   "name": { "en": "Albert" },   "sex": "m", "born": 1819, "died": 1861, "houseBirth": "coburg",  "houseMarriage": null },
     { "id": "vicky",    "name": { "en": "Victoria, Princess Royal" }, "sex": "f", "born": 1840, "died": 1901, "houseBirth": "coburg", "houseMarriage": "hohenzollern" },
     { "id": "edward7",  "name": { "en": "Edward VII" }, "sex": "m", "born": 1841, "died": 1910, "houseBirth": "coburg", "houseMarriage": null },
-    { "id": "friedrich3","name": { "en": "Frederick III", "native": "Friedrich III" }, "sex": "m", "born": 1831, "died": 1888, "houseBirth": "hohenzollern", "houseMarriage": null }
+    { "id": "friedrich3","name": { "en": "Frederick III", "native": "Friedrich III" }, "sex": "m", "born": 1831, "died": 1888, "houseBirth": "hohenzollern", "houseMarriage": null },
+    { "id": "alice", "name": { "en": "Alice" }, "sex": "f", "born": 1843, "died": 1878, "houseBirth": "coburg", "houseMarriage": "hesse" },
+    { "id": "alfred", "name": { "en": "Alfred" }, "sex": "m", "born": 1844, "died": 1900, "houseBirth": "coburg", "houseMarriage": null },
+    { "id": "helena", "name": { "en": "Helena" }, "sex": "f", "born": 1846, "died": 1923, "houseBirth": "coburg", "houseMarriage": null },
+    { "id": "louise", "name": { "en": "Louise" }, "sex": "f", "born": 1848, "died": 1939, "houseBirth": "coburg", "houseMarriage": null },
+    { "id": "arthur", "name": { "en": "Arthur" }, "sex": "m", "born": 1850, "died": 1942, "houseBirth": "coburg", "houseMarriage": null },
+    { "id": "leopold", "name": { "en": "Leopold" }, "sex": "m", "born": 1853, "died": 1884, "houseBirth": "coburg", "houseMarriage": null },
+    { "id": "beatrice", "name": { "en": "Beatrice" }, "sex": "f", "born": 1857, "died": 1944, "houseBirth": "coburg", "houseMarriage": null },
+    { "id": "alexandra", "name": { "en": "Alexandra of Denmark" }, "sex": "f", "born": 1844, "died": 1925, "houseBirth": "glucksburg", "houseMarriage": "coburg" },
+    { "id": "george5", "name": { "en": "George V" }, "sex": "m", "born": 1865, "died": 1936, "houseBirth": "coburg", "houseMarriage": null },
+    { "id": "wilhelm2", "name": { "en": "Wilhelm II", "native": "Wilhelm II" }, "sex": "m", "born": 1859, "died": 1941, "houseBirth": "hohenzollern", "houseMarriage": null },
+    { "id": "louis4", "name": { "en": "Louis IV of Hesse", "native": "Ludwig IV" }, "sex": "m", "born": 1837, "died": 1892, "houseBirth": "hesse", "houseMarriage": null }
   ],
   "parentage": [
     { "parent": "victoria", "child": "vicky" },
     { "parent": "albert",   "child": "vicky" },
     { "parent": "victoria", "child": "edward7" },
-    { "parent": "albert",   "child": "edward7" }
+    { "parent": "albert",   "child": "edward7" },
+    { "parent": "victoria", "child": "alice" },    
+    { "parent": "albert", "child": "alice" },
+    { "parent": "victoria", "child": "alfred" },   
+    { "parent": "albert", "child": "alfred" },
+    { "parent": "victoria", "child": "helena" },   
+    { "parent": "albert", "child": "helena" },
+    { "parent": "victoria", "child": "louise" },   
+    { "parent": "albert", "child": "louise" },
+    { "parent": "victoria", "child": "arthur" },   
+    { "parent": "albert", "child": "arthur" },
+    { "parent": "victoria", "child": "leopold" },  
+    { "parent": "albert", "child": "leopold" },
+    { "parent": "victoria", "child": "beatrice" }, 
+    { "parent": "albert", "child": "beatrice" },
+    { "parent": "edward7", "child": "george5" },   
+    { "parent": "alexandra", "child": "george5" },
+    { "parent": "vicky", "child": "wilhelm2" },    
+    { "parent": "friedrich3", "child": "wilhelm2" }
   ],
   "unions": [
     { "a": "victoria", "b": "albert",     "from": 1840 },
-    { "a": "vicky",    "b": "friedrich3", "from": 1858 }
+    { "a": "vicky",    "b": "friedrich3", "from": 1858 },
+    { "a": "edward7", "b": "alexandra", "from": 1863 },
+    { "a": "alice", "b": "louis4", "from": 1862 }
   ]
 }
