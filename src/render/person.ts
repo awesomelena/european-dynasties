@@ -7,32 +7,27 @@ function houseColor(data: Dataset, houseId: HouseId | null): string {
   return house ? house.color : "none";
 }
 
-export function drawPerson(
-  svg: SVGSVGElement,
-  data: Dataset,
-  person: Person,
-  pos: Point
-) {
-  const rect = document.createElementNS(SVG_NS, "rect");
+export function drawPerson(svg: SVGSVGElement, data: Dataset, person: Person, pos: Point): SVGGElement{    
+  const g = document.createElementNS(SVG_NS, "g");
+  g.style.cursor = "pointer";            
 
+  const rect = document.createElementNS(SVG_NS, "rect");
   rect.setAttribute("x", String(pos.x));
   rect.setAttribute("y", String(pos.y));
   rect.setAttribute("width", String(NODE_W));
   rect.setAttribute("height", String(NODE_H));
-
   rect.style.fill = houseColor(data, person.houseBirth);
   rect.style.stroke = houseColor(data, person.houseMarriage);
   rect.style.strokeWidth = "4";
-
-  svg.appendChild(rect);
+  g.appendChild(rect);          
 
   const text = document.createElementNS(SVG_NS, "text");
-
   text.setAttribute("x", String(pos.x + 8));
   text.setAttribute("y", String(pos.y + 25));
-
   text.style.fill = "var(--argent)";
   text.textContent = person.name.en;
+  g.appendChild(text);            
 
-  svg.appendChild(text);
+  svg.appendChild(g);   
+  return g;            
 }

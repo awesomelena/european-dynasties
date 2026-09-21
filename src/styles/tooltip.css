@@ -1,0 +1,16 @@
+.tooltip {
+  position: fixed;
+  pointer-events: none;
+  z-index: 10;
+  background: var(--sable);
+  color: var(--argent);
+  border: var(--border) solid var(--or);
+  padding: var(--space) calc(var(--space) * 2);
+  font-family: var(--font-bio);
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.tooltip div:first-child {
+  font-weight: bold;
+}

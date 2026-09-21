@@ -62,11 +62,11 @@ function place(
   }
 }
 
-export function computeLayout(data: Dataset): Map<PersonId, Point> {
+export function computeLayout(data: Dataset, rootId: PersonId): Map<PersonId, Point> {
   const { childrenOf, spouseOf } = buildFamily(data);
 
   const xByPerson = new Map<PersonId, number>();
-  place("victoria", 0, childrenOf, spouseOf, xByPerson);
+  place(rootId, 0, childrenOf, spouseOf, xByPerson);
 
   const parentsByChild = new Map<PersonId, PersonId[]>();
   for (const p of data.parentage) {
