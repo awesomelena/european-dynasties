@@ -37,3 +37,27 @@
   font-size: 24px;
   cursor: pointer;
 }
+
+.bio-wiki {
+  margin: var(--space) 0 calc(var(--space) * 2);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.bio-wiki::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.bio-portrait {
+  float: right;
+  width: 110px;
+  margin: 0 0 var(--space) var(--space);
+  border: var(--border) solid var(--sable);
+}
+
+.bio-wiki a {
+  color: var(--azure);
+  font-size: 12px;
+}

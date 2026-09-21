@@ -23,6 +23,7 @@ export interface Person {
   houseBirth: HouseId;
   houseMarriage: HouseId | null;
   titles?: Title[];
+  wiki?: string;
 }
 
 export interface Parentage {

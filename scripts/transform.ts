@@ -11,6 +11,7 @@ type Raw = {
   marriages: Pair[];
   houses: Pair[];
   titles: { s: string; label: string; start: string | null; end: string | null }[];
+  wiki: { s: string; title: string }[];
 };
 
 const PALETTE: { color: string; textColor?: string }[] = [
@@ -105,6 +106,9 @@ async function main() {
     titlesOf.get(t.s)!.push(t);
   }
 
+  const wikiOf = new Map<string, string>();
+  for (const w of raw.wiki) wikiOf.set(w.s, w.title);
+
   // 1. osobe
   const people: Person[] = [];
   let skipped = 0;
@@ -162,6 +166,7 @@ async function main() {
       died: year(rp.death[0]),
       houseBirth,
       houseMarriage: null,
+      wiki: wikiOf.get(id),
     });
   }
   const ids = new Set(people.map((p) => p.id));

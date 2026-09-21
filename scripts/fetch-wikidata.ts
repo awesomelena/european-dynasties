@@ -135,6 +135,26 @@ async function positions(ids: string[]): Promise<RawPosition[]> {
   return result;
 }
 
+type RawArticle = { s: string; title: string };
+
+async function articles(ids: string[]): Promise<RawArticle[]> {
+  const result: RawArticle[] = [];
+  for (const part of chunks(ids, 100)) {
+    const rows = await sparql(`
+      SELECT ?s ?article WHERE {
+        VALUES ?s { ${values(part)} }
+        ?article schema:about ?s ;
+                 schema:isPartOf <https://en.wikipedia.org/> .
+      }`);
+    for (const r of rows) {
+      const url = r.article!.value;
+      const title = url.substring(url.indexOf("/wiki/") + 6);
+      result.push({ s: qid(r.s!.value), title: decodeURIComponent(title) });
+    }
+  }
+  return result;
+}
+
 async function main() {
   console.log("Descendants...");
   const core = await descendants(ROOT);
@@ -165,11 +185,12 @@ async function main() {
   const marriages = await pairs(all, "P26");
   const houses = await pairs(all, "P53");
   const titles = await positions(all);
+  const wiki = await articles(all);
 
   await mkdir("scripts/raw", { recursive: true });
   await writeFile(
     "scripts/raw/victoria.json",
-    JSON.stringify({ root: ROOT, people, fathers, mothers, marriages, houses, titles }, null, 2)
+    JSON.stringify({ root: ROOT, people, fathers, mothers, marriages, houses, titles, wiki }, null, 2)
   );
   console.log(`Saved ${Object.keys(people).length} people.`);
 }

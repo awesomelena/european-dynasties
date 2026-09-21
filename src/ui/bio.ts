@@ -1,6 +1,7 @@
 import type { Dataset, HouseId, Person, PersonId } from "../types";
 import type { Family } from "../data/family";
 import { houseName, personLines } from "../render/tooltip";
+import { fetchSummary } from "./wiki";
 
 const panel = document.createElement("aside");
 panel.className = "bio";
@@ -72,6 +73,41 @@ export function showBio(
 ) {
   const [name, ...rest] = personLines(data, person);
   startPanel(name);
+
+  if (person.wiki !== undefined) {
+    const box = document.createElement("div");
+    box.className = "bio-wiki";
+    box.textContent = "Loading biography…";
+    panel.appendChild(box);
+
+    fetchSummary(person.wiki).then((summary) => {
+      box.replaceChildren();
+      if (summary === null) {
+        box.remove();
+        return;
+      }
+
+      if (summary.thumbnail !== undefined) {
+        const img = document.createElement("img");
+        img.className = "bio-portrait";
+        img.src = summary.thumbnail;
+        img.alt = person.name.en;
+        box.appendChild(img);
+      }
+
+      const text = document.createElement("p");
+      text.textContent = summary.extract;
+      box.appendChild(text);
+
+      const source = document.createElement("a");
+      source.href = summary.url;
+      source.target = "_blank";
+      source.rel = "noopener";
+      source.textContent = "Read more on Wikipedia · CC BY-SA";
+      box.appendChild(source);
+    });
+  }
+
   for (const line of rest) addText(line);
 
   const spouseId = family.spouseOf.get(person.id);
