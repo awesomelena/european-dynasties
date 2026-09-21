@@ -1,7 +1,11 @@
 import "./styles/tokens.css";
-import type { Dataset, Person, HouseId } from "./types";
+import type { Dataset, Person, HouseId, PersonId } from "./types";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
+const NODE_W = 180;
+const NODE_H = 40;
+
+type Point = { x: number; y: number };
 
 function houseColor(data: Dataset, houseId: HouseId | null): string {
   if (houseId === null) return "none";
@@ -13,14 +17,14 @@ function yearToY(year: number): number {
   return (year - 1800) * 8;
 }
 
-function drawPerson(svg: SVGSVGElement, data: Dataset, person: Person, x: number) {
+function drawPerson(svg: SVGSVGElement, data: Dataset, person: Person, x: number): Point {
   const y = yearToY(person.born);
 
   const rect = document.createElementNS(SVG_NS, "rect");
   rect.setAttribute("x", String(x));
   rect.setAttribute("y", String(y));
-  rect.setAttribute("width", "180");
-  rect.setAttribute("height", "40");
+  rect.setAttribute("width", String(NODE_W));
+  rect.setAttribute("height", String(NODE_H));
   rect.style.fill = houseColor(data, person.houseBirth);
   rect.style.stroke = houseColor(data, person.houseMarriage);
   rect.style.strokeWidth = "4";
@@ -32,6 +36,19 @@ function drawPerson(svg: SVGSVGElement, data: Dataset, person: Person, x: number
   text.style.fill = "var(--argent)";
   text.textContent = person.name.en;
   svg.appendChild(text);
+
+  return {x, y};
+}
+
+function drawLine(svg: SVGSVGElement, x1: number, y1: number, x2: number, y2: number) {
+  const line = document.createElementNS(SVG_NS, "line");
+  line.setAttribute("x1", String(x1));
+  line.setAttribute("y1", String(y1));
+  line.setAttribute("x2", String(x2));
+  line.setAttribute("y2", String(y2));
+  line.style.stroke = "var(--sable)";
+  line.style.strokeWidth = "3";
+  svg.appendChild(line);
 }
 
 async function loadData(): Promise<Dataset> {
@@ -48,8 +65,23 @@ async function main() {
   svg.setAttribute("height", "900");
   document.querySelector("#app")!.appendChild(svg);
 
+  const positions = new Map<PersonId, Point>();
+
   for (let i = 0; i < data.people.length; i++) {
-    drawPerson(svg, data, data.people[i], i * 200);
+    const person = data.people[i];
+    const pos = drawPerson(svg, data, person, i * 200);
+    positions.set(person.id, pos);
+  }
+
+  for (const union of data.unions) {
+    const a = positions.get(union.a);
+    const b = positions.get(union.b);
+    if (a === undefined || b === undefined) continue;
+
+    const left = a.x < b.x ? a : b;
+    const right = a.x < b.x ? b : a;
+
+    drawLine(svg, left.x + NODE_W, left.y + NODE_H / 2, right.x, right.y + NODE_H / 2);
   }
 }
 
