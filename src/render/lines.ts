@@ -1,6 +1,6 @@
-import type { Dataset, PersonId, Point, Box } from "../types";
+import type { Box, Point } from "../types";
+import type { Layout } from "../layout/positions";
 import { SVG_NS, NODE_H } from "../constants";
-import { unionKey } from "../data/family";
 
 type LineKind = "union" | "parent";
 
@@ -54,74 +54,40 @@ function drawUnionPath(svg: SVGGElement, points: Point[]) {
   svg.appendChild(inner);
 }
 
-export function drawUnions(svg: SVGGElement, data: Dataset, positions: Map<PersonId, Box>) {
-  for (const union of data.unions) {
-    const a = positions.get(union.a);
-    const b = positions.get(union.b);
-    if (a === undefined || b === undefined) continue;
-
-    const left = a.x < b.x ? a : b;
-    const right = a.x < b.x ? b : a;
-
-    const startX = left.x + left.w;
-    const startY = left.y + NODE_H / 2;
-    const endX = right.x;
-    const endY = right.y + NODE_H / 2;
-    const midX = (startX + endX) / 2;
-
-    drawUnionPath(svg, [
-    { x: startX, y: startY },
-    { x: midX, y: startY },
-    { x: midX, y: endY },
-    { x: endX, y: endY },
+export function drawUnions(g: SVGGElement, layout: Layout) {
+  for (const b of layout.blocks) {
+    if (b.spouse === null) continue;
+    const y = b.person.y + NODE_H / 2;
+    drawUnionPath(g, [
+      { x: b.person.x + b.person.w, y },
+      { x: b.spouse.x, y },
     ]);
   }
 }
 
-export function drawParentage(svg: SVGGElement, data: Dataset, positions: Map<PersonId, Box>) {
-  const parentsByChild = new Map<PersonId, PersonId[]>();
-  for (const p of data.parentage) {
-    if (!parentsByChild.has(p.child)) parentsByChild.set(p.child, []);
-    parentsByChild.get(p.child)!.push(p.parent);
+function drawComb(g: SVGGElement, fromX: number, fromY: number, kids: Box[], gap: number) {
+  if (kids.length === 0) return;
+  const centers = kids.map((c) => c.x + c.w / 2);
+  const barY = Math.min(...kids.map((c) => c.y)) - gap;
+  const barLeft = Math.min(fromX, ...centers);
+  const barRight = Math.max(fromX, ...centers);
+
+  drawLine(g, fromX, fromY, fromX, barY, "parent");
+  drawLine(g, barLeft, barY, barRight, barY, "parent");
+  for (let i = 0; i < kids.length; i++) {
+    drawLine(g, centers[i], barY, centers[i], kids[i].y, "parent");
   }
+}
 
-  const childrenByUnion = new Map<string, PersonId[]>();
-  for (const [childId, parentIds] of parentsByChild) {
-    if (parentIds.length !== 2) continue;
-    const key = unionKey(parentIds[0], parentIds[1]);
-    if (!childrenByUnion.has(key)) childrenByUnion.set(key, []);
-    childrenByUnion.get(key)!.push(childId);
-  }
+export function drawParentage(g: SVGGElement, layout: Layout) {
+  for (const b of layout.blocks) {
+    const ofCouple = b.children.filter((c) => c.ofCouple);
+    const alone = b.children.filter((c) => !c.ofCouple);
 
-  for (const union of data.unions) {
-    const childIds = childrenByUnion.get(unionKey(union.a, union.b));
-    if (childIds === undefined) continue;
-
-    const a = positions.get(union.a);
-    const b = positions.get(union.b);
-    if (a === undefined || b === undefined) continue;
-
-    const left = a.x < b.x ? a : b;
-    const right = a.x < b.x ? b : a;
-    const midX = (left.x + left.w + right.x) / 2;
-    const midY = Math.max(left.y, right.y) + NODE_H / 2 + 3;
-
-    const children: Box[] = [];
-    for (const id of childIds) {
-      const pos = positions.get(id);
-      if (pos !== undefined) children.push(pos);
+    if (b.spouse !== null) {
+      const midX = (b.person.x + b.person.w + b.spouse.x) / 2;
+      drawComb(g, midX, b.person.y + NODE_H / 2 + 3, ofCouple, 20);
     }
-    if (children.length === 0) continue;
-
-    const centers = children.map((c) => c.x + c.w / 2);
-    const barY = Math.min(...children.map((c) => c.y)) - 20;
-    const barLeft = Math.min(midX, ...centers);
-    const barRight = Math.max(midX, ...centers);
-
-    drawLine(svg, midX, midY, midX, barY, "parent");
-    drawLine(svg, barLeft, barY, barRight, barY, "parent");
-    for (let i = 0; i < children.length; i++) {
-      drawLine(svg, centers[i], barY, centers[i], children[i].y, "parent");
-    }
+    drawComb(g, b.person.x + b.person.w / 2, b.person.y + NODE_H, alone, 32);
   }
 }

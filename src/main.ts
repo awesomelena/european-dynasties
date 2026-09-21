@@ -3,7 +3,7 @@ import "./styles/tooltip.css";
 import "./styles/menu.css";     
 import "./styles/bio.css";
 import "./styles/canvas.css";
-import type { PersonId } from "./types";
+import type { Person, PersonId } from "./types";
 import { SVG_NS, NODE_H } from "./constants";
 import { nodeWidth } from "./render/measure";
 import { loadData } from "./data/loader";
@@ -69,60 +69,70 @@ async function main() {
   }
   document.body.appendChild(controls);
 
-  function render(focusId: PersonId) {
-    world.replaceChildren();
-    hideTooltip();
+  function attach(g: SVGGElement, person: Person) {
+    g.addEventListener("mouseenter", (e) =>
+      showTooltip(personLines(data, person), e.clientX, e.clientY)
+    );
+    g.addEventListener("mousemove", (e) => moveTooltip(e.clientX, e.clientY));
+    g.addEventListener("mouseleave", hideTooltip);
 
-    const positions = computeLayout(data, focusId, widths);
+    g.addEventListener("click", (e) => {
+      e.stopPropagation();
+      hideTooltip();
 
-    let maxX = 0;
-    let maxY = 0;
-    for (const p of positions.values()) {
-      maxX = Math.max(maxX, p.x + p.w);
-      maxY = Math.max(maxY, p.y + NODE_H);
-    }
-    lastWidth = maxX + 40;
-    lastHeight = maxY + 40;
+      const items: MenuItem[] = [
+        { label: "Center here", action: () => render(person.id) },
+        { label: "Biography", action: () => openBio(person.id) },
+      ];
 
-    drawUnions(world, data, positions);
-    drawParentage(world, data, positions);
+      const spouseId = spouseOf.get(person.id);
+      const spouse = spouseId !== undefined ? personById.get(spouseId) : undefined;
+      if (spouse !== undefined && spouse.houseBirth !== person.houseBirth) {
+        items.push({
+          label: `Open ${houseName(data, spouse.houseBirth)} tree`,
+          action: () => render(spouse.id),
+        });
+      }
 
-    for (const person of data.people) {
-      const pos = positions.get(person.id);
-      if (pos === undefined) continue;
-
-      const g = drawPerson(world, data, person, pos);
-      g.addEventListener("mouseenter", (e) =>
-        showTooltip(personLines(data, person), e.clientX, e.clientY)
-      );
-      g.addEventListener("mousemove", (e) => moveTooltip(e.clientX, e.clientY));
-      g.addEventListener("mouseleave", hideTooltip);
-
-      g.addEventListener("click", (e) => {
-        e.stopPropagation();
-        hideTooltip();
-
-        const items: MenuItem[] = [
-          { label: "Center here", action: () => render(person.id) },
-          { label: "Biography", action: () => openBio(person.id) },
-        ];
-
-        const spouseId = spouseOf.get(person.id);
-        const spouse = spouseId !== undefined ? personById.get(spouseId) : undefined;
-        if (spouse !== undefined && spouse.houseBirth !== person.houseBirth) {
-          items.push({
-            label: `Open ${houseName(data, spouse.houseBirth)} tree`,
-            action: () => render(spouse.id),
-          });
-        }
-
-        showMenu(items, e.clientX, e.clientY);
-      });
-    }
-
-    fitToView(lastWidth, lastHeight);
-
+      showMenu(items, e.clientX, e.clientY);
+    });
   }
+
+  function render(focusId: PersonId) {
+  world.replaceChildren();
+  hideTooltip();
+
+  const layout = computeLayout(data, focusId, widths);
+
+  let maxX = 0;
+  let maxY = 0;
+  for (const b of layout.blocks) {
+    const boxes = b.spouse !== null ? [b.person, b.spouse] : [b.person];
+    for (const box of boxes) {
+      maxX = Math.max(maxX, box.x + box.w);
+      maxY = Math.max(maxY, box.y + NODE_H);
+    }
+  }
+  lastWidth = maxX + 40;
+  lastHeight = maxY + 40;
+
+  drawUnions(world, layout);
+  drawParentage(world, layout);
+
+  for (const [id, box] of layout.positions) {
+    const person = personById.get(id)!;
+    attach(drawPerson(world, data, person, box), person);
+  }
+
+  for (const b of layout.blocks) {
+    if (b.spouse === null || !b.spouse.ghost) continue;
+    const person = personById.get(b.spouse.id)!;
+    attach(drawPerson(world, data, person, b.spouse, true), person);
+  }
+
+  fitToView(lastWidth, lastHeight);
+  
+}
 
   render("Q9439");
 }

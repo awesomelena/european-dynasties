@@ -11,7 +11,8 @@ export function drawPerson(
   svg: SVGGElement,
   data: Dataset,
   person: Person,
-  pos: Box
+  pos: Box,
+  ghost = false
 ): SVGGElement {
   const g = document.createElementNS(SVG_NS, "g");
   g.style.cursor = "pointer";
@@ -24,6 +25,11 @@ export function drawPerson(
   rect.style.fill = houseColor(data, person.houseBirth);
   rect.style.stroke = houseColor(data, person.houseMarriage);
   rect.style.strokeWidth = "4";
+  if (ghost) {
+    rect.style.stroke = "var(--sable)";
+    rect.style.strokeDasharray = "6 4";
+    g.style.opacity = "0.55";
+  }
   g.appendChild(rect);
 
   const house = data.houses.find((h) => h.id === person.houseBirth);
