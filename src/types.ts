@@ -34,3 +34,5 @@ export interface Dataset {
   parentage: Parentage[];
   unions: Union[];
 }
+
+export type Point = { x: number; y: number };
