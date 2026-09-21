@@ -20,10 +20,10 @@ import {
   showTooltip, moveTooltip, hideTooltip, personLines, houseName,
 } from "./render/tooltip";
 import { showMenu, type MenuItem } from "./ui/menu"; 
-import { showBio } from "./ui/bio";
 import { select } from "d3-selection";
 import { zoom, zoomIdentity } from "d3-zoom";
 import { createSearch } from "./ui/search";
+import { showBio, showHouse } from "./ui/bio";
 
 async function main() {
   const data = await loadData();
@@ -119,7 +119,11 @@ async function main() {
     }
   }
 
-  const updateLegend = createLegend(applyHighlight);
+  function openHouse(houseId: HouseId) {
+    showHouse(data, houseId, (id) => render(id));
+  }
+
+  const updateLegend = createLegend(applyHighlight, openHouse);
 
   function render(focusId: PersonId) {
   world.replaceChildren();

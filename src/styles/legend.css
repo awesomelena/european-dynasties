@@ -56,3 +56,17 @@
 .legend-row.active {
   background: var(--or);
 }
+
+.legend-more {
+  margin-left: auto;
+  padding: 0 4px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.legend-more:hover {
+  color: var(--azure);
+}

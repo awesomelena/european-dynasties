@@ -21,7 +21,10 @@ const LINE_SAMPLES = `
   </div>
 `;
 
-export function createLegend(onHighlight: (house: HouseId | null) => void) {
+export function createLegend(
+  onHighlight: (house: HouseId | null) => void,
+  onShowHouse: (house: HouseId) => void
+){
   const details = document.createElement("details");
   details.className = "legend";
   details.open = true;
@@ -65,6 +68,18 @@ export function createLegend(onHighlight: (house: HouseId | null) => void) {
       const name = document.createElement("span");
       name.textContent = id === "unknown" ? "Unknown" : houseName(data, id);
       row.append(swatch, name);
+
+      if (id !== "unknown") {
+        const more = document.createElement("button");
+        more.className = "legend-more";
+        more.textContent = "›";
+        more.title = "Show all members";
+        more.addEventListener("click", (e) => {
+          e.stopPropagation();
+          onShowHouse(id);
+        });
+        row.appendChild(more);
+      }
       row.dataset.house = id;
       row.classList.toggle("active", id === active);
       row.addEventListener("click", () => setActive(active === id ? null : id));
