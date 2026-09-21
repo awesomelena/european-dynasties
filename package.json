@@ -6,10 +6,17 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "fetch:wikidata": "tsx scripts/fetch-wikidata.ts",
+    "transform": "tsx scripts/transform.ts"
   },
   "devDependencies": {
+    "@types/node": "^26.6.2",
+    "tsx": "^4.23.15",
     "typescript": "~6.0.2",
     "vite": "^8.3.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
   }
 }

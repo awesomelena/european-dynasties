@@ -3,7 +3,7 @@ export type PersonId = string;
 
 export interface House {
   id: HouseId;
-  name: { sr: string; en: string };
+  name: { en: string; native?: string };
   color: string; 
   textColor?: string;         
 }
