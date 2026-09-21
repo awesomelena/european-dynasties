@@ -117,45 +117,51 @@ function drawUnions(
   }
 }
 
-function drawParentage(
-  svg: SVGSVGElement,
-  data: Dataset,
-  positions: Map<PersonId, Point>
-) {
+function drawParentage(svg: SVGSVGElement, data: Dataset, positions: Map<PersonId, Point>) {
   const parentsByChild = new Map<PersonId, PersonId[]>();
-
   for (const p of data.parentage) {
-    if (!parentsByChild.has(p.child)) {
-      parentsByChild.set(p.child, []);
-    }
-
+    if (!parentsByChild.has(p.child)) parentsByChild.set(p.child, []);
     parentsByChild.get(p.child)!.push(p.parent);
   }
 
+  const childrenByUnion = new Map<string, PersonId[]>();
   for (const [childId, parentIds] of parentsByChild) {
     if (parentIds.length !== 2) continue;
+    const key = unionKey(parentIds[0], parentIds[1]);
+    if (!childrenByUnion.has(key)) childrenByUnion.set(key, []);
+    childrenByUnion.get(key)!.push(childId);
+  }
 
-    const p1 = positions.get(parentIds[0]);
-    const p2 = positions.get(parentIds[1]);
-    const child = positions.get(childId);
+  for (const union of data.unions) {
+    const childIds = childrenByUnion.get(unionKey(union.a, union.b));
+    if (childIds === undefined) continue;
 
-    if (p1 === undefined || p2 === undefined || child === undefined) {
-      continue;
-    }
+    const a = positions.get(union.a);
+    const b = positions.get(union.b);
+    if (a === undefined || b === undefined) continue;
 
-    const left = p1.x < p2.x ? p1 : p2;
-    const right = p1.x < p2.x ? p2 : p1;
-
+    const left = a.x < b.x ? a : b;
+    const right = a.x < b.x ? b : a;
     const midX = (left.x + NODE_W + right.x) / 2;
     const midY = (left.y + right.y) / 2 + NODE_H / 2;
 
-    drawLine(
-      svg,
-      midX,
-      midY,
-      child.x + NODE_W / 2,
-      child.y
-    );
+    const children: Point[] = [];
+    for (const id of childIds) {
+      const pos = positions.get(id);
+      if (pos !== undefined) children.push(pos);
+    }
+    if (children.length === 0) continue;
+
+    const centers = children.map((c) => c.x + NODE_W / 2);
+    const barY = Math.min(...children.map((c) => c.y)) - 20;
+    const barLeft = Math.min(midX, ...centers);
+    const barRight = Math.max(midX, ...centers);
+
+    drawLine(svg, midX, midY, midX, barY);
+    drawLine(svg, barLeft, barY, barRight, barY);
+    for (let i = 0; i < children.length; i++) {
+      drawLine(svg, centers[i], barY, centers[i], children[i].y);
+    }
   }
 }
 
