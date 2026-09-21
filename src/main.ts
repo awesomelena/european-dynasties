@@ -83,6 +83,32 @@ async function main() {
 
     drawLine(svg, left.x + NODE_W, left.y + NODE_H / 2, right.x, right.y + NODE_H / 2);
   }
+
+  const parentsByChild = new Map<PersonId, PersonId[]>();
+
+  for (const p of data.parentage) {
+    if (!parentsByChild.has(p.child)) {
+      parentsByChild.set(p.child, []);
+    }
+    parentsByChild.get(p.child)!.push(p.parent);
+  }
+
+  for (const [childId, parentIds] of parentsByChild) {
+    if (parentIds.length !== 2) continue;
+
+    const p1 = positions.get(parentIds[0]);
+    const p2 = positions.get(parentIds[1]);
+    const c = positions.get(childId);
+    if (p1 === undefined || p2 === undefined || c === undefined) continue;
+
+    const left = p1.x < p2.x ? p1 : p2;
+    const right = p1.x < p2.x ? p2 : p1;
+
+    const midX = (left.x + NODE_W + right.x) / 2;
+    const midY = (left.y + right.y) / 2 + NODE_H / 2;
+
+    drawLine(svg, midX, midY, c.x + NODE_W / 2, c.y);
+  }
 }
 
 main();
