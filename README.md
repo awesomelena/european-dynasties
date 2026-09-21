@@ -6,8 +6,7 @@ XOXO Gossip Girl
 
 **Live site:** https://awesomelena.github.io/european-dynasties/
 
-<!-- Add a screenshot: save one as docs/screenshot.png and uncomment the line below -->
-<!-- ![Screenshot of the family tree](docs/screenshot.png) -->
+![Screenshot of the family tree](docs/screenshot.png)
 
 ## Features
 
