@@ -57,6 +57,14 @@ async function descendants(root: string): Promise<string[]> {
 
 type Pair = { s: string; o: string; oLabel: string };
 
+function chunks<T>(list: T[], size: number): T[][] {
+  const result: T[][] = [];
+  for (let i = 0; i < list.length; i += size) {
+    result.push(list.slice(i, i + size));
+  }
+  return result;
+}
+
 async function pairs(ids: string[], prop: string): Promise<Pair[]> {
   if (ids.length === 0) return [];
   const rows = await sparql(`
@@ -101,6 +109,32 @@ async function basics(ids: string[]): Promise<Record<string, RawPerson>> {
   return people;
 }
 
+type RawPosition = { s: string; label: string; start: string | null; end: string | null };
+
+async function positions(ids: string[]): Promise<RawPosition[]> {
+  const result: RawPosition[] = [];
+  for (const part of chunks(ids, 100)) {
+    const rows = await sparql(`
+      SELECT ?s ?posLabel ?start ?end WHERE {
+        VALUES ?s { ${values(part)} }
+        ?s p:P39 ?st .
+        ?st ps:P39 ?pos .
+        OPTIONAL { ?st pq:P580 ?start . }
+        OPTIONAL { ?st pq:P582 ?end . }
+        SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+      }`);
+    for (const r of rows) {
+      result.push({
+        s: qid(r.s!.value),
+        label: r.posLabel?.value ?? "",
+        start: r.start?.value ?? null,
+        end: r.end?.value ?? null,
+      });
+    }
+  }
+  return result;
+}
+
 async function main() {
   console.log("Descendants...");
   const core = await descendants(ROOT);
@@ -130,11 +164,12 @@ async function main() {
   const mothers = await pairs(all, "P25");
   const marriages = await pairs(all, "P26");
   const houses = await pairs(all, "P53");
+  const titles = await positions(all);
 
   await mkdir("scripts/raw", { recursive: true });
   await writeFile(
     "scripts/raw/victoria.json",
-    JSON.stringify({ root: ROOT, people, fathers, mothers, marriages, houses }, null, 2)
+    JSON.stringify({ root: ROOT, people, fathers, mothers, marriages, houses, titles }, null, 2)
   );
   console.log(`Saved ${Object.keys(people).length} people.`);
 }

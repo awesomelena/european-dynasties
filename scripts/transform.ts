@@ -10,6 +10,7 @@ type Raw = {
   mothers: Pair[];
   marriages: Pair[];
   houses: Pair[];
+  titles: { s: string; label: string; start: string | null; end: string | null }[];
 };
 
 const PALETTE: { color: string; textColor?: string }[] = [
@@ -50,6 +51,40 @@ function splitLabel(label: string): { name: string; title?: string } {
   return { name: label };
 }
 
+const TIERS: RegExp[] = [
+  /\b(emperor|empress|tsar|tsarina|king|queen|monarch)\b/i,
+  /\b(grand duke|grand duchess|elector|electress)\b/i,
+  /\b(duke|duchess|prince|princess|regent)\b/i,
+];
+
+const IMPERIAL = /\b(emperor|empress|tsar|tsarina)\b/i;
+const SECONDARY = /\bof India\b/i;
+
+function tier(title: string): number {
+  const i = TIERS.findIndex((re) => re.test(title));
+  return i === -1 ? TIERS.length : i;
+}
+
+const FEMININE: [RegExp, string][] = [
+  [/\bEmperor\b/, "Empress"],
+  [/\bKing\b/, "Queen"],
+  [/\bTsar\b/, "Tsarina"],
+  [/\bGrand Duke\b/, "Grand Duchess"],
+  [/\bArchduke\b/, "Archduchess"],
+  [/\bDuke\b/, "Duchess"],
+  [/\bPrince\b/, "Princess"],
+  [/\bElector\b/, "Electress"],
+];
+
+function cleanTitle(label: string, sex: "m" | "f"): string {
+  let t = label.replace(/^monarch of /i, "King of ");
+  t = t.charAt(0).toUpperCase() + t.slice(1);
+  if (sex === "f") {
+    for (const [re, feminine] of FEMININE) t = t.replace(re, feminine);
+  }
+  return t;
+}
+
 async function main() {
   const raw: Raw = JSON.parse(await readFile("scripts/raw/victoria.json", "utf8"));
 
@@ -63,6 +98,12 @@ async function main() {
   }
   const fatherOf = new Map<string, string>();
   for (const f of raw.fathers) fatherOf.set(f.s, f.o);
+
+  const titlesOf = new Map<string, Raw["titles"]>();
+  for (const t of raw.titles) {
+    if (!titlesOf.has(t.s)) titlesOf.set(t.s, []);
+    titlesOf.get(t.s)!.push(t);
+  }
 
   // 1. osobe
   const people: Person[] = [];
@@ -79,13 +120,44 @@ async function main() {
     const fatherHouses = father !== undefined ? housesOf.get(father) ?? [] : [];
     const houseBirth = own.find((h) => fatherHouses.includes(h)) ?? own[0] ?? "unknown";
 
-    const { name: shortName, title: titleText } = splitLabel(rp.label);
+    const { name: shortName, title: labelTitle } = splitLabel(rp.label);
+    const sex: "m" | "f" = rp.sex.includes("Q6581072") ? "f" : "m";
+
+    const fromWiki = (titlesOf.get(id) ?? [])
+      .map((t) => ({
+        title: cleanTitle(t.label, sex),
+        from: year(t.start ?? undefined),
+        to: year(t.end ?? undefined),
+      }))
+      .filter((t) => t.title !== "")
+      .sort(
+        (a, b) =>
+        tier(a.title) - tier(b.title) ||
+        Number(SECONDARY.test(a.title)) - Number(SECONDARY.test(b.title)) ||
+        (a.from ?? 9999) - (b.from ?? 9999) ||
+        Number(IMPERIAL.test(b.title)) - Number(IMPERIAL.test(a.title))
+      );
+
+    const royal = fromWiki.filter((t) => tier(t.title) < TIERS.length);
+    const other = fromWiki.filter((t) => tier(t.title) === TIERS.length);
+    const titles = [...royal];
+    if (labelTitle !== undefined && !titles.some((t) => t.title === labelTitle)) {
+      titles.push({ title: labelTitle, from: null, to: null });
+    }
+    titles.push(...other);
+
+    let name = shortName;
+    const primary = titles[0];
+    const ofAt = name.lastIndexOf(" of ");
+    if (primary !== undefined && ofAt !== -1 && primary.title.endsWith(name.slice(ofAt + 4))) {
+      name = name.slice(0, ofAt);
+    }
 
     people.push({
       id,
-      name: { en: shortName },
-      titles: titleText !== undefined ? [{ title: titleText, from: null, to: null }] : undefined,
-      sex: rp.sex.includes("Q6581072") ? "f" : "m",
+      name: { en: name },
+      titles: titles.length > 0 ? titles : undefined,
+      sex,
       born,
       died: year(rp.death[0]),
       houseBirth,

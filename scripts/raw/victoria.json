@@ -13016,5 +13016,1903 @@
       "o": "Q3942872",
       "oLabel": "House of Ruspoli"
     }
+  ],
+  "titles": [
+    {
+      "s": "Q335129",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/db87f3a631d214016966cdc2a16439fe"
+    },
+    {
+      "s": "Q337477",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/7a96bfdec4315955bd80e75db1141e32"
+    },
+    {
+      "s": "Q347374",
+      "label": "Hereditary Prince",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q382226",
+      "label": "Head of the House of Romanov",
+      "start": "1938-10-12T00:00:00Z",
+      "end": "1992-04-21T00:00:00Z"
+    },
+    {
+      "s": "Q439167",
+      "label": "heir presumptive",
+      "start": "1943-04-26T00:00:00Z",
+      "end": "1945-12-14T00:00:00Z"
+    },
+    {
+      "s": "Q439167",
+      "label": "Counsellor of State",
+      "start": "1943-04-26T00:00:00Z",
+      "end": "1944-02-07T00:00:00Z"
+    },
+    {
+      "s": "Q518846",
+      "label": "heir apparent",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q519332",
+      "label": "Governor-General of the Union of South Africa",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q519332",
+      "label": "Member of the Privy Council of the United Kingdom",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q590227",
+      "label": "monarch of New Zealand",
+      "start": "1936-01-21T00:00:00Z",
+      "end": "1936-12-12T00:00:00Z"
+    },
+    {
+      "s": "Q590227",
+      "label": "monarch of the United Kingdom",
+      "start": "1936-01-20T00:00:00Z",
+      "end": "1936-12-11T00:00:00Z"
+    },
+    {
+      "s": "Q590227",
+      "label": "monarch of Canada",
+      "start": "1936-01-20T00:00:00Z",
+      "end": "1936-12-11T00:00:00Z"
+    },
+    {
+      "s": "Q590227",
+      "label": "Grand Master of the Order of the British Empire",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q590227",
+      "label": "Emperor of India",
+      "start": "1936-01-20T00:00:00Z",
+      "end": "1936-12-11T00:00:00Z"
+    },
+    {
+      "s": "Q590227",
+      "label": "Head of the House of Windsor",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q590227",
+      "label": "Prince of Wales",
+      "start": "1910-06-23T00:00:00Z",
+      "end": "1936-01-20T00:00:00Z"
+    },
+    {
+      "s": "Q590227",
+      "label": "monarch of the Union of South Africa",
+      "start": "1936-01-20T00:00:00Z",
+      "end": "1936-12-11T00:00:00Z"
+    },
+    {
+      "s": "Q590227",
+      "label": "Heir Apparent of the United Kingdom",
+      "start": "1910-05-06T00:00:00Z",
+      "end": "1936-01-20T00:00:00Z"
+    },
+    {
+      "s": "Q778200",
+      "label": "Grand Mistress of the Order of Saint Catherine",
+      "start": "1936-01-01T00:00:00Z",
+      "end": "1948-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q590227",
+      "label": "Governor of the Bahamas",
+      "start": "1940-08-18T00:00:00Z",
+      "end": "1945-04-30T00:00:00Z"
+    },
+    {
+      "s": "Q115477",
+      "label": "Queen Consort of Sweden",
+      "start": "1950-10-29T00:00:00Z",
+      "end": "1965-03-07T00:00:00Z"
+    },
+    {
+      "s": "Q115477",
+      "label": "crown princess",
+      "start": "1923-11-03T00:00:00Z",
+      "end": "1950-10-29T00:00:00Z"
+    },
+    {
+      "s": "Q116728",
+      "label": "Princess Royal",
+      "start": "1841-01-01T00:00:00Z",
+      "end": "1901-08-05T00:00:00Z"
+    },
+    {
+      "s": "Q117174",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/13e39bf4ad2c294979dc021f1155cb39"
+    },
+    {
+      "s": "Q117174",
+      "label": "Governor-General of Australia",
+      "start": "1945-01-30T00:00:00Z",
+      "end": "1947-03-11T00:00:00Z"
+    },
+    {
+      "s": "Q151742",
+      "label": "King of the Hellenes",
+      "start": "1917-06-11T00:00:00Z",
+      "end": "1920-10-25T00:00:00Z"
+    },
+    {
+      "s": "Q152094",
+      "label": "Consort of Russia",
+      "start": "1894-11-26T00:00:00Z",
+      "end": "1917-03-15T00:00:00Z"
+    },
+    {
+      "s": "Q152935",
+      "label": "King of the Hellenes",
+      "start": "1935-11-03T00:00:00Z",
+      "end": "1947-04-01T00:00:00Z"
+    },
+    {
+      "s": "Q152935",
+      "label": "King of the Hellenes",
+      "start": "1922-09-27T00:00:00Z",
+      "end": "1924-03-25T00:00:00Z"
+    },
+    {
+      "s": "Q154423",
+      "label": "Queen Consort of Norway",
+      "start": "1905-11-18T00:00:00Z",
+      "end": "1938-11-20T00:00:00Z"
+    },
+    {
+      "s": "Q154912",
+      "label": "Chief of Defence of Norway",
+      "start": "1944-07-01T00:00:00Z",
+      "end": "1945-07-15T00:00:00Z"
+    },
+    {
+      "s": "Q154912",
+      "label": "Monarch of Norway",
+      "start": "1957-09-21T00:00:00Z",
+      "end": "1991-01-17T00:00:00Z"
+    },
+    {
+      "s": "Q155394",
+      "label": "King of the Hellenes",
+      "start": "1947-04-01T00:00:00Z",
+      "end": "1964-03-06T00:00:00Z"
+    },
+    {
+      "s": "Q155822",
+      "label": "Queen consort of Greece",
+      "start": "1913-01-01T00:00:00Z",
+      "end": null
+    },
+    {
+      "s": "Q157068",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/9da20f77d441f9256b342bb6508ad5af"
+    },
+    {
+      "s": "Q157068",
+      "label": "Governor of the Isle of Wight",
+      "start": "1965-07-19T00:00:00Z",
+      "end": null
+    },
+    {
+      "s": "Q157068",
+      "label": "Lord Lieutenant of the Isle of Wight",
+      "start": "1974-04-01T00:00:00Z",
+      "end": "1979-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q157068",
+      "label": "Governor-General of India",
+      "start": "1947-08-15T00:00:00Z",
+      "end": "1948-06-21T00:00:00Z"
+    },
+    {
+      "s": "Q157068",
+      "label": "Chief of the Defence Staff",
+      "start": "1959-01-01T00:00:00Z",
+      "end": "1965-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q157068",
+      "label": "Member of the Privy Council of the United Kingdom",
+      "start": "1947-01-01T00:00:00Z",
+      "end": null
+    },
+    {
+      "s": "Q157068",
+      "label": "First Sea Lord",
+      "start": "1955-01-01T00:00:00Z",
+      "end": "1959-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q158140",
+      "label": "Governor of the Isle of Wight",
+      "start": "1896-01-01T00:00:00Z",
+      "end": "1944-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q158143",
+      "label": "Member of the Privy Council of the United Kingdom",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q158143",
+      "label": "Duke of Edinburgh",
+      "start": "1866-05-24T00:00:00Z",
+      "end": "1900-07-30T00:00:00Z"
+    },
+    {
+      "s": "Q158143",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/d4f0bd74277200b7496d4d8b92722fc5"
+    },
+    {
+      "s": "Q159670",
+      "label": "Duke of Clarence and Avondale",
+      "start": "1890-05-24T00:00:00Z",
+      "end": "1892-01-14T00:00:00Z"
+    },
+    {
+      "s": "Q159670",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/94bdc38283380e9843129725754341fa"
+    },
+    {
+      "s": "Q160001",
+      "label": "Consort of Spain",
+      "start": "1906-05-31T00:00:00Z",
+      "end": "1931-04-14T00:00:00Z"
+    },
+    {
+      "s": "Q160467",
+      "label": "chairperson",
+      "start": "1933-01-01T00:00:00Z",
+      "end": "1945-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q160467",
+      "label": "member of the House of Lords",
+      "start": "1905-07-19T00:00:00Z",
+      "end": "1919-03-28T00:00:00Z"
+    },
+    {
+      "s": "Q160467",
+      "label": "member of the Reichstag of Nazi Germany",
+      "start": "1936-01-01T00:00:00Z",
+      "end": "1945-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q160541",
+      "label": "Member of the Privy Council of the United Kingdom",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q160541",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/e298802c604c53a3d693c9bb1efb07af"
+    },
+    {
+      "s": "Q160558",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/21aac7c93721a06d1505c8619959fc61"
+    },
+    {
+      "s": "Q160558",
+      "label": "Governor General of Canada",
+      "start": "1911-10-13T00:00:00Z",
+      "end": "1916-11-11T00:00:00Z"
+    },
+    {
+      "s": "Q160558",
+      "label": "Member of the Privy Council of the United Kingdom",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q160558",
+      "label": "Member of the Privy Council of Ireland",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q160770",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/fc4317a307752dadc7b51459bd289017"
+    },
+    {
+      "s": "Q160770",
+      "label": "Duke of Kent",
+      "start": "1934-10-12T00:00:00Z",
+      "end": "1942-08-25T00:00:00Z"
+    },
+    {
+      "s": "Q160770",
+      "label": "Member of the Privy Council of the United Kingdom",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q163010",
+      "label": "Consort of Denmark",
+      "start": "1947-04-20T00:00:00Z",
+      "end": "1972-01-14T00:00:00Z"
+    },
+    {
+      "s": "Q167387",
+      "label": "Consort of Serbia",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q20875",
+      "label": "monarch of Canada",
+      "start": "1901-01-22T00:00:00Z",
+      "end": "1910-05-06T00:00:00Z"
+    },
+    {
+      "s": "Q20875",
+      "label": "Member of the Privy Council of the United Kingdom",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q20875",
+      "label": "Member of the Privy Council of Ireland",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q20875",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/93e9316b6d8c2845709710e29784d2ef"
+    },
+    {
+      "s": "Q20875",
+      "label": "Emperor of India",
+      "start": "1901-01-22T00:00:00Z",
+      "end": "1910-05-06T00:00:00Z"
+    },
+    {
+      "s": "Q20875",
+      "label": "Lord High Steward of Scotland",
+      "start": "1841-01-01T00:00:00Z",
+      "end": "1901-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q20875",
+      "label": "Prince of Wales",
+      "start": "1841-12-08T00:00:00Z",
+      "end": "1901-01-22T00:00:00Z"
+    },
+    {
+      "s": "Q20875",
+      "label": "monarch of the United Kingdom of Great Britain and Ireland",
+      "start": "1901-01-22T00:00:00Z",
+      "end": "1910-05-06T00:00:00Z"
+    },
+    {
+      "s": "Q212897",
+      "label": "King of Romania",
+      "start": "1930-06-08T00:00:00Z",
+      "end": "1940-09-06T00:00:00Z"
+    },
+    {
+      "s": "Q233516",
+      "label": "Princess Royal",
+      "start": "1905-11-09T00:00:00Z",
+      "end": "1931-01-04T00:00:00Z"
+    },
+    {
+      "s": "Q233913",
+      "label": "Princess Royal",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q235521",
+      "label": "Viceregal consort of Canada",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q235521",
+      "label": "Chancellor of the University of the West Indies",
+      "start": "1948-01-01T00:00:00Z",
+      "end": "1971-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q255953",
+      "label": "Colonel-in-Chief",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q255953",
+      "label": "heir presumptive",
+      "start": "1891-05-17T00:00:00Z",
+      "end": "1912-01-29T00:00:00Z"
+    },
+    {
+      "s": "Q255953",
+      "label": "Counsellor of State",
+      "start": "1937-01-01T00:00:00Z",
+      "end": "1944-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q2677",
+      "label": "German Emperor",
+      "start": "1888-06-15T00:00:00Z",
+      "end": "1918-11-28T00:00:00Z"
+    },
+    {
+      "s": "Q2677",
+      "label": "King of Prussia",
+      "start": "1888-06-15T00:00:00Z",
+      "end": "1918-11-09T00:00:00Z"
+    },
+    {
+      "s": "Q269412",
+      "label": "Emperor of India",
+      "start": "1910-05-06T00:00:00Z",
+      "end": "1936-01-20T00:00:00Z"
+    },
+    {
+      "s": "Q269412",
+      "label": "monarch of the United Kingdom",
+      "start": "1927-04-12T00:00:00Z",
+      "end": "1936-01-20T00:00:00Z"
+    },
+    {
+      "s": "Q269412",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/4f85c6ff792e132560d319090b92db4b"
+    },
+    {
+      "s": "Q269412",
+      "label": "Member of the Privy Council of the United Kingdom",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q269412",
+      "label": "President of the Royal Philatelic Society London",
+      "start": "1896-01-01T00:00:00Z",
+      "end": "1910-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q269412",
+      "label": "monarch of Canada",
+      "start": "1910-05-06T00:00:00Z",
+      "end": "1936-01-20T00:00:00Z"
+    },
+    {
+      "s": "Q269412",
+      "label": "Member of the Privy Council of Ireland",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q269412",
+      "label": "Duke of York",
+      "start": "1892-05-24T00:00:00Z",
+      "end": "1910-05-06T00:00:00Z"
+    },
+    {
+      "s": "Q269412",
+      "label": "monarch of the United Kingdom of Great Britain and Ireland",
+      "start": "1910-05-06T00:00:00Z",
+      "end": "1927-04-12T00:00:00Z"
+    },
+    {
+      "s": "Q269412",
+      "label": "monarch",
+      "start": "1931-01-01T00:00:00Z",
+      "end": "1936-01-20T00:00:00Z"
+    },
+    {
+      "s": "Q280856",
+      "label": "monarch of the Union of South Africa",
+      "start": "1936-12-11T00:00:00Z",
+      "end": "1952-02-06T00:00:00Z"
+    },
+    {
+      "s": "Q280856",
+      "label": "monarch of New Zealand",
+      "start": "1947-01-01T00:00:00Z",
+      "end": "1952-02-06T00:00:00Z"
+    },
+    {
+      "s": "Q280856",
+      "label": "monarch of the Dominion of Pakistan",
+      "start": "1947-01-01T00:00:00Z",
+      "end": "1952-02-06T00:00:00Z"
+    },
+    {
+      "s": "Q280856",
+      "label": "monarch of the Dominion of Ceylon",
+      "start": "1948-01-01T00:00:00Z",
+      "end": "1952-02-06T00:00:00Z"
+    },
+    {
+      "s": "Q280856",
+      "label": "emperor",
+      "start": "1936-12-11T00:00:00Z",
+      "end": "1937-12-29T00:00:00Z"
+    },
+    {
+      "s": "Q280856",
+      "label": "monarch of Canada",
+      "start": "1936-12-11T00:00:00Z",
+      "end": "1952-02-06T00:00:00Z"
+    },
+    {
+      "s": "Q280856",
+      "label": "King of India",
+      "start": "1947-08-15T00:00:00Z",
+      "end": "1950-01-26T00:00:00Z"
+    },
+    {
+      "s": "Q280856",
+      "label": "Duke of York",
+      "start": "1920-06-03T00:00:00Z",
+      "end": "1936-12-11T00:00:00Z"
+    },
+    {
+      "s": "Q280856",
+      "label": "monarch of the United Kingdom",
+      "start": "1936-12-11T00:00:00Z",
+      "end": "1952-02-06T00:00:00Z"
+    },
+    {
+      "s": "Q280856",
+      "label": "Emperor of India",
+      "start": "1936-12-11T00:00:00Z",
+      "end": "1948-06-01T00:00:00Z"
+    },
+    {
+      "s": "Q280856",
+      "label": "monarch of Australia",
+      "start": "1942-01-01T00:00:00Z",
+      "end": "1952-02-06T00:00:00Z"
+    },
+    {
+      "s": "Q313857",
+      "label": "Pretender to the Spanish throne",
+      "start": "1941-01-15T00:00:00Z",
+      "end": "1977-05-14T00:00:00Z"
+    },
+    {
+      "s": "Q58063",
+      "label": "abbess",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q66546",
+      "label": "Landrat",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q67038",
+      "label": "Landrat",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q9439",
+      "label": "Emperor of India",
+      "start": "1876-05-01T00:00:00Z",
+      "end": "1901-01-22T00:00:00Z"
+    },
+    {
+      "s": "Q9439",
+      "label": "monarch of the United Kingdom of Great Britain and Ireland",
+      "start": "1837-06-20T00:00:00Z",
+      "end": "1901-01-22T00:00:00Z"
+    },
+    {
+      "s": "Q9439",
+      "label": "monarch of Canada",
+      "start": "1867-07-01T00:00:00Z",
+      "end": "1901-01-22T00:00:00Z"
+    },
+    {
+      "s": "Q164500",
+      "label": "consort",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q164500",
+      "label": "consort",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q164500",
+      "label": "Grand Mistress of the Order of Saint Catherine",
+      "start": "1928-01-01T00:00:00Z",
+      "end": "1936-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q152094",
+      "label": "Grand Mistress of the Order of Saint Catherine",
+      "start": "1894-01-01T00:00:00Z",
+      "end": "1918-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q269412",
+      "label": "Lord Warden of the Cinque Ports",
+      "start": "1905-01-01T00:00:00Z",
+      "end": "1907-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q57666",
+      "label": "Consort of Romania",
+      "start": "1914-10-10T00:00:00Z",
+      "end": "1927-07-20T00:00:00Z"
+    },
+    {
+      "s": "Q154045",
+      "label": "heir apparent",
+      "start": "1904-08-12T00:00:00Z",
+      "end": "1917-03-15T00:00:00Z"
+    },
+    {
+      "s": "Q233913",
+      "label": "Chancellor of the University of Leeds",
+      "start": "1951-01-01T00:00:00Z",
+      "end": "1965-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q154912",
+      "label": "crown prince",
+      "start": "1905-11-18T00:00:00Z",
+      "end": "1957-09-21T00:00:00Z"
+    },
+    {
+      "s": "Q154912",
+      "label": "Prince of Denmark",
+      "start": "1903-07-02T00:00:00Z",
+      "end": "1905-11-18T00:00:00Z"
+    },
+    {
+      "s": "Q154423",
+      "label": "Princess of Denmark",
+      "start": "1896-01-01T00:00:00Z",
+      "end": "1905-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q154423",
+      "label": "British princess",
+      "start": "1869-01-01T00:00:00Z",
+      "end": "1896-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q151312",
+      "label": "monarch of Denmark",
+      "start": "1947-04-20T00:00:00Z",
+      "end": "1972-01-14T00:00:00Z"
+    },
+    {
+      "s": "Q152099",
+      "label": "King of the Hellenes",
+      "start": "1920-12-19T00:00:00Z",
+      "end": "1922-09-27T00:00:00Z"
+    },
+    {
+      "s": "Q152099",
+      "label": "King of the Hellenes",
+      "start": "1913-03-18T00:00:00Z",
+      "end": "1917-06-12T00:00:00Z"
+    },
+    {
+      "s": "Q152245",
+      "label": "Member of the Privy Council of the United Kingdom",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q152260",
+      "label": "Consort of the United Kingdom of Great Britain and Ireland",
+      "start": "1901-01-22T00:00:00Z",
+      "end": "1910-05-06T00:00:00Z"
+    },
+    {
+      "s": "Q154927",
+      "label": "Monarch of Norway",
+      "start": "1905-11-18T00:00:00Z",
+      "end": "1957-09-21T00:00:00Z"
+    },
+    {
+      "s": "Q160948",
+      "label": "Head of the House of Romanov",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q18363",
+      "label": "Pretender to the Spanish throne",
+      "start": "1931-04-14T00:00:00Z",
+      "end": "1941-01-14T00:00:00Z"
+    },
+    {
+      "s": "Q18363",
+      "label": "Monarch of Spain",
+      "start": "1886-05-17T00:00:00Z",
+      "end": "1931-04-14T00:00:00Z"
+    },
+    {
+      "s": "Q18363",
+      "label": "Head of State of Spain",
+      "start": "1886-05-17T00:00:00Z",
+      "end": "1931-04-14T00:00:00Z"
+    },
+    {
+      "s": "Q207384",
+      "label": "King of Yugoslavia",
+      "start": "1921-08-16T00:00:00Z",
+      "end": "1929-10-03T00:00:00Z"
+    },
+    {
+      "s": "Q207384",
+      "label": "King of Yugoslavia",
+      "start": "1929-10-03T00:00:00Z",
+      "end": "1934-10-09T00:00:00Z"
+    },
+    {
+      "s": "Q248900",
+      "label": "mayor of Moscow",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q248900",
+      "label": "member of the State Council of the Russian Empire",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q334971",
+      "label": "member of the House of Lords",
+      "start": "1900-04-24T00:00:00Z",
+      "end": "1914-05-02T00:00:00Z"
+    },
+    {
+      "s": "Q334971",
+      "label": "member of the 20th Parliament of the United Kingdom",
+      "start": "1868-11-17T00:00:00Z",
+      "end": "1874-01-26T00:00:00Z"
+    },
+    {
+      "s": "Q334971",
+      "label": "member of the 26th Parliament of the United Kingdom",
+      "start": "1895-07-13T00:00:00Z",
+      "end": "1900-04-24T00:00:00Z"
+    },
+    {
+      "s": "Q334971",
+      "label": "member of the 19th Parliament of the United Kingdom",
+      "start": "1868-03-03T00:00:00Z",
+      "end": "1868-11-11T00:00:00Z"
+    },
+    {
+      "s": "Q334971",
+      "label": "member of the 21st Parliament of the United Kingdom",
+      "start": "1874-01-31T00:00:00Z",
+      "end": "1878-08-03T00:00:00Z"
+    },
+    {
+      "s": "Q334971",
+      "label": "Governor General of Canada",
+      "start": "1878-11-25T00:00:00Z",
+      "end": "1883-10-23T00:00:00Z"
+    },
+    {
+      "s": "Q334971",
+      "label": "President of the Royal Geographical Society",
+      "start": "1885-01-01T00:00:00Z",
+      "end": "1886-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q40787",
+      "label": "King of Poland",
+      "start": "1894-11-01T00:00:00Z",
+      "end": "1916-11-05T00:00:00Z"
+    },
+    {
+      "s": "Q40787",
+      "label": "Emperor of all the Russias",
+      "start": "1894-11-01T00:00:00Z",
+      "end": "1917-03-15T00:00:00Z"
+    },
+    {
+      "s": "Q40787",
+      "label": "Grand Duke of Finland",
+      "start": "1894-11-01T00:00:00Z",
+      "end": "1917-03-15T00:00:00Z"
+    },
+    {
+      "s": "Q40787",
+      "label": "member of the State Council of the Russian Empire",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q444347",
+      "label": "Member of the Privy Council of the United Kingdom",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q51007",
+      "label": "regent",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q52878",
+      "label": "Monarch of Sweden",
+      "start": "1950-10-29T00:00:00Z",
+      "end": "1973-09-15T00:00:00Z"
+    },
+    {
+      "s": "Q52878",
+      "label": "crown prince",
+      "start": "1907-12-08T00:00:00Z",
+      "end": "1950-10-29T00:00:00Z"
+    },
+    {
+      "s": "Q57165",
+      "label": "King of Romania",
+      "start": "1914-10-10T00:00:00Z",
+      "end": "1927-07-20T00:00:00Z"
+    },
+    {
+      "s": "Q57165",
+      "label": "Member of the Crown Council of Romania",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q57468",
+      "label": "Member of the Privy Council of the United Kingdom",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q57468",
+      "label": "First Sea Lord",
+      "start": "1912-01-01T00:00:00Z",
+      "end": "1914-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q57468",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/ac1256385bf82a0e7833b26dfe00cff4"
+    },
+    {
+      "s": "Q57672",
+      "label": "monarch",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q58600",
+      "label": "German Emperor",
+      "start": "1888-03-09T00:00:00Z",
+      "end": "1888-06-15T00:00:00Z"
+    },
+    {
+      "s": "Q58600",
+      "label": "King of Prussia",
+      "start": "1888-03-09T00:00:00Z",
+      "end": "1888-06-15T00:00:00Z"
+    },
+    {
+      "s": "Q58777",
+      "label": "member of the Reichstag of the Weimar Republic",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q58777",
+      "label": "member of the Reichstag of Nazi Germany",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q60741",
+      "label": "member of the Reichstag of Nazi Germany",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q62549",
+      "label": "regent",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q63609",
+      "label": "member of the Reichstag of the German Empire",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q63679",
+      "label": "king",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q677589",
+      "label": "Member of the Privy Council of the United Kingdom",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q60707",
+      "label": "consort",
+      "start": "1905-01-01T00:00:00Z",
+      "end": "1918-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q154927",
+      "label": "Prince of Denmark",
+      "start": "1872-08-03T00:00:00Z",
+      "end": "1905-11-18T00:00:00Z"
+    },
+    {
+      "s": "Q231281",
+      "label": "crown princess",
+      "start": "1929-03-21T00:00:00Z",
+      "end": "1954-04-05T00:00:00Z"
+    },
+    {
+      "s": "Q231281",
+      "label": "Princess of Sweden",
+      "start": "1901-03-28T00:00:00Z",
+      "end": "1929-03-21T00:00:00Z"
+    },
+    {
+      "s": "Q10633",
+      "label": "Consort of the United Kingdom",
+      "start": "1936-12-11T00:00:00Z",
+      "end": "1952-02-06T00:00:00Z"
+    },
+    {
+      "s": "Q10633",
+      "label": "Lord Warden of the Cinque Ports",
+      "start": "1978-01-01T00:00:00Z",
+      "end": "2002-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q11309157",
+      "label": "member of the 14th Parliament of the United Kingdom",
+      "start": "1841-06-29T00:00:00Z",
+      "end": "1847-07-23T00:00:00Z"
+    },
+    {
+      "s": "Q11309157",
+      "label": "member of the 17th Parliament of the United Kingdom",
+      "start": "1857-03-27T00:00:00Z",
+      "end": "1857-06-10T00:00:00Z"
+    },
+    {
+      "s": "Q11309157",
+      "label": "member of the 15th Parliament of the United Kingdom",
+      "start": "1847-07-29T00:00:00Z",
+      "end": "1852-07-01T00:00:00Z"
+    },
+    {
+      "s": "Q11309157",
+      "label": "member of the 16th Parliament of the United Kingdom",
+      "start": "1852-07-07T00:00:00Z",
+      "end": "1857-03-21T00:00:00Z"
+    },
+    {
+      "s": "Q11309157",
+      "label": "member of the 13th Parliament of the United Kingdom",
+      "start": "1837-07-24T00:00:00Z",
+      "end": "1841-06-23T00:00:00Z"
+    },
+    {
+      "s": "Q120180",
+      "label": "Grand Duke of Finland",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q120180",
+      "label": "Emperor of all the Russias",
+      "start": "1881-03-13T00:00:00Z",
+      "end": "1894-11-01T00:00:00Z"
+    },
+    {
+      "s": "Q120180",
+      "label": "Head of the House of Romanov",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q120180",
+      "label": "King of Poland",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q120180",
+      "label": "member of the State Council of the Russian Empire",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q13529783",
+      "label": "member of the 34th Parliament of the United Kingdom",
+      "start": "1924-10-29T00:00:00Z",
+      "end": "1929-05-10T00:00:00Z"
+    },
+    {
+      "s": "Q13529783",
+      "label": "Secretary of State for Transport",
+      "start": "1924-11-11T00:00:00Z",
+      "end": "1929-06-04T00:00:00Z"
+    },
+    {
+      "s": "Q13529783",
+      "label": "member of the House of Lords",
+      "start": "1932-01-13T00:00:00Z",
+      "end": "1939-07-03T00:00:00Z"
+    },
+    {
+      "s": "Q13529783",
+      "label": "member of the 35th Parliament of the United Kingdom",
+      "start": "1929-05-30T00:00:00Z",
+      "end": "1931-10-07T00:00:00Z"
+    },
+    {
+      "s": "Q13529783",
+      "label": "member of the 31st Parliament of the United Kingdom",
+      "start": "1918-12-14T00:00:00Z",
+      "end": "1922-10-26T00:00:00Z"
+    },
+    {
+      "s": "Q13529783",
+      "label": "member of the 36th Parliament of the United Kingdom",
+      "start": "1931-10-27T00:00:00Z",
+      "end": "1932-01-13T00:00:00Z"
+    },
+    {
+      "s": "Q13529783",
+      "label": "member of the 30th Parliament of the United Kingdom",
+      "start": "1910-12-03T00:00:00Z",
+      "end": "1918-11-25T00:00:00Z"
+    },
+    {
+      "s": "Q13529783",
+      "label": "member of the 28th Parliament of the United Kingdom",
+      "start": "1906-01-12T00:00:00Z",
+      "end": "1910-01-10T00:00:00Z"
+    },
+    {
+      "s": "Q13529783",
+      "label": "member of the 29th Parliament of the United Kingdom",
+      "start": "1910-01-15T00:00:00Z",
+      "end": "1910-11-28T00:00:00Z"
+    },
+    {
+      "s": "Q13529783",
+      "label": "Member of the Privy Council of the United Kingdom",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q13529783",
+      "label": "member of the 33rd Parliament of the United Kingdom",
+      "start": "1923-12-06T00:00:00Z",
+      "end": "1924-10-09T00:00:00Z"
+    },
+    {
+      "s": "Q13529783",
+      "label": "member of the 32nd Parliament of the United Kingdom",
+      "start": "1922-11-15T00:00:00Z",
+      "end": "1923-11-16T00:00:00Z"
+    },
+    {
+      "s": "Q150642",
+      "label": "Emperor of Ethiopia",
+      "start": "1936-05-09T00:00:00Z",
+      "end": "1941-05-05T00:00:00Z"
+    },
+    {
+      "s": "Q150642",
+      "label": "King of Albania",
+      "start": "1939-04-16T00:00:00Z",
+      "end": "1943-09-08T00:00:00Z"
+    },
+    {
+      "s": "Q150642",
+      "label": "Head of the House of Savoy",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q150642",
+      "label": "monarch of Italy",
+      "start": "1900-07-29T00:00:00Z",
+      "end": "1946-05-09T00:00:00Z"
+    },
+    {
+      "s": "Q150652",
+      "label": "German Emperor",
+      "start": "1871-01-18T00:00:00Z",
+      "end": "1888-03-09T00:00:00Z"
+    },
+    {
+      "s": "Q150652",
+      "label": "King of Prussia",
+      "start": "1861-01-02T00:00:00Z",
+      "end": "1888-03-09T00:00:00Z"
+    },
+    {
+      "s": "Q151305",
+      "label": "Duke of Holstein",
+      "start": "1863-11-15T00:00:00Z",
+      "end": "1864-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q151305",
+      "label": "Duke of Schleswig",
+      "start": "1863-11-15T00:00:00Z",
+      "end": "1864-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q151305",
+      "label": "monarch of Denmark",
+      "start": "1863-11-15T00:00:00Z",
+      "end": "1906-01-29T00:00:00Z"
+    },
+    {
+      "s": "Q151305",
+      "label": "Duke of Lauenburg",
+      "start": "1863-11-15T00:00:00Z",
+      "end": "1864-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q152756",
+      "label": "monarch of Denmark",
+      "start": "1906-01-29T00:00:00Z",
+      "end": "1912-05-14T00:00:00Z"
+    },
+    {
+      "s": "Q156617",
+      "label": "monarch of Iceland",
+      "start": "1918-12-01T00:00:00Z",
+      "end": "1944-06-17T00:00:00Z"
+    },
+    {
+      "s": "Q156617",
+      "label": "monarch of Denmark",
+      "start": "1912-05-14T00:00:00Z",
+      "end": "1947-04-20T00:00:00Z"
+    },
+    {
+      "s": "Q1606406",
+      "label": "Governor of Queensland",
+      "start": "1958-03-18T00:00:00Z",
+      "end": "1966-03-18T00:00:00Z"
+    },
+    {
+      "s": "Q1606406",
+      "label": "High Sheriff of Nottinghamshire",
+      "start": "1886-01-01T00:00:00Z",
+      "end": "1887-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q169902",
+      "label": "monarch",
+      "start": "1941-05-18T00:00:00Z",
+      "end": "1943-07-31T00:00:00Z"
+    },
+    {
+      "s": "Q17142",
+      "label": "King of the Hellenes",
+      "start": "1863-03-30T00:00:00Z",
+      "end": "1913-03-18T00:00:00Z"
+    },
+    {
+      "s": "Q211827",
+      "label": "king",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q2653986",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/38c7b7f1f426779231468ea86e019b52"
+    },
+    {
+      "s": "Q2653986",
+      "label": "Lord Lieutenant of the West Riding of Yorkshire",
+      "start": "1927-12-14T00:00:00Z",
+      "end": "1947-05-23T00:00:00Z"
+    },
+    {
+      "s": "Q312819",
+      "label": "member of the State Council of the Russian Empire",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q32347",
+      "label": "Head of State of Spain",
+      "start": "1874-12-29T00:00:00Z",
+      "end": "1885-11-25T00:00:00Z"
+    },
+    {
+      "s": "Q32347",
+      "label": "Monarch of Spain",
+      "start": "1874-12-29T00:00:00Z",
+      "end": "1885-11-25T00:00:00Z"
+    },
+    {
+      "s": "Q32347",
+      "label": "Prince of Asturias",
+      "start": "1857-01-01T00:00:00Z",
+      "end": "1868-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q3271148",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/cfe9216d4c710069831e83d14ba431a9"
+    },
+    {
+      "s": "Q332552",
+      "label": "Captain of the Honourable Corps of Gentlemen-at-Arms",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q332552",
+      "label": "member of the 21st Parliament of the United Kingdom",
+      "start": "1874-01-31T00:00:00Z",
+      "end": "1879-08-07T00:00:00Z"
+    },
+    {
+      "s": "Q332552",
+      "label": "member of the House of Lords",
+      "start": "1879-08-07T00:00:00Z",
+      "end": "1912-01-29T00:00:00Z"
+    },
+    {
+      "s": "Q332552",
+      "label": "Lord Lieutenant of the County of London",
+      "start": "1900-02-12T00:00:00Z",
+      "end": "1912-01-12T00:00:00Z"
+    },
+    {
+      "s": "Q335091",
+      "label": "Governor-General of the Union of South Africa",
+      "start": "1924-01-21T00:00:00Z",
+      "end": "1930-12-21T00:00:00Z"
+    },
+    {
+      "s": "Q335091",
+      "label": "Member of the Privy Council of the United Kingdom",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q335091",
+      "label": "Governor General of Canada",
+      "start": "1940-06-21T00:00:00Z",
+      "end": "1946-04-12T00:00:00Z"
+    },
+    {
+      "s": "Q335091",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/51a76f9d83afec76399cdffcd6132812"
+    },
+    {
+      "s": "Q335159",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/55c3fe11d75ed978948b9375f75f52f2"
+    },
+    {
+      "s": "Q336617",
+      "label": "member of the House of Lords",
+      "start": "1979-12-03T00:00:00Z",
+      "end": "2014-12-12T00:00:00Z"
+    },
+    {
+      "s": "Q337464",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/738e0810c373d7f139ea2426d7b81656"
+    },
+    {
+      "s": "Q337464",
+      "label": "member of the 27th Parliament of the United Kingdom",
+      "start": "1900-10-01T00:00:00Z",
+      "end": "1906-01-08T00:00:00Z"
+    },
+    {
+      "s": "Q337464",
+      "label": "member of the 26th Parliament of the United Kingdom",
+      "start": "1895-07-13T00:00:00Z",
+      "end": "1900-09-17T00:00:00Z"
+    },
+    {
+      "s": "Q437001",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/0ee3fe64f76cc26e7eef133ed5b6eea3"
+    },
+    {
+      "s": "Q518879",
+      "label": "Captain General of Catalonia",
+      "start": "1930-01-01T00:00:00Z",
+      "end": "1930-11-01T00:00:00Z"
+    },
+    {
+      "s": "Q518879",
+      "label": "Member of the Consultative National Assembly",
+      "start": "1927-10-10T00:00:00Z",
+      "end": "1930-02-15T00:00:00Z"
+    },
+    {
+      "s": "Q52890",
+      "label": "crown prince",
+      "start": "1872-09-18T00:00:00Z",
+      "end": "1907-12-08T00:00:00Z"
+    },
+    {
+      "s": "Q52890",
+      "label": "heir apparent",
+      "start": "1872-09-18T00:00:00Z",
+      "end": "1907-12-08T00:00:00Z"
+    },
+    {
+      "s": "Q52890",
+      "label": "Monarch of Sweden",
+      "start": "1907-12-08T00:00:00Z",
+      "end": "1950-10-29T00:00:00Z"
+    },
+    {
+      "s": "Q535987",
+      "label": "president",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q546533",
+      "label": "Duke of Anhalt",
+      "start": "1918-04-21T00:00:00Z",
+      "end": "1918-09-13T00:00:00Z"
+    },
+    {
+      "s": "Q553168",
+      "label": "member of the Prussian House of Lords",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q572145",
+      "label": "regent",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q58770",
+      "label": "monarch",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q60505",
+      "label": "member of the Reichstag of the North German Confederation",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q61782",
+      "label": "member of the Prussian House of Lords",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q62287",
+      "label": "member of the Reichstag of the German Empire",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q62287",
+      "label": "president",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q76927",
+      "label": "Consort of the United Kingdom of Great Britain and Ireland",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q76927",
+      "label": "Consort of the United Kingdom",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q793616",
+      "label": "Inspector General of the Cavalry",
+      "start": "1898-01-01T00:00:00Z",
+      "end": "1912-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q83171",
+      "label": "member of the State Council of the Russian Empire",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q83171",
+      "label": "Emperor of all the Russias",
+      "start": "1855-03-02T00:00:00Z",
+      "end": "1881-03-13T00:00:00Z"
+    },
+    {
+      "s": "Q92157",
+      "label": "member of the Prussian House of Lords",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q788565",
+      "label": "Grand Mistress of the Order of Saint Catherine",
+      "start": "1948-01-01T00:00:00Z",
+      "end": "1992-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q337464",
+      "label": "Deputy Lieutenant",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q337464",
+      "label": "Deputy Lieutenant",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q337464",
+      "label": "captain general",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q337464",
+      "label": "Lord Lieutenant of Dumfries",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q337464",
+      "label": "Lord Clerk Register",
+      "start": "1926-01-01T00:00:00Z",
+      "end": "1935-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q16896250",
+      "label": "member of parliament",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q518879",
+      "label": "President of the Council of Orders",
+      "start": "1907-01-01T00:00:00Z",
+      "end": "1914-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q2653986",
+      "label": "Chancellor of the University of Sheffield",
+      "start": "1944-01-01T00:00:00Z",
+      "end": "1947-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q63158",
+      "label": "Prince of Schaumburg-Lippe",
+      "start": "1860-01-01T00:00:00Z",
+      "end": "1893-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q62080",
+      "label": "Prince of Waldeck and Pyrmont",
+      "start": "1845-05-15T00:00:00Z",
+      "end": "1893-05-12T00:00:00Z"
+    },
+    {
+      "s": "Q153601",
+      "label": "Consort of Russia",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q155178",
+      "label": "Regent of Greece",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q155585",
+      "label": "Consort of Russia",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q166028",
+      "label": "Consort of Denmark",
+      "start": "1863-11-15T00:00:00Z",
+      "end": "1898-09-29T00:00:00Z"
+    },
+    {
+      "s": "Q181530",
+      "label": "Consort of Italy",
+      "start": "1900-07-29T00:00:00Z",
+      "end": "1946-05-09T00:00:00Z"
+    },
+    {
+      "s": "Q232402",
+      "label": "Consort of Denmark",
+      "start": "1906-01-29T00:00:00Z",
+      "end": "1912-05-14T00:00:00Z"
+    },
+    {
+      "s": "Q25975706",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/1ad59ff1e93489d4d9c4f6d17cdac51d"
+    },
+    {
+      "s": "Q335300",
+      "label": "President of the Geological Society of London",
+      "start": "1872-01-01T00:00:00Z",
+      "end": "1874-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q335300",
+      "label": "Lord Privy Seal",
+      "start": "1880-04-28T00:00:00Z",
+      "end": "1881-05-02T00:00:00Z"
+    },
+    {
+      "s": "Q335300",
+      "label": "Postmaster General of the United Kingdom",
+      "start": "1855-11-30T00:00:00Z",
+      "end": "1858-02-21T00:00:00Z"
+    },
+    {
+      "s": "Q335300",
+      "label": "Secretary of State for India",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q335300",
+      "label": "Member of the Privy Council of the United Kingdom",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q335300",
+      "label": "Lord Privy Seal",
+      "start": "1853-01-04T00:00:00Z",
+      "end": "1855-12-07T00:00:00Z"
+    },
+    {
+      "s": "Q335300",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/f7f6052c7899bbbef5c0b356af7d94cc"
+    },
+    {
+      "s": "Q335300",
+      "label": "Lord Privy Seal",
+      "start": "1859-06-18T00:00:00Z",
+      "end": "1866-06-26T00:00:00Z"
+    },
+    {
+      "s": "Q337671",
+      "label": "member of the 31st Parliament of the United Kingdom",
+      "start": "1918-12-14T00:00:00Z",
+      "end": "1920-03-15T00:00:00Z"
+    },
+    {
+      "s": "Q337671",
+      "label": "Minister of Reconstruction",
+      "start": "1919-01-01T00:00:00Z",
+      "end": "1919-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q337671",
+      "label": "member of the 30th Parliament of the United Kingdom",
+      "start": "1917-10-25T00:00:00Z",
+      "end": "1918-11-25T00:00:00Z"
+    },
+    {
+      "s": "Q337671",
+      "label": "President of the Board of Trade",
+      "start": "1919-05-26T00:00:00Z",
+      "end": "1920-03-19T00:00:00Z"
+    },
+    {
+      "s": "Q337671",
+      "label": "ambassador of the United Kingdom of Great Britain and Ireland to the United States",
+      "start": "1920-01-01T00:00:00Z",
+      "end": "1922-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q337671",
+      "label": "President of the Local Government Board",
+      "start": "1918-01-01T00:00:00Z",
+      "end": "1919-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q337671",
+      "label": "Member of the Privy Council of the United Kingdom",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q337671",
+      "label": "ambassador of the United Kingdom to the United States",
+      "start": "1922-01-01T00:00:00Z",
+      "end": "1924-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q3830709",
+      "label": "senator of the Kingdom of Italy",
+      "start": "1939-03-23T00:00:00Z",
+      "end": "1943-08-05T00:00:00Z"
+    },
+    {
+      "s": "Q4718892",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/6b17ab833d3890723d17b3b996f69cbc"
+    },
+    {
+      "s": "Q538125",
+      "label": "Regent of Spain",
+      "start": "1885-01-01T00:00:00Z",
+      "end": "1902-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q538125",
+      "label": "Consort of Spain",
+      "start": "1879-01-01T00:00:00Z",
+      "end": "1885-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q538125",
+      "label": "Abbess of the Institution of Noble Ladies of the Prague Castle",
+      "start": "1875-01-01T00:00:00Z",
+      "end": "1879-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q5724676",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/03ff13b2d2962729cdbf56b0aac29822"
+    },
+    {
+      "s": "Q5724676",
+      "label": "Lord Lieutenant of the West Riding of Yorkshire",
+      "start": "1904-04-22T00:00:00Z",
+      "end": "1927-12-14T00:00:00Z"
+    },
+    {
+      "s": "Q57264",
+      "label": "Consort of Denmark",
+      "start": "1912-05-14T00:00:00Z",
+      "end": "1947-04-20T00:00:00Z"
+    },
+    {
+      "s": "Q57541",
+      "label": "Empress",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q57648",
+      "label": "Queen Consort of Sweden",
+      "start": "1907-12-08T00:00:00Z",
+      "end": "1930-04-04T00:00:00Z"
+    },
+    {
+      "s": "Q61787",
+      "label": "Duchy of Saxe-Altenburg",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q6241087",
+      "label": "adjunct professor",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q6254150",
+      "label": "member of the House of Lords",
+      "start": "1880-07-20T00:00:00Z",
+      "end": "1887-11-25T00:00:00Z"
+    },
+    {
+      "s": "Q6254150",
+      "label": "Secretary of State for Scotland",
+      "start": "1886-04-05T00:00:00Z",
+      "end": "1886-07-20T00:00:00Z"
+    },
+    {
+      "s": "Q6254150",
+      "label": "equerry",
+      "start": "1874-01-01T00:00:00Z",
+      "end": "1876-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q6254150",
+      "label": "member of the 22nd Parliament of the United Kingdom",
+      "start": "1880-03-31T00:00:00Z",
+      "end": "1880-07-20T00:00:00Z"
+    },
+    {
+      "s": "Q6254150",
+      "label": "heir apparent",
+      "start": "1874-07-06T00:00:00Z",
+      "end": "1880-07-20T00:00:00Z"
+    },
+    {
+      "s": "Q6254150",
+      "label": "Lord-in-waiting",
+      "start": "1880-09-01T00:00:00Z",
+      "end": "1885-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q698051",
+      "label": "Member of the House of Lords (Austria)",
+      "start": "1884-02-09T00:00:00Z",
+      "end": null
+    },
+    {
+      "s": "Q704332",
+      "label": "Duke of Anhalt",
+      "start": "1871-05-22T00:00:00Z",
+      "end": "1904-01-24T00:00:00Z"
+    },
+    {
+      "s": "Q75384315",
+      "label": "High Sheriff of Nottinghamshire",
+      "start": "1900-01-01T00:00:00Z",
+      "end": "1901-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q7612759",
+      "label": "member of the House of Lords",
+      "start": null,
+      "end": "http://www.wikidata.org/.well-known/genid/6ca0a112821785a8cdfe98919e0c9421"
+    },
+    {
+      "s": "Q76908",
+      "label": "Minister President of Prussia",
+      "start": null,
+      "end": "1918-11-09T00:00:00Z"
+    },
+    {
+      "s": "Q76908",
+      "label": "Imperial chancellor",
+      "start": "1918-10-03T00:00:00Z",
+      "end": "1918-11-09T00:00:00Z"
+    },
+    {
+      "s": "Q90214",
+      "label": "member of parliament",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q95591",
+      "label": "member of the Prussian House of Lords",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q95591",
+      "label": "member of the Reichstag of the German Empire",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q153601",
+      "label": "Grand Mistress of the Order of Saint Catherine",
+      "start": "1880-01-01T00:00:00Z",
+      "end": "1894-01-01T00:00:00Z"
+    },
+    {
+      "s": "Q155585",
+      "label": "Grand Mistress of the Order of Saint Catherine",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q255704",
+      "label": "Infanta of Portugal",
+      "start": null,
+      "end": null
+    },
+    {
+      "s": "Q335300",
+      "label": "President of the Royal Society of Edinburgh",
+      "start": "1860-01-01T00:00:00Z",
+      "end": "1864-01-01T00:00:00Z"
+    }
   ]
 }
