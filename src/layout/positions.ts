@@ -1,5 +1,5 @@
 import type { Box, Dataset, Person, PersonId } from "../types";
-import { COUPLE_GAP, SIBLING_GAP, UP, DOWN } from "../constants";
+import { COUPLE_GAP, SIBLING_GAP, UP, DOWN, MIN_GENERATION_GAP } from "../constants";
 import { buildFamily } from "../data/family";
 
 export type PlacedBox = Box & { id: PersonId };
@@ -149,8 +149,12 @@ export function computeLayout(
   for (const id of ctx.xByPerson.keys()) {
     yByPerson.set(id, yearToY(personById.get(id)!.born));
   }
-  for (const [spouseId, partnerId] of ctx.partnerOf) {
-    yByPerson.set(spouseId, yByPerson.get(partnerId)!);
+  for (const b of ctx.rawBlocks) {
+    const y = yByPerson.get(b.person)!;
+    if (b.spouse !== null && !b.ghost) yByPerson.set(b.spouse, y);
+    for (const child of b.children) {
+      yByPerson.set(child, Math.max(yByPerson.get(child)!, y + MIN_GENERATION_GAP));
+    }
   }
 
   let minY = Infinity;

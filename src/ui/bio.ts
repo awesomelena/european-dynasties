@@ -1,6 +1,6 @@
 import type { Dataset, HouseId, Person, PersonId } from "../types";
 import type { Family } from "../data/family";
-import { houseName, personLines } from "../render/tooltip";
+import { houseName, personLines, bornText } from "../render/tooltip";
 import { fetchSummary } from "./wiki";
 
 const panel = document.createElement("aside");
@@ -48,7 +48,7 @@ function addPeople(title: string, people: Person[], onSelect: (id: PersonId) => 
     const item = document.createElement("li");
     const link = document.createElement("button");
     link.className = "bio-link";
-    link.textContent = `${person.name.en} (${person.born}–${person.died ?? ""})`;
+    link.textContent = `${person.name.en} (${bornText(person)}-${person.died ?? ""})`;
     link.addEventListener("click", () => onSelect(person.id));
     item.appendChild(link);
     list.appendChild(item);

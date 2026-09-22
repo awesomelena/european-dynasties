@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "fetch:wikidata": "tsx scripts/fetch-wikidata.ts",
-    "transform": "tsx scripts/transform.ts"
+    "transform": "tsx scripts/transform.ts",
+    "fetch:europe": "tsx scripts/fetch-europe.ts"
   },
   "devDependencies": {
     "@types/d3-selection": "^3.0.12",

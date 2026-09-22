@@ -42,6 +42,6 @@
   cursor: pointer;
 }
 
-.search-results li:hover {
+.search-results li.active {
   background: var(--or);
 }

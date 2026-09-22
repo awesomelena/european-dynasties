@@ -24,6 +24,7 @@ export interface Person {
   houseMarriage: HouseId | null;
   titles?: Title[];
   wiki?: string;
+  bornEstimated?: boolean;
 }
 
 export interface Parentage {

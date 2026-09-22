@@ -30,6 +30,10 @@ export function hideTooltip() {
   tip.style.display = "none";
 }
 
+export function bornText(person: Person): string {
+  return `${person.bornEstimated ? "c. " : ""}${person.born}`;
+}
+
 export function personLines(data: Dataset, person: Person): string[] {
   const lines: string[] = [];
 
@@ -40,7 +44,7 @@ export function personLines(data: Dataset, person: Person): string[] {
   }
 
   const died = person.died === null ? "" : String(person.died);
-  lines.push(`${person.born}–${died}`);
+  lines.push(`${bornText(person)}-${died}`);
 
   for (const t of person.titles ?? []) {
     if (t.from === null && t.to === null) {

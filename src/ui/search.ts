@@ -1,4 +1,5 @@
 import type { Person, PersonId } from "../types";
+import { bornText } from "../render/tooltip";
 
 function normalize(s: string): string {
   return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
@@ -24,7 +25,17 @@ export function createSearch(people: Person[], onSelect: (id: PersonId) => void)
 
   let results: Person[] = [];
 
+  let active = -1;
+
+  function setActive(index: number) {
+    active = index;
+    const items = list.querySelectorAll("li");
+    items.forEach((item, i) => item.classList.toggle("active", i === index));
+    if (index >= 0) items[index].scrollIntoView({ block: "nearest" });
+  }
+
   function clear() {
+    active = -1;
     input.value = "";
     list.replaceChildren();
     results = [];
@@ -51,17 +62,28 @@ export function createSearch(people: Person[], onSelect: (id: PersonId) => void)
       .sort((a, b) => a.born - b.born)
       .slice(0, 12);
 
-    for (const p of results) {
+    results.forEach((p, i) => {
       const item = document.createElement("li");
       const title = p.titles?.[0]?.title;
-      item.textContent = `${p.name.en} (${p.born})${title !== undefined ? " · " + title : ""}`;
+      item.textContent = `${p.name.en} (${bornText(p)})${title !== undefined ? " · " + title : ""}`;
       item.addEventListener("click", () => choose(p.id));
+      item.addEventListener("mouseenter", () => setActive(i));
       list.appendChild(item);
-    }
+    });
+    setActive(results.length > 0 ? 0 : -1);
   });
 
   input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && results.length > 0) choose(results[0].id);
-    if (e.key === "Escape") clear();
+    if (e.key === "ArrowDown" && results.length > 0) {
+      e.preventDefault();
+      setActive((active + 1) % results.length);
+    } else if (e.key === "ArrowUp" && results.length > 0) {
+      e.preventDefault();
+      setActive((active - 1 + results.length) % results.length);
+    } else if (e.key === "Enter" && active >= 0) {
+      choose(results[active].id);
+    } else if (e.key === "Escape") {
+      clear();
+    }
   });
 }

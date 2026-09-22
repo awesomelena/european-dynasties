@@ -86,8 +86,77 @@ function cleanTitle(label: string, sex: "m" | "f"): string {
   return t;
 }
 
+function knownYears(ids: string[] | undefined, from: Map<string, number>): number[] {
+  const result: number[] = [];
+  for (const id of ids ?? []) {
+    const y = from.get(id);
+    if (y !== undefined) result.push(y);
+  }
+  return result;
+}
+
+function estimateBirthYears(raw: Raw) {
+  const years = new Map<string, number>();
+  for (const [id, rp] of Object.entries(raw.people)) {
+    const y = year(rp.birth[0]);
+    if (y !== null) years.set(id, y);
+  }
+
+  const spousesOf = new Map<string, string[]>();
+  const childrenOf = new Map<string, string[]>();
+  const parentsOf = new Map<string, string[]>();
+  const add = (map: Map<string, string[]>, key: string, value: string) => {
+    if (!map.has(key)) map.set(key, []);
+    map.get(key)!.push(value);
+  };
+  for (const m of raw.marriages) {
+    add(spousesOf, m.s, m.o);
+    add(spousesOf, m.o, m.s);
+  }
+  for (const p of [...raw.fathers, ...raw.mothers]) {
+    add(parentsOf, p.s, p.o);
+    add(childrenOf, p.o, p.s);
+  }
+
+  const estimated = new Set<string>();
+
+  function pass(useDeath: boolean): boolean {
+    const before = new Map(years);
+    let found = false;
+
+    for (const [id, rp] of Object.entries(raw.people)) {
+      if (before.has(id)) continue;
+
+      const spouses = knownYears(spousesOf.get(id), before);
+      const children = knownYears(childrenOf.get(id), before);
+      const parents = knownYears(parentsOf.get(id), before);
+      const died = year(rp.death[0]);
+
+      let estimate: number | undefined;
+      if (spouses.length > 0) estimate = spouses[0];
+      else if (children.length > 0) estimate = Math.min(...children) - 25;
+      else if (parents.length > 0) estimate = Math.max(...parents) + 25;
+      else if (useDeath && died !== null) estimate = died - 45;
+
+      if (estimate !== undefined) {
+        years.set(id, estimate);
+        estimated.add(id);
+        found = true;
+      }
+    }
+    return found;
+  }
+
+  while (pass(false)) {}
+  pass(true);
+  while (pass(false)) {}
+
+  return { years, estimated };
+}
+
 async function main() {
-  const raw: Raw = JSON.parse(await readFile("scripts/raw/victoria.json", "utf8"));
+  const name = process.argv[2] ?? "victoria";
+  const raw: Raw = JSON.parse(await readFile(`scripts/raw/${name}.json`, "utf8"));
 
   // pomoćne mape
   const housesOf = new Map<string, string[]>();
@@ -112,9 +181,11 @@ async function main() {
   // 1. osobe
   const people: Person[] = [];
   let skipped = 0;
+  const { years, estimated } = estimateBirthYears(raw);
+
   for (const [id, rp] of Object.entries(raw.people)) {
-    const born = year(rp.birth[0]);
-    if (born === null) {
+    const born = years.get(id);
+    if (born === undefined) {
       skipped++;
       continue;
     }
@@ -167,6 +238,7 @@ async function main() {
       houseBirth,
       houseMarriage: null,
       wiki: wikiOf.get(id),
+      bornEstimated: estimated.has(id) || undefined,
     });
   }
   const ids = new Set(people.map((p) => p.id));
@@ -212,7 +284,7 @@ async function main() {
     );
 
   const dataset: Dataset = { houses, people, parentage, unions };
-  await writeFile("public/data/victoria.json", JSON.stringify(dataset));
+  await writeFile(`public/data/${name}.json`, JSON.stringify(dataset));
 
   console.log(
     `${people.length} people (${skipped} skipped, no birth year), ` +
