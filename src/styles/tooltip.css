@@ -14,3 +14,9 @@
 .tooltip div:first-child {
   font-weight: bold;
 }
+
+.tooltip-hint {
+  margin-top: calc(var(--space) * 0.75);
+  font-size: 11px;
+  opacity: 0.6;
+}

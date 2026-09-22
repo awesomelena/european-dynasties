@@ -10,11 +10,17 @@ export function houseName(data: Dataset, houseId: HouseId): string {
   return house ? house.name.en : houseId;
 }
 
-export function showTooltip(lines: string[], x: number, y: number) {
+export function showTooltip(lines: string[], x: number, y: number, hint?: string) {
   tip.replaceChildren();
   for (const line of lines) {
     const row = document.createElement("div");
     row.textContent = line;
+    tip.appendChild(row);
+  }
+  if (hint !== undefined) {
+    const row = document.createElement("div");
+    row.className = "tooltip-hint";
+    row.textContent = hint;
     tip.appendChild(row);
   }
   moveTooltip(x, y);

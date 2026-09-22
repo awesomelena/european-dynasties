@@ -56,6 +56,7 @@ async function main() {
 
   const updateRuler = createRuler(svg, world);
   let currentOrigin = 0;
+  let currentFocus: PersonId | null = null;
 
   const zoomer = zoom<SVGSVGElement, unknown>()
     .scaleExtent([0.05, 3])
@@ -99,7 +100,11 @@ async function main() {
   function attach(g: SVGGElement, person: Person) {
     g.addEventListener("mouseenter", (e) => {
       setHover(person.id);
-      showTooltip(personLines(data, person), e.clientX, e.clientY);
+      const hint =
+      person.id === currentFocus
+        ? "click for biography · right-click for more"
+        : "click to centre · right-click for more";
+      showTooltip(personLines(data, person), e.clientX, e.clientY, hint);
     });
     g.addEventListener("mousemove", (e) => moveTooltip(e.clientX, e.clientY));
     g.addEventListener("mouseleave", () => {
@@ -110,23 +115,38 @@ async function main() {
     g.addEventListener("click", (e) => {
       e.stopPropagation();
       hideTooltip();
+      if (person.id === currentFocus) {
+        openBio(person.id);
+      } else {
+        navigate(person.id);
+      }
+    });
 
-      const items: MenuItem[] = [
-        { label: "Center here", action: () => navigate(person.id) },
-        { label: "Biography", action: () => openBio(person.id) },
-      ];
+    g.addEventListener("contextmenu", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      hideTooltip();
+
+      const items: MenuItem[] = [{ label: "Biography", action: () => openBio(person.id) }];
+
+      if (person.houseBirth !== "unknown") {
+        items.push({
+          label: `Members of ${houseName(data, person.houseBirth)}`,
+          action: () => openHouse(person.houseBirth),
+        });
+      }
 
       for (const spouseId of family.spousesOf.get(person.id) ?? []) {
         const spouse = personById.get(spouseId)!;
         if (spouse.houseBirth === person.houseBirth) continue;
         items.push({
-          label: `Open ${houseName(data, spouse.houseBirth)} tree (${spouse.name.en})`,
-          action: () => navigate(spouse.id),
-        });
-      }
+        label: `Open ${houseName(data, spouse.houseBirth)} tree (${spouse.name.en})`,
+        action: () => navigate(spouse.id),
+      });
+    }
 
-      showMenu(items, e.clientX, e.clientY);
-    });
+  showMenu(items, e.clientX, e.clientY);
+});
   }
 
   function applyHighlight(house: HouseId | null) {
@@ -172,6 +192,8 @@ async function main() {
   }
 
   function render(focusId: PersonId) {
+    currentFocus = focusId;
+    
     document.title = `${personById.get(focusId)!.name.en} · European Dynasties`;
     
     world.replaceChildren();

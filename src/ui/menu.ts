@@ -29,3 +29,5 @@ document.addEventListener("click", hideMenu);
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") hideMenu();
 });
+
+document.addEventListener("contextmenu", hideMenu);
