@@ -42,7 +42,7 @@ async function main() {
 
   function openBio(id: PersonId) {
     showBio(data, personById.get(id)!, family, (nextId) => {
-      render(nextId);
+      navigate(nextId);
       openBio(nextId);
     });
   }
@@ -103,7 +103,7 @@ async function main() {
       hideTooltip();
 
       const items: MenuItem[] = [
-        { label: "Center here", action: () => render(person.id) },
+        { label: "Center here", action: () => navigate(person.id) },
         { label: "Biography", action: () => openBio(person.id) },
       ];
 
@@ -112,7 +112,7 @@ async function main() {
       if (spouse !== undefined && spouse.houseBirth !== person.houseBirth) {
         items.push({
           label: `Open ${houseName(data, spouse.houseBirth)} tree`,
-          action: () => render(spouse.id),
+          action: () => navigate(spouse.id),
         });
       }
 
@@ -129,59 +129,69 @@ async function main() {
   }
 
   function openHouse(houseId: HouseId) {
-    showHouse(data, houseId, (id) => render(id));
+    showHouse(data, houseId, (id) => navigate(id));
   }
 
   const updateLegend = createLegend(applyHighlight, openHouse);
 
-  function render(focusId: PersonId) {
-  world.replaceChildren();
-  hideTooltip();
-
-  const layout = computeLayout(data, focusId, widths);
-
-  const colors = assignColors(layout, personById);
-
-  let maxX = 0;
-  let maxY = 0;
-  for (const b of layout.blocks) {
-    const boxes = b.spouse !== null ? [b.person, b.spouse] : [b.person];
-    for (const box of boxes) {
-      maxX = Math.max(maxX, box.x + box.w);
-      maxY = Math.max(maxY, box.y + NODE_H);
+  function navigate(id: PersonId) {
+    if (location.hash === `#${id}`) {
+      render(id);
+    } else {
+      location.hash = id;
     }
   }
-  lastWidth = maxX + 40;
-  lastHeight = maxY + 40;
 
-  drawUnions(world, layout);
-  drawParentage(world, layout);
+  function render(focusId: PersonId) {
+    document.title = `${personById.get(focusId)!.name.en} · European Dynasties`;
+    
+    world.replaceChildren();
+    hideTooltip();
 
-  for (const [id, box] of layout.positions) {
-    const person = personById.get(id)!;
-    attach(drawPerson(world, colors, person, box, { focus: id === focusId }), person);
-  }
+    const layout = computeLayout(data, focusId, widths);
 
-  for (const b of layout.blocks) {
-    if (b.spouse === null || !b.spouse.ghost) continue;
-    const person = personById.get(b.spouse.id)!;
-    attach(drawPerson(world, colors, person, b.spouse, { ghost: true }), person);
-  }
+    const colors = assignColors(layout, personById);
 
-  const focusBox = layout.positions.get(focusId);
-  if (focusBox !== undefined) {
-    centerOn(focusBox);
-  } else {
-    fitToView(lastWidth, lastHeight);
-  }
+    let maxX = 0;
+    let maxY = 0;
+    for (const b of layout.blocks) {
+      const boxes = b.spouse !== null ? [b.person, b.spouse] : [b.person];
+      for (const box of boxes) {
+        maxX = Math.max(maxX, box.x + box.w);
+        maxY = Math.max(maxY, box.y + NODE_H);
+      }
+    }
+    lastWidth = maxX + 40;
+    lastHeight = maxY + 40;
 
-  updateLegend(colors, data);
+    drawUnions(world, layout);
+    drawParentage(world, layout);
+
+    for (const [id, box] of layout.positions) {
+      const person = personById.get(id)!;
+      attach(drawPerson(world, colors, person, box, { focus: id === focusId }), person);
+    }
+
+    for (const b of layout.blocks) {
+      if (b.spouse === null || !b.spouse.ghost) continue;
+      const person = personById.get(b.spouse.id)!;
+      attach(drawPerson(world, colors, person, b.spouse, { ghost: true }), person);
+    }
+
+    const focusBox = layout.positions.get(focusId);
+    if (focusBox !== undefined) {
+      centerOn(focusBox);
+    } else {
+      fitToView(lastWidth, lastHeight);
+    }
+
+    updateLegend(colors, data);
   
-}
+  }
 
-  createSearch(data.people, (id) => render(id));
+  createSearch(data.people, (id) => navigate(id));
 
-  const home = createHome(data, (id) => render(id));
+  const home = createHome(data, (id) => navigate(id));
 
   const homeButton = document.createElement("button");
   homeButton.className = "home-button";
@@ -189,8 +199,21 @@ async function main() {
   homeButton.addEventListener("click", () => home.show());
   document.body.appendChild(homeButton);
 
-  render("Q9439");
-  home.show();
+  window.addEventListener("hashchange", () => {
+    const id = location.hash.slice(1);
+    if (personById.has(id)) {
+      home.hide();
+      render(id);
+    }
+  });
+
+  const initial = location.hash.slice(1);
+  if (personById.has(initial)) {
+    render(initial);
+  } else {
+    render("Q9439");
+    home.show();
+  }
 }
 
 main();
