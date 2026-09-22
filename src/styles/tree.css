@@ -36,3 +36,11 @@
   stroke: var(--argent);
   stroke-width: 4px;
 }
+
+.hovering .person:not(.related) {
+  opacity: 0.2;
+}
+
+.hovering .line:not(.related) {
+  opacity: 0.12;
+}

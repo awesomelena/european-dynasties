@@ -1,6 +1,11 @@
-import type { Box, Point } from "../types";
-import type { Layout, LayoutSpouse } from "../layout/positions";
+import type { Box, Point, PersonId } from "../types";
+import type { Layout, LayoutSpouse, PlacedBox } from "../layout/positions";
 import { SVG_NS, NODE_H } from "../constants";
+
+function tag(el: SVGElement, people: PersonId[]) {
+  el.classList.add("line");
+  el.dataset.people = people.join(" ");
+}
 
 type LineKind = "union" | "parent";
 
@@ -10,7 +15,8 @@ function drawLine(
   y1: number,
   x2: number,
   y2: number,
-  kind: LineKind
+  kind: LineKind,
+  people: PersonId[]
 ) {
   const line = document.createElementNS(SVG_NS, "line");
 
@@ -34,11 +40,11 @@ function drawLine(
   }
 
   line.style.strokeWidth = "2";
-  line.classList.add("line");
+  tag(line, people);
   svg.appendChild(line);
 }
 
-function drawUnionPath(svg: SVGGElement, points: Point[], dashed = false) {
+function drawUnionPath(svg: SVGGElement, points: Point[], dashed = false, people: PersonId[]) {
   const pts = points.map((p) => `${p.x},${p.y}`).join(" ");
 
   const outer = document.createElementNS(SVG_NS, "polyline");
@@ -49,7 +55,7 @@ function drawUnionPath(svg: SVGGElement, points: Point[], dashed = false) {
   outer.style.strokeLinejoin = "miter";
   svg.appendChild(outer);
 
-  outer.classList.add("line");
+  tag(outer, people);
 
   if (dashed) outer.style.strokeDasharray = "10 6";
 
@@ -80,7 +86,7 @@ export function drawUnions(g: SVGGElement, layout: Layout) {
       if (s.adjacent) {
         const left = s.x < p.x ? s : p;
         const right = s.x < p.x ? p : s;
-        drawUnionPath(g, [{ x: left.x + left.w, y: midY }, { x: right.x, y: midY }], s.ended !== undefined);
+        drawUnionPath(g, [{ x: left.x + left.w, y: midY }, { x: right.x, y: midY }], s.ended !== undefined, [p.id, s.id]);
       } else {
         const top = arcTop(p, s);
         const x1 = p.x + p.w - 8 - 8 * s.arc;
@@ -91,24 +97,32 @@ export function drawUnions(g: SVGGElement, layout: Layout) {
           { x: x2, y: top },
           { x: x2, y: p.y },
           ], 
-          s.ended !== undefined
+          s.ended !== undefined,
+          [p.id, s.id]
         );
       }
     }
   }
 }
 
-function drawComb(g: SVGGElement, fromX: number, fromY: number, kids: Box[], barY: number) {
+function drawComb(
+  g: SVGGElement,
+  fromX: number,
+  fromY: number,
+  kids: PlacedBox[],
+  barY: number,
+  parents: PersonId[]
+) {
   if (kids.length === 0) return;
   const centers = kids.map((c) => c.x + c.w / 2);
-  const barLeft = Math.min(fromX, ...centers);
-  const barRight = Math.max(fromX, ...centers);
+  const everyone = [...parents, ...kids.map((k) => k.id)];
+  drawLine(g, fromX, fromY, fromX, barY, "parent", everyone);
 
-  drawLine(g, fromX, fromY, fromX, barY, "parent");
-  drawLine(g, barLeft, barY, barRight, barY, "parent");
-  for (let i = 0; i < kids.length; i++) {
-    drawLine(g, centers[i], barY, centers[i], kids[i].y, "parent");
-  }
+  kids.forEach((k, i) => {
+    const mine = [...parents, k.id];
+    drawLine(g, fromX, barY, centers[i], barY, "parent", mine);
+    drawLine(g, centers[i], barY, centers[i], k.y, "parent", mine);
+  });
 }
 
 export function drawParentage(g: SVGGElement, layout: Layout) {
@@ -120,10 +134,10 @@ export function drawParentage(g: SVGGElement, layout: Layout) {
     b.spouses.forEach((s, i) => {
       const kids = b.children.filter((c) => c.spouse === i);
       const from = unionAnchor(p, s);
-      drawComb(g, from.x, from.y, kids, top - 20 - 8 * i);
+      drawComb(g, from.x, from.y, kids, top - 20 - 8 * i, [p.id, s.id]);
     });
 
     const alone = b.children.filter((c) => c.spouse === -1);
-    drawComb(g, p.x + p.w / 2, p.y + NODE_H, alone, top - 20 - 8 * b.spouses.length);
+    drawComb(g, p.x + p.w / 2, p.y + NODE_H, alone, top - 20 - 8 * b.spouses.length, [p.id]);
   }
 }

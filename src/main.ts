@@ -97,11 +97,15 @@ async function main() {
   document.body.appendChild(controls);
 
   function attach(g: SVGGElement, person: Person) {
-    g.addEventListener("mouseenter", (e) =>
-      showTooltip(personLines(data, person), e.clientX, e.clientY)
-    );
+    g.addEventListener("mouseenter", (e) => {
+      setHover(person.id);
+      showTooltip(personLines(data, person), e.clientX, e.clientY);
+    });
     g.addEventListener("mousemove", (e) => moveTooltip(e.clientX, e.clientY));
-    g.addEventListener("mouseleave", hideTooltip);
+    g.addEventListener("mouseleave", () => {
+      setHover(null);
+      hideTooltip();
+    });
 
     g.addEventListener("click", (e) => {
       e.stopPropagation();
@@ -130,6 +134,26 @@ async function main() {
     for (const g of world.querySelectorAll<SVGGElement>(".person")) {
       const houses = (g.dataset.houses ?? "").split(" ");
       g.classList.toggle("match", house !== null && houses.includes(house));
+    }
+  }
+
+  function setHover(id: PersonId | null) {
+    world.classList.toggle("hovering", id !== null);
+
+    const related = new Set<PersonId>();
+    if (id !== null) {
+      related.add(id);
+      for (const s of family.spousesOf.get(id) ?? []) related.add(s);
+      for (const p of family.parentsByChild.get(id) ?? []) related.add(p);
+      for (const c of family.childrenOf.get(id) ?? []) related.add(c);
+    }
+
+    for (const g of world.querySelectorAll<SVGGElement>(".person")) {
+      g.classList.toggle("related", related.has(g.dataset.id ?? ""));
+    }
+    for (const line of world.querySelectorAll<SVGElement>(".line")) {
+      const people = (line.dataset.people ?? "").split(" ");
+      line.classList.toggle("related", id !== null && people.includes(id));
     }
   }
 

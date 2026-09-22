@@ -12,6 +12,7 @@ export function drawPerson(
   g.style.cursor = "pointer";
 
   g.classList.add("person");
+  g.dataset.id = person.id;
   if (opts.ghost) g.classList.add("ghost");
   g.dataset.houses = [person.houseBirth, person.houseMarriage ?? ""].join(" ");
 
