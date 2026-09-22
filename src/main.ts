@@ -26,9 +26,10 @@ import {
 } from "./render/tooltip";
 import { showMenu, type MenuItem } from "./ui/menu"; 
 import { select } from "d3-selection";
-import { zoom, zoomIdentity } from "d3-zoom";
+import { zoom, zoomIdentity, zoomTransform } from "d3-zoom";
 import { createSearch } from "./ui/search";
 import { showBio, showHouse } from "./ui/bio";
+import { createRuler } from "./render/ruler";
 import "./styles/pixel.css";
 
 async function main() {
@@ -53,10 +54,14 @@ async function main() {
   svg.appendChild(world);
   document.querySelector("#app")!.appendChild(svg);
 
+  const updateRuler = createRuler(svg, world);
+  let currentOrigin = 0;
+
   const zoomer = zoom<SVGSVGElement, unknown>()
     .scaleExtent([0.05, 3])
     .on("zoom", (event) => {
       world.setAttribute("transform", event.transform.toString());
+      updateRuler(event.transform, currentOrigin);
     });
   select(svg).call(zoomer);
 
@@ -150,6 +155,8 @@ async function main() {
 
     const layout = computeLayout(family, focusId, widths);
 
+    currentOrigin = layout.origin;
+
     const colors = assignColors(layout, personById);
 
     let maxX = 0;
@@ -215,6 +222,8 @@ async function main() {
     render("Q9439");
     home.show();
   }
+
+  window.addEventListener("resize", () => updateRuler(zoomTransform(svg), currentOrigin));
 }
 
 main();

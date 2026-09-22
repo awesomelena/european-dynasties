@@ -28,3 +28,6 @@ export const OTHER_STYLE: HouseStyle = { color: "#cfcfc4", textColor: "var(--sab
 export const NAME_Y_WITH_TITLE = 18;
 export const NAME_Y_ALONE = 27;
 export const TITLE_Y = 35;
+export const BASE_YEAR = 1800;
+export const YEAR_PX = 8;
+export const TOP_MARGIN = 40;

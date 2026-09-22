@@ -1,5 +1,5 @@
 import type { Box, Person, PersonId, Union } from "../types";
-import { COUPLE_GAP, SIBLING_GAP, UP, DOWN, MIN_GENERATION_GAP } from "../constants";
+import { COUPLE_GAP, SIBLING_GAP, UP, DOWN, MIN_GENERATION_GAP, BASE_YEAR, YEAR_PX, TOP_MARGIN } from "../constants";
 import { type Family, unionKey } from "../data/family";
 
 export type PlacedBox = Box & { id: PersonId };
@@ -15,6 +15,7 @@ export type LayoutBlock = {
 export type Layout = {
   positions: Map<PersonId, Box>;
   blocks: LayoutBlock[];
+  origin: number;
 };
 
 type RawSpouse = { id: PersonId; x: number; ghost: boolean; adjacent: boolean; arc: number; ended?: "divorce" | "annulment"; };
@@ -39,7 +40,7 @@ type Ctx = {
 };
 
 function yearToY(year: number): number {
-  return (year - 1800) * 8;
+  return (year - BASE_YEAR) * YEAR_PX;
 }
 
 function findAnchor(
@@ -208,7 +209,7 @@ export function computeLayout(
 
   const positions = new Map<PersonId, Box>();
   for (const [id, x] of ctx.xByPerson) {
-    positions.set(id, { x, y: yByPerson.get(id)! - minY + 40, w: widths.get(id)! });
+    positions.set(id, { x, y: yByPerson.get(id)! - minY + TOP_MARGIN, w: widths.get(id)! });
   }
 
   const blocks: LayoutBlock[] = ctx.rawBlocks.map((b) => {
@@ -227,5 +228,5 @@ export function computeLayout(
     return { person, spouses, children };
   });
 
-  return { positions, blocks };
+  return { positions, blocks, origin: minY };
 }

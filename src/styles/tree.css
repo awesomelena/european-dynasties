@@ -17,3 +17,22 @@
 .highlighting .line {
   opacity: 0.2;
 }
+
+.ruler {
+  pointer-events: none;
+}
+
+.ruler-guide {
+  stroke: var(--sable);
+  stroke-opacity: 0.15;
+  stroke-dasharray: 2 6;
+}
+
+.ruler-label {
+  font: 13px 'Pixelify Sans', monospace;
+  fill: var(--sable);
+  opacity: 0.7;
+  paint-order: stroke;
+  stroke: var(--argent);
+  stroke-width: 4px;
+}
