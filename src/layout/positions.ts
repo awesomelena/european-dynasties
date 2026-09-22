@@ -1,6 +1,6 @@
-import type { Box, Dataset, Person, PersonId, Union } from "../types";
+import type { Box, Person, PersonId, Union } from "../types";
 import { COUPLE_GAP, SIBLING_GAP, UP, DOWN, MIN_GENERATION_GAP } from "../constants";
-import { buildFamily, unionKey } from "../data/family";
+import { type Family, unionKey } from "../data/family";
 
 export type PlacedBox = Box & { id: PersonId };
 
@@ -35,6 +35,7 @@ type Ctx = {
   partnerOf: Map<PersonId, PersonId>;
   rawBlocks: RawBlock[];
   unionByPair: Map<string, Union>;
+  widthCache: Map<string, number>;
 };
 
 function yearToY(year: number): number {
@@ -79,13 +80,21 @@ function blockWidth(personId: PersonId, ctx: Ctx): number {
 }
 
 function subtreeWidth(personId: PersonId, depth: number, ctx: Ctx): number {
+  const key = `${personId}|${depth}`;
+  const cached = ctx.widthCache.get(key);
+  if (cached !== undefined) return cached;
+
   const own = blockWidth(personId, ctx);
   const children = depth > 0 ? ctx.childrenOf.get(personId) ?? [] : [];
-  if (children.length === 0) return own;
+  let result = own;
+  if (children.length > 0) {
+    let total = (children.length - 1) * SIBLING_GAP;
+    for (const child of children) total += subtreeWidth(child, depth - 1, ctx);
+    result = Math.max(own, total);
+  }
 
-  let total = (children.length - 1) * SIBLING_GAP;
-  for (const child of children) total += subtreeWidth(child, depth - 1, ctx);
-  return Math.max(own, total);
+  ctx.widthCache.set(key, result);
+  return result;
 }
 
 function place(personId: PersonId, left: number, depth: number, ctx: Ctx) {
@@ -155,11 +164,11 @@ function place(personId: PersonId, left: number, depth: number, ctx: Ctx) {
 }
 
 export function computeLayout(
-  data: Dataset,
+  family: Family,
   focusId: PersonId,
   widths: Map<PersonId, number>
 ): Layout {
-  const { childrenOf, spousesOf, parentsByChild, personById, unionByPair } = buildFamily(data);
+  const { childrenOf, spousesOf, parentsByChild, personById, unionByPair } = family;
   const { anchorId, steps } = findAnchor(focusId, parentsByChild, personById);
   const depth = steps + DOWN;
 
@@ -176,6 +185,7 @@ export function computeLayout(
     xByPerson: new Map(),
     partnerOf: new Map(),
     rawBlocks: [],
+    widthCache: new Map(),
   };
   place(anchorId, 0, depth, ctx);
 

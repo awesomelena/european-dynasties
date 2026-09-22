@@ -25,3 +25,6 @@ export const UP = 1;
 export const DOWN = 2;
 export const MIN_GENERATION_GAP = 140;
 export const OTHER_STYLE: HouseStyle = { color: "#cfcfc4", textColor: "var(--sable)" };
+export const NAME_Y_WITH_TITLE = 18;
+export const NAME_Y_ALONE = 27;
+export const TITLE_Y = 35;

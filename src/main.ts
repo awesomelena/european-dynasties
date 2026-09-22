@@ -148,7 +148,7 @@ async function main() {
     world.replaceChildren();
     hideTooltip();
 
-    const layout = computeLayout(data, focusId, widths);
+    const layout = computeLayout(family, focusId, widths);
 
     const colors = assignColors(layout, personById);
 

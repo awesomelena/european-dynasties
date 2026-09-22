@@ -1,17 +1,16 @@
 import { readFile, writeFile } from "node:fs/promises";
 import type { Country, Dataset, House, Parentage, Person, Union } from "../src/types";
+import type { Pair, RawArticle, RawMarriage, RawPerson, RawPosition } from "./wikidata";
 
-type Pair = { s: string; o: string; oLabel: string };
-type RawPerson = { label: string; birth: string[]; death: string[]; sex: string[] };
 type Raw = {
   root: string;
   people: Record<string, RawPerson>;
   fathers: Pair[];
   mothers: Pair[];
-  marriages: { s: string; o: string; start: string | null; end: string | null; cause: string }[];
+  marriages: RawMarriage[];
   houses: Pair[];
-  titles: { s: string; label: string; start: string | null; end: string | null }[];
-  wiki: { s: string; title: string }[];
+  titles: RawPosition[];
+  wiki: RawArticle[];
 };
 
 const PALETTE: { color: string; textColor?: string }[] = [
@@ -162,7 +161,7 @@ function span(t: { from: number | null; to: number | null }): number {
 const NOISE = /^(head of state|member of)\b/i;
 
 async function main() {
-  const name = process.argv[2] ?? "victoria";
+  const name = process.argv[2] ?? "europe";
   const raw: Raw = JSON.parse(await readFile(`scripts/raw/${name}.json`, "utf8"));
 
   // pomoćne mape

@@ -1,5 +1,5 @@
 import type { HouseId, Person, Box, HouseStyle } from "../types";
-import { SVG_NS, NODE_H, NODE_PAD, FONT_NAME, FONT_TITLE, UNKNOWN_STYLE } from "../constants";
+import { SVG_NS, NODE_H, NODE_PAD, FONT_NAME, FONT_TITLE, UNKNOWN_STYLE, NAME_Y_ALONE, NAME_Y_WITH_TITLE, TITLE_Y } from "../constants";
 
 export function drawPerson(
   svg: SVGGElement,
@@ -59,7 +59,7 @@ export function drawPerson(
 
   const name = document.createElementNS(SVG_NS, "text");
   name.setAttribute("x", String(pos.x + NODE_PAD));
-  name.setAttribute("y", String(pos.y + (title !== undefined ? 18 : 27)));
+  name.setAttribute("y", String(pos.y + (title !== undefined ? NAME_Y_WITH_TITLE : NAME_Y_ALONE)));
   name.style.font = FONT_NAME;
   name.style.fill = textColor;
   name.textContent = person.name.en;
@@ -68,7 +68,7 @@ export function drawPerson(
   if (title !== undefined) {
     const sub = document.createElementNS(SVG_NS, "text");
     sub.setAttribute("x", String(pos.x + NODE_PAD));
-    sub.setAttribute("y", String(pos.y + 35));
+    sub.setAttribute("y", String(pos.y + TITLE_Y));
     sub.style.font = FONT_TITLE;
     sub.style.fill = textColor;
     sub.style.opacity = "0.85";
