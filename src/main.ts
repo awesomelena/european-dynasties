@@ -38,7 +38,7 @@ async function main() {
   await Promise.all([document.fonts.load(FONT_NAME), document.fonts.load(FONT_TITLE)]);
 
   const widths = new Map<PersonId, number>(data.people.map((p) => [p.id, nodeWidth(p)]));
-  const { spouseOf, personById } = family;
+  const { personById } = family;
 
   function openBio(id: PersonId) {
     showBio(data, personById.get(id)!, family, (nextId) => {
@@ -107,11 +107,11 @@ async function main() {
         { label: "Biography", action: () => openBio(person.id) },
       ];
 
-      const spouseId = spouseOf.get(person.id);
-      const spouse = spouseId !== undefined ? personById.get(spouseId) : undefined;
-      if (spouse !== undefined && spouse.houseBirth !== person.houseBirth) {
+      for (const spouseId of family.spousesOf.get(person.id) ?? []) {
+        const spouse = personById.get(spouseId)!;
+        if (spouse.houseBirth === person.houseBirth) continue;
         items.push({
-          label: `Open ${houseName(data, spouse.houseBirth)} tree`,
+          label: `Open ${houseName(data, spouse.houseBirth)} tree (${spouse.name.en})`,
           action: () => navigate(spouse.id),
         });
       }
@@ -155,8 +155,7 @@ async function main() {
     let maxX = 0;
     let maxY = 0;
     for (const b of layout.blocks) {
-      const boxes = b.spouse !== null ? [b.person, b.spouse] : [b.person];
-      for (const box of boxes) {
+      for (const box of [b.person, ...b.spouses]) {
         maxX = Math.max(maxX, box.x + box.w);
         maxY = Math.max(maxY, box.y + NODE_H);
       }
@@ -173,9 +172,11 @@ async function main() {
     }
 
     for (const b of layout.blocks) {
-      if (b.spouse === null || !b.spouse.ghost) continue;
-      const person = personById.get(b.spouse.id)!;
-      attach(drawPerson(world, colors, person, b.spouse, { ghost: true }), person);
+      for (const s of b.spouses) {
+        if (!s.ghost) continue;
+        const person = personById.get(s.id)!;
+        attach(drawPerson(world, colors, person, s, { ghost: true }), person);
+      }
     }
 
     const focusBox = layout.positions.get(focusId);

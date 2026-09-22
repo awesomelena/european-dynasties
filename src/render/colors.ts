@@ -8,7 +8,9 @@ export function assignColors(
 ): Map<HouseId, HouseStyle> {
   const visible: PersonId[] = [...layout.positions.keys()];
   for (const b of layout.blocks) {
-    if (b.spouse !== null && b.spouse.ghost) visible.push(b.spouse.id);
+    for (const s of b.spouses) {
+      if (s.ghost) visible.push(s.id);
+    }
   }
 
   const count = new Map<HouseId, number>();

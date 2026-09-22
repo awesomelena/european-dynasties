@@ -1,13 +1,15 @@
-import type { Box, Dataset, Person, PersonId } from "../types";
+import type { Box, Dataset, Person, PersonId, Union } from "../types";
 import { COUPLE_GAP, SIBLING_GAP, UP, DOWN, MIN_GENERATION_GAP } from "../constants";
-import { buildFamily } from "../data/family";
+import { buildFamily, unionKey } from "../data/family";
 
 export type PlacedBox = Box & { id: PersonId };
 
+export type LayoutSpouse = PlacedBox & { ghost: boolean; adjacent: boolean; arc: number; ended?: "divorce" | "annulment"; };
+
 export type LayoutBlock = {
   person: PlacedBox;
-  spouse: (PlacedBox & { ghost: boolean }) | null;
-  children: (PlacedBox & { ofCouple: boolean })[];
+  spouses: LayoutSpouse[];
+  children: (PlacedBox & { spouse: number })[];
 };
 
 export type Layout = {
@@ -15,23 +17,24 @@ export type Layout = {
   blocks: LayoutBlock[];
 };
 
+type RawSpouse = { id: PersonId; x: number; ghost: boolean; adjacent: boolean; arc: number; ended?: "divorce" | "annulment"; };
+
 type RawBlock = {
   person: PersonId;
-  spouse: PersonId | null;
-  ghost: boolean;
-  spouseX: number;
-  children: PersonId[];
+  spouses: RawSpouse[];
+  children: { id: PersonId; spouse: number }[];
 };
 
 type Ctx = {
   childrenOf: Map<PersonId, PersonId[]>;
-  spouseOf: Map<PersonId, PersonId>;
+  spousesOf: Map<PersonId, PersonId[]>;
   parentsByChild: Map<PersonId, PersonId[]>;
   widths: Map<PersonId, number>;
   blood: Set<PersonId>;
   xByPerson: Map<PersonId, number>;
   partnerOf: Map<PersonId, PersonId>;
   rawBlocks: RawBlock[];
+  unionByPair: Map<string, Union>;
 };
 
 function yearToY(year: number): number {
@@ -70,11 +73,9 @@ function collectBlood(
 }
 
 function blockWidth(personId: PersonId, ctx: Ctx): number {
-  const spouseId = ctx.spouseOf.get(personId);
-  return (
-    ctx.widths.get(personId)! +
-    (spouseId !== undefined ? COUPLE_GAP + ctx.widths.get(spouseId)! : 0)
-  );
+  let w = ctx.widths.get(personId)!;
+  for (const s of ctx.spousesOf.get(personId) ?? []) w += COUPLE_GAP + ctx.widths.get(s)!;
+  return w;
 }
 
 function subtreeWidth(personId: PersonId, depth: number, ctx: Ctx): number {
@@ -89,24 +90,56 @@ function subtreeWidth(personId: PersonId, depth: number, ctx: Ctx): number {
 
 function place(personId: PersonId, left: number, depth: number, ctx: Ctx) {
   const W = subtreeWidth(personId, depth, ctx);
-  const personW = ctx.widths.get(personId)!;
-  const spouseId = ctx.spouseOf.get(personId) ?? null;
+  const spouses = ctx.spousesOf.get(personId) ?? [];
+  const w = (id: PersonId) => ctx.widths.get(id)!;
 
-  const blockLeft = left + (W - blockWidth(personId, ctx)) / 2;
-  ctx.xByPerson.set(personId, blockLeft);
+  // raspored u bloku: S1 levo (ako ih je 2+), pa osoba, pa ostali desno
+  let cursor = left + (W - blockWidth(personId, ctx)) / 2;
+  const placed: RawSpouse[] = [];
+  const makeSpouse = (id: PersonId, x: number, adjacent: boolean, arc: number): RawSpouse => ({
+    id,
+    x,
+    adjacent,
+    arc,
+    ghost: ctx.blood.has(id) || ctx.xByPerson.has(id),
+    ended: ctx.unionByPair.get(unionKey(personId, id))?.ended,
+  });
 
-  const spouseX = blockLeft + personW + COUPLE_GAP;
-  const ghost = spouseId !== null && ctx.blood.has(spouseId);
-  if (spouseId !== null && !ghost) {
-    ctx.xByPerson.set(spouseId, spouseX);
-    ctx.partnerOf.set(spouseId, personId);
+  if (spouses.length >= 2) {
+    placed.push(makeSpouse(spouses[0], cursor, true, 0));
+    cursor += w(spouses[0]) + COUPLE_GAP;
   }
 
-  const block: RawBlock = { person: personId, spouse: spouseId, ghost, spouseX, children: [] };
+  ctx.xByPerson.set(personId, cursor);
+  cursor += w(personId);
+
+  let rightCount = 0;
+  for (let i = spouses.length >= 2 ? 1 : 0; i < spouses.length; i++) {
+    cursor += COUPLE_GAP;
+    const adjacent = rightCount === 0;
+    placed.push(makeSpouse(spouses[i], cursor, adjacent, adjacent ? 0 : rightCount));
+    cursor += w(spouses[i]);
+    rightCount++;
+  }
+
+  for (const s of placed) {
+    if (!s.ghost) ctx.xByPerson.set(s.id, s.x);
+  }
+
+  const block: RawBlock = { person: personId, spouses: placed, children: [] };
   ctx.rawBlocks.push(block);
 
-  const children = depth > 0 ? ctx.childrenOf.get(personId) ?? [] : [];
-  if (children.length === 0) return;
+  // deca, grupisana po braku
+  const kids = depth > 0 ? ctx.childrenOf.get(personId) ?? [] : [];
+  if (kids.length === 0) return;
+
+  const spouseIndex = (child: PersonId) =>
+    spouses.findIndex((s) => (ctx.parentsByChild.get(child) ?? []).includes(s));
+  const group = (child: PersonId) => {
+    const i = spouseIndex(child);
+    return i === -1 ? spouses.length : i;
+  };
+  const children = [...kids].sort((a, b) => group(a) - group(b));
 
   let childrenWidth = (children.length - 1) * SIBLING_GAP;
   for (const child of children) childrenWidth += subtreeWidth(child, depth - 1, ctx);
@@ -115,7 +148,7 @@ function place(personId: PersonId, left: number, depth: number, ctx: Ctx) {
   for (const child of children) {
     if (!ctx.xByPerson.has(child)) {
       place(child, currentLeft, depth - 1, ctx);
-      block.children.push(child);
+      block.children.push({ id: child, spouse: spouseIndex(child) });
     }
     currentLeft += subtreeWidth(child, depth - 1, ctx) + SIBLING_GAP;
   }
@@ -126,7 +159,7 @@ export function computeLayout(
   focusId: PersonId,
   widths: Map<PersonId, number>
 ): Layout {
-  const { childrenOf, spouseOf, parentsByChild, personById } = buildFamily(data);
+  const { childrenOf, spousesOf, parentsByChild, personById, unionByPair } = buildFamily(data);
   const { anchorId, steps } = findAnchor(focusId, parentsByChild, personById);
   const depth = steps + DOWN;
 
@@ -135,8 +168,9 @@ export function computeLayout(
 
   const ctx: Ctx = {
     childrenOf,
-    spouseOf,
+    spousesOf,
     parentsByChild,
+    unionByPair,
     widths,
     blood,
     xByPerson: new Map(),
@@ -151,9 +185,11 @@ export function computeLayout(
   }
   for (const b of ctx.rawBlocks) {
     const y = yByPerson.get(b.person)!;
-    if (b.spouse !== null && !b.ghost) yByPerson.set(b.spouse, y);
-    for (const child of b.children) {
-      yByPerson.set(child, Math.max(yByPerson.get(child)!, y + MIN_GENERATION_GAP));
+    for (const s of b.spouses) {
+      if (!s.ghost) yByPerson.set(s.id, y);
+    }
+    for (const c of b.children) {
+      yByPerson.set(c.id, Math.max(yByPerson.get(c.id)!, y + MIN_GENERATION_GAP));
     }
   }
 
@@ -167,16 +203,18 @@ export function computeLayout(
 
   const blocks: LayoutBlock[] = ctx.rawBlocks.map((b) => {
     const person = { id: b.person, ...positions.get(b.person)! };
-    const spouse =
-      b.spouse === null
-        ? null
-        : { id: b.spouse, ghost: b.ghost, x: b.spouseX, y: person.y, w: widths.get(b.spouse)! };
-    const children = b.children.map((id) => ({
-      id,
-      ...positions.get(id)!,
-      ofCouple: b.spouse !== null && (parentsByChild.get(id) ?? []).includes(b.spouse),
+    const spouses = b.spouses.map((s) => ({
+      id: s.id,
+      ghost: s.ghost,
+      adjacent: s.adjacent,
+      arc: s.arc,
+      x: s.x,
+      y: person.y,
+      w: widths.get(s.id)!,
+      ended: s.ended,
     }));
-    return { person, spouse, children };
+    const children = b.children.map((c) => ({ id: c.id, spouse: c.spouse, ...positions.get(c.id)! }));
+    return { person, spouses, children };
   });
 
   return { positions, blocks };

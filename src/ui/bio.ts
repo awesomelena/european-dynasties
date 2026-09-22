@@ -117,9 +117,8 @@ export function showBio(
 
   for (const line of rest) addText(line);
 
-  const spouseId = family.spouseOf.get(person.id);
   addPeople("Parents", lookup(family.parentsByChild.get(person.id) ?? [], family), onSelect);
-  addPeople("Spouse", lookup(spouseId !== undefined ? [spouseId] : [], family), onSelect);
+  addPeople("Spouses", lookup(family.spousesOf.get(person.id) ?? [], family), onSelect);
   addPeople("Children", lookup(family.childrenOf.get(person.id) ?? [], family), onSelect);
 
   panel.style.display = "block";

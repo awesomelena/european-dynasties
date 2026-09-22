@@ -8,7 +8,7 @@ type Raw = {
   people: Record<string, RawPerson>;
   fathers: Pair[];
   mothers: Pair[];
-  marriages: Pair[];
+  marriages: { s: string; o: string; start: string | null; end: string | null; cause: string }[];
   houses: Pair[];
   titles: { s: string; label: string; start: string | null; end: string | null }[];
   wiki: { s: string; title: string }[];
@@ -289,7 +289,13 @@ async function main() {
     const key = m.s < m.o ? `${m.s}|${m.o}` : `${m.o}|${m.s}`;
     if (seen.has(key)) continue;
     seen.add(key);
-    unions.push({ a: m.s, b: m.o, from: null });
+    unions.push({
+      a: m.s,
+      b: m.o,
+      from: year(m.start ?? undefined),
+      to: year(m.end ?? undefined),
+      ended: /annul/i.test(m.cause) ? "annulment" : /divorc/i.test(m.cause) ? "divorce" : undefined,
+    });
   }
 
   // 4. kuća braka

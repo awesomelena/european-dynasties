@@ -9,6 +9,10 @@ const LINE_SAMPLES = `
     Marriage
   </div>
   <div class="legend-row">
+    <svg width="36" height="12"><line x1="0" y1="6" x2="36" y2="6" stroke="var(--sable)" stroke-width="6" stroke-dasharray="10 6"/><line x1="0" y1="6" x2="36" y2="6" stroke="var(--argent)" stroke-width="2" stroke-dasharray="10 6"/></svg>
+    Divorce or annulment
+  </div>
+  <div class="legend-row">
     <svg width="36" height="12"><line x1="0" y1="6" x2="36" y2="6" stroke="var(--sable)" stroke-width="2"/></svg>
     Parent - child
   </div>

@@ -93,6 +93,40 @@ export async function pairs(ids: string[], prop: string): Promise<Pair[]> {
   return result;
 }
 
+export type RawMarriage = {
+  s: string;
+  o: string;
+  start: string | null;
+  end: string | null;
+  cause: string;
+};
+
+export async function marriages(ids: string[]): Promise<RawMarriage[]> {
+  const result: RawMarriage[] = [];
+  for (const part of chunks(ids, 100)) {
+    const rows = await sparql(`
+      SELECT ?s ?o ?start ?end ?causeLabel WHERE {
+        VALUES ?s { ${values(part)} }
+        ?s p:P26 ?st .
+        ?st ps:P26 ?o .
+        OPTIONAL { ?st pq:P580 ?start . }
+        OPTIONAL { ?st pq:P582 ?end . }
+        OPTIONAL { ?st pq:P1534 ?cause . }
+        SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+      }`);
+    for (const r of rows) {
+      result.push({
+        s: qid(r.s!.value),
+        o: qid(r.o!.value),
+        start: r.start?.value ?? null,
+        end: r.end?.value ?? null,
+        cause: r.causeLabel?.value ?? "",
+      });
+    }
+  }
+  return result;
+}
+
 export async function childrenViaParents(ids: string[]): Promise<Pair[]> {
   const result: Pair[] = [];
   for (const part of chunks(ids, 100)) {

@@ -37,6 +37,8 @@ export interface Union {
   a: PersonId;
   b: PersonId;
   from: number | null;
+  to?: number | null;
+  ended?: "divorce" | "annulment";
 }
 
 export interface Dataset {

@@ -23,5 +23,5 @@ export const COUPLE_GAP = 50;
 export const SIBLING_GAP = 30;
 export const UP = 1;
 export const DOWN = 2;
-export const MIN_GENERATION_GAP = 110;
+export const MIN_GENERATION_GAP = 140;
 export const OTHER_STYLE: HouseStyle = { color: "#cfcfc4", textColor: "var(--sable)" };

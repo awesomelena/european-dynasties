@@ -1,6 +1,6 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import {
-  articles, basics, childrenViaParents, chunks, pairs, positions, qid, sparql, values,
+  articles, basics, childrenViaParents, chunks, pairs, positions, qid, sparql, values, marriages
 } from "./wikidata";
 
 const HOPS = 1;
@@ -64,7 +64,7 @@ async function main() {
   const fathers = await pairs(ids, "P22");
   const mothers = await pairs(ids, "P25");
   console.log("  marriages, houses...");
-  const marriages = await pairs(ids, "P26");
+  const marriageList = await marriages(ids);
   const houses = await pairs(ids, "P53");
   console.log("  titles, Wikipedia...");
   const titles = await positions(ids);
@@ -73,7 +73,7 @@ async function main() {
   await mkdir("scripts/raw", { recursive: true });
   await writeFile(
     "scripts/raw/europe.json",
-    JSON.stringify({ root: "Q9439", people, fathers, mothers, marriages, houses, titles, wiki })
+    JSON.stringify({ root: "Q9439", people, fathers, mothers, marriages: marriageList, houses, titles, wiki })
   );
   console.log(`Saved ${Object.keys(people).length} people.`);
 }
