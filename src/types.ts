@@ -25,6 +25,7 @@ export interface Person {
   titles?: Title[];
   wiki?: string;
   bornEstimated?: boolean;
+  displayTitle?: string;
 }
 
 export interface Parentage {
@@ -50,6 +51,7 @@ export interface Country {
   name: string;
   color: string;
   houses: HouseId[];
+  starts?: Record<HouseId, PersonId>;
 }
 
 export type Point = { x: number; y: number };

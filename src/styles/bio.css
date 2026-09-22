@@ -55,6 +55,8 @@
   width: 110px;
   margin: 0 0 var(--space) var(--space);
   border: var(--border) solid var(--sable);
+  image-rendering: pixelated;
+  box-shadow: var(--shadow);
 }
 
 .bio-wiki a {

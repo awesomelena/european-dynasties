@@ -52,7 +52,7 @@ function drawUnionPath(svg: SVGGElement, points: Point[]) {
   outer.classList.add("line");
 
   const inner = outer.cloneNode() as SVGPolylineElement;
-  inner.style.stroke = "white";
+  inner.style.stroke = "var(--argent)";
   inner.style.strokeWidth = "2";
   svg.appendChild(inner);
 }

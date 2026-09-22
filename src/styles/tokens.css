@@ -11,6 +11,7 @@
 
   --space:   8px;
   --border:  2px;
-  --font-ui: 'Silkscreen', monospace;
-  --font-bio: Georgia, serif;
+  --font-ui:  'Silkscreen', monospace;
+  --font-bio: 'Pixelify Sans', monospace;
+  --shadow:   4px 4px 0 var(--sable);
 }

@@ -88,11 +88,18 @@ export function showBio(
       }
 
       if (summary.thumbnail !== undefined) {
-        const img = document.createElement("img");
-        img.className = "bio-portrait";
+        const img = new Image();
         img.src = summary.thumbnail;
-        img.alt = person.name.en;
-        box.appendChild(img);
+        img.addEventListener("load", () => {
+          const canvas = document.createElement("canvas");
+          canvas.width = 48;
+          canvas.height = Math.round((48 * img.height) / img.width);
+          canvas.getContext("2d")!.drawImage(img, 0, 0, canvas.width, canvas.height);
+          canvas.className = "bio-portrait";
+          canvas.setAttribute("role", "img");
+          canvas.setAttribute("aria-label", person.name.en);
+          box.prepend(canvas);
+        });
       }
 
       const text = document.createElement("p");

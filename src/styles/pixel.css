@@ -1,0 +1,52 @@
+body {
+  font-family: var(--font-bio);
+  background-color: var(--argent);
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.home {
+  background-color: var(--argent);
+  background-image: inherit;
+  background-size: 16px 16px;
+}
+
+.home h1, .home h2, .home-card h3, .bio h2, .legend summary, .home-button, .menu button {
+  font-family: var(--font-ui);
+  font-weight: normal;
+  letter-spacing: 0.02em;
+}
+
+.home h1 { font-size: 36px; }
+.home-card h3 { font-size: 16px; }
+.bio h2 { font-size: 20px; }
+
+.home-card, .home-button, .zoom-controls button, .search input,
+.search-results, .legend, .menu, .tooltip {
+  box-shadow: var(--shadow);
+}
+
+.bio {
+  box-shadow: -4px 0 0 var(--sable);
+}
+
+.home-card:active, .home-button:active, .zoom-controls button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 var(--sable);
+}
+
+.home-card:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0 var(--sable);
+}
+
+.search input:focus {
+  outline: none;
+  box-shadow: 4px 4px 0 var(--or);
+}
+
+.canvas rect, .canvas line, .canvas polyline {
+  shape-rendering: crispEdges;
+}

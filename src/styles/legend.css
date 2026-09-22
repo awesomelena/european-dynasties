@@ -70,3 +70,9 @@
 .legend-more:hover {
   color: var(--azure);
 }
+
+.legend summary {
+  position: sticky;
+  top: 0;
+  background: var(--argent);
+}

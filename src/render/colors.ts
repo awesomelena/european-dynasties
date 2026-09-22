@@ -1,6 +1,6 @@
 import type { HouseId, HouseStyle, Person, PersonId } from "../types";
 import type { Layout } from "../layout/positions";
-import { PALETTE, UNKNOWN_STYLE } from "../constants";
+import { PALETTE, UNKNOWN_STYLE, OTHER_STYLE } from "../constants";
 
 export function assignColors(
   layout: Layout,
@@ -25,7 +25,7 @@ export function assignColors(
   const houses = [...count.keys()]
     .filter((h) => h !== "unknown")
     .sort((a, b) => count.get(b)! - count.get(a)!);
-  houses.forEach((h, i) => colors.set(h, PALETTE[i % PALETTE.length]));
+  houses.forEach((h, i) => colors.set(h, i < PALETTE.length ? PALETTE[i] : OTHER_STYLE));
   if (count.has("unknown")) colors.set("unknown", UNKNOWN_STYLE);
 
   return colors;

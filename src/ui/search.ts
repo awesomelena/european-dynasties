@@ -64,7 +64,7 @@ export function createSearch(people: Person[], onSelect: (id: PersonId) => void)
 
     results.forEach((p, i) => {
       const item = document.createElement("li");
-      const title = p.titles?.[0]?.title;
+      const title = p.displayTitle;
       item.textContent = `${p.name.en} (${bornText(p)})${title !== undefined ? " · " + title : ""}`;
       item.addEventListener("click", () => choose(p.id));
       item.addEventListener("mouseenter", () => setActive(i));

@@ -59,7 +59,8 @@ const TIERS: RegExp[] = [
 ];
 
 const IMPERIAL = /\b(emperor|empress|tsar|tsarina)\b/i;
-const SECONDARY = /\bof India\b/i;
+const SECONDARY =
+  /\bof (the )?(India|Canada|Australia|New Zealand|(Union of )?South Africa|Pakistan|Ceylon|Jamaica|Barbados|Bahamas|Belize|Grenada|Papua New Guinea|Solomon Islands|Tuvalu|Saint Lucia|Saint Vincent|Antigua|Saint Kitts|Fiji|Ghana|Kenya|Malta|Mauritius|Nigeria|Sierra Leone|Tanganyika|Trinidad|Uganda|Guyana|The Gambia)\b/i;
 
 function tier(title: string): number {
   const i = TIERS.findIndex((re) => re.test(title));
@@ -154,6 +155,12 @@ function estimateBirthYears(raw: Raw) {
   return { years, estimated };
 }
 
+function span(t: { from: number | null; to: number | null }): number {
+  return t.from !== null && t.to !== null ? t.to - t.from : 0;
+}
+
+const NOISE = /^(head of state|member of)\b/i;
+
 async function main() {
   const name = process.argv[2] ?? "victoria";
   const raw: Raw = JSON.parse(await readFile(`scripts/raw/${name}.json`, "utf8"));
@@ -169,7 +176,7 @@ async function main() {
 
   for (const h of raw.houses) {
     const id = canonicalByLabel.get(h.oLabel)!;
-    houseLabel.set(id, h.oLabel);
+    houseLabel.set(id, /^Q\d+$/.test(h.oLabel) ? "Unnamed house" : h.oLabel);
     if (!housesOf.has(h.s)) housesOf.set(h.s, []);
     if (!housesOf.get(h.s)!.includes(id)) housesOf.get(h.s)!.push(id);
   }
@@ -205,28 +212,43 @@ async function main() {
     const { name: shortName, title: labelTitle } = splitLabel(rp.label);
     const sex: "m" | "f" = rp.sex.includes("Q6581072") ? "f" : "m";
 
-    const fromWiki = (titlesOf.get(id) ?? [])
-      .map((t) => ({
-        title: cleanTitle(t.label, sex),
-        from: year(t.start ?? undefined),
-        to: year(t.end ?? undefined),
-      }))
-      .filter((t) => t.title !== "")
-      .sort(
-        (a, b) =>
-        tier(a.title) - tier(b.title) ||
-        Number(SECONDARY.test(a.title)) - Number(SECONDARY.test(b.title)) ||
-        (a.from ?? 9999) - (b.from ?? 9999) ||
-        Number(IMPERIAL.test(b.title)) - Number(IMPERIAL.test(a.title))
-      );
+    const mapped = (titlesOf.get(id) ?? [])
+    .map((t) => ({
+      title: cleanTitle(t.label, sex),
+      from: year(t.start ?? undefined),
+      to: year(t.end ?? undefined),
+    }))
+    .filter((t) => t.title !== "" && !NOISE.test(t.title));
+
+    const merged = new Map<string, { title: string; from: number | null; to: number | null; years: number }>();
+    for (const t of mapped) {
+      const m = merged.get(t.title);
+      if (m === undefined) {
+        merged.set(t.title, { ...t, years: span(t) });
+      } else {
+        m.from = m.from === null ? t.from : t.from === null ? m.from : Math.min(m.from, t.from);
+        m.to = m.to === null ? t.to : t.to === null ? m.to : Math.max(m.to, t.to);
+        m.years += span(t);
+      }
+    }
+
+    const fromWiki = [...merged.values()].sort(
+    (a, b) =>
+      tier(a.title) - tier(b.title) ||
+      Number(SECONDARY.test(a.title)) - Number(SECONDARY.test(b.title)) ||
+      b.years - a.years ||
+      Number(IMPERIAL.test(b.title)) - Number(IMPERIAL.test(a.title))
+    );
 
     const royal = fromWiki.filter((t) => tier(t.title) < TIERS.length);
     const other = fromWiki.filter((t) => tier(t.title) === TIERS.length);
-    const titles = [...royal];
+    const clean = (t: { title: string; from: number | null; to: number | null }) =>
+      ({ title: t.title, from: t.from, to: t.to });
+    const titles = royal.map(clean);
     if (labelTitle !== undefined && !titles.some((t) => t.title === labelTitle)) {
       titles.push({ title: labelTitle, from: null, to: null });
     }
-    titles.push(...other);
+    titles.push(...other.map(clean));
 
     let name = shortName;
     const primary = titles[0];
@@ -246,6 +268,7 @@ async function main() {
       houseMarriage: null,
       wiki: wikiOf.get(id),
       bornEstimated: estimated.has(id) || undefined,
+      displayTitle: royal[0]?.title ?? labelTitle,
     });
   }
   const ids = new Set(people.map((p) => p.id));
@@ -291,21 +314,33 @@ async function main() {
   );
 
   // 6. države
-  const countryConfig: { name: string; color: string; houses: string[] }[] =
+  type HouseEntry = string | { house: string; start: string };
+
+  const countryConfig: { name: string; color: string; houses: HouseEntry[] }[] =
     JSON.parse(await readFile("scripts/countries.json", "utf8"));
   const usedHouses = new Set(houses.map((h) => h.id));
+  const knownPeople = new Set(people.map((p) => p.id));
 
   const countries: Country[] = countryConfig.map((c) => {
     const ids: string[] = [];
-    for (const label of c.houses) {
+    const starts: Record<string, string> = {};
+
+    for (const entry of c.houses) {
+      const label = typeof entry === "string" ? entry : entry.house;
       const id = canonicalByLabel.get(label);
       if (id === undefined || !usedHouses.has(id)) {
         console.log(`  ${c.name}: house not found in data: ${label}`);
         continue;
       }
       ids.push(id);
+
+      if (typeof entry !== "string") {
+        if (knownPeople.has(entry.start)) starts[id] = entry.start;
+        else console.log(`  ${c.name}: start person not in data: ${entry.start}`);
+      }
     }
-    return { name: c.name, color: c.color, houses: ids };
+
+    return { name: c.name, color: c.color, houses: ids, starts };
   });
 
   const dataset: Dataset = { houses, people, parentage, unions, countries };

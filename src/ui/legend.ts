@@ -1,15 +1,16 @@
 import type { Dataset, HouseId, HouseStyle } from "../types";
 import { houseName } from "../render/tooltip";
+import { OTHER_STYLE } from "../constants";
 
 const LINE_SAMPLES = `
   <h4>Lines</h4>
   <div class="legend-row">
-    <svg width="36" height="12"><line x1="0" y1="6" x2="36" y2="6" stroke="var(--sable)" stroke-width="6"/><line x1="0" y1="6" x2="36" y2="6" stroke="white" stroke-width="2"/></svg>
+    <svg width="36" height="12"><line x1="0" y1="6" x2="36" y2="6" stroke="var(--sable)" stroke-width="6"/><line x1="0" y1="6" x2="36" y2="6" stroke="var(--argent)" stroke-width="2"/></svg>
     Marriage
   </div>
   <div class="legend-row">
     <svg width="36" height="12"><line x1="0" y1="6" x2="36" y2="6" stroke="var(--sable)" stroke-width="2"/></svg>
-    Parent – child
+    Parent - child
   </div>
   <div class="legend-row">
     <svg width="36" height="18"><rect x="2" y="2" width="32" height="14" fill="#ccc" stroke="var(--sable)" stroke-width="2" stroke-dasharray="4 3"/></svg>
@@ -60,6 +61,24 @@ export function createLegend(
     body.appendChild(heading);
 
     for (const [id, style] of colors) {
+      let others = 0;
+      if (style === OTHER_STYLE) {
+        others++;
+        continue;
+      }
+
+      if (others > 0) {
+        const row = document.createElement("div");
+        row.className = "legend-row";
+        const swatch = document.createElement("span");
+        swatch.className = "legend-swatch";
+        swatch.style.background = OTHER_STYLE.color;
+        const name = document.createElement("span");
+        name.textContent = `${others} other ${others === 1 ? "house" : "houses"}`;
+        row.append(swatch, name);
+        body.appendChild(row);
+      }
+      
       const row = document.createElement("div");
       row.className = "legend-row";
       const swatch = document.createElement("span");

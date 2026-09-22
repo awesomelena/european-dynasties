@@ -2,7 +2,7 @@
   { "name": "France", "color": "var(--azure)",
     "houses": ["Capetian dynasty", "House of Valois", "House of Bourbon", "House of Bourbon in France", "House of Bonaparte"] },
   { "name": "England & Britain", "color": "var(--gules)",
-    "houses": ["House of Plantagenet", "House of Tudor", "House of Stuart", "House of Hanover", "House of Saxe-Coburg and Gotha", "House of Windsor"] },
+    "houses": ["House of Plantagenet", "House of Tudor", "House of Stuart", "House of Hanover", "House of Saxe-Coburg and Gotha", { "house": "House of Windsor", "start": "Q269412" }] },
   { "name": "Holy Roman Empire", "color": "var(--or)",
     "houses": ["Salian dynasty", "House of Luxembourg", "House of Habsburg", "House of Habsburg-Lorraine"] },
   { "name": "Austria", "color": "var(--gules)",

@@ -1,3 +1,6 @@
+import "@fontsource/silkscreen";
+import "@fontsource/pixelify-sans";
+
 import "./styles/tokens.css";
 import "./styles/tooltip.css";
 import "./styles/menu.css";     
@@ -11,7 +14,7 @@ import { createHome } from "./ui/home";
 import { assignColors } from "./render/colors";
 import { createLegend } from "./ui/legend";
 import type { Person, PersonId, Box, HouseId } from "./types";
-import { SVG_NS, NODE_H } from "./constants";
+import { SVG_NS, NODE_H, FONT_NAME, FONT_TITLE } from "./constants";
 import { nodeWidth } from "./render/measure";
 import { loadData } from "./data/loader";
 import { buildFamily } from "./data/family";  
@@ -26,10 +29,14 @@ import { select } from "d3-selection";
 import { zoom, zoomIdentity } from "d3-zoom";
 import { createSearch } from "./ui/search";
 import { showBio, showHouse } from "./ui/bio";
+import "./styles/pixel.css";
 
 async function main() {
   const data = await loadData();
   const family = buildFamily(data);
+
+  await Promise.all([document.fonts.load(FONT_NAME), document.fonts.load(FONT_TITLE)]);
+
   const widths = new Map<PersonId, number>(data.people.map((p) => [p.id, nodeWidth(p)]));
   const { spouseOf, personById } = family;
 

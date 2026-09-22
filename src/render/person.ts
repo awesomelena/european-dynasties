@@ -27,6 +27,16 @@ export function drawPerson(
     g.appendChild(ring);
   }
 
+  if (!opts.ghost) {
+    const shadow = document.createElementNS(SVG_NS, "rect");
+    shadow.setAttribute("x", String(pos.x + 4));
+    shadow.setAttribute("y", String(pos.y + 4));
+    shadow.setAttribute("width", String(pos.w));
+    shadow.setAttribute("height", String(NODE_H));
+    shadow.style.fill = "var(--sable)";
+    g.appendChild(shadow);
+  }
+
   const rect = document.createElementNS(SVG_NS, "rect");
   rect.setAttribute("x", String(pos.x));
   rect.setAttribute("y", String(pos.y));
@@ -45,7 +55,7 @@ export function drawPerson(
   g.appendChild(rect);
 
   const textColor = colors.get(person.houseBirth)?.textColor ?? "var(--argent)";
-  const title = person.titles?.[0]?.title;
+  const title = person.displayTitle;
 
   const name = document.createElementNS(SVG_NS, "text");
   name.setAttribute("x", String(pos.x + NODE_PAD));

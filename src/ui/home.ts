@@ -10,7 +10,14 @@ type Dynasty = {
   entry: Person;
 };
 
-function describe(data: Dataset, houseId: HouseId): Dynasty | null {
+const SOVEREIGN = /\b(king|queen|emperor|empress|tsar|tsarina|grand prince|grand duke|grand duchess|despot)\b/i;
+
+function isSovereign(p: Person): boolean {
+  const t = p.displayTitle;
+  return t !== undefined && SOVEREIGN.test(t) && !/consort/i.test(t);
+}
+
+function describe(data: Dataset, houseId: HouseId, startId?: PersonId): Dynasty | null {
   const members = data.people
     .filter((p) => p.houseBirth === houseId)
     .sort((a, b) => a.born - b.born);
@@ -28,7 +35,11 @@ function describe(data: Dataset, houseId: HouseId): Dynasty | null {
     members: members.length,
     from: members[0].born,
     to: living ? "present" : String(lastDeath),
-    entry: members.find((p) => (p.titles?.length ?? 0) > 0) ?? members[0],
+    entry:
+    (startId !== undefined ? data.people.find((p) => p.id === startId) : undefined) ??
+    members.find(isSovereign) ??
+    members.find((p) => p.displayTitle !== undefined) ??
+    members[0],
   };
 }
 
@@ -100,7 +111,7 @@ export function createHome(data: Dataset, onPick: (id: PersonId) => void) {
     const grid = document.createElement("div");
     grid.className = "home-grid";
     for (const houseId of country.houses) {
-      const d = describe(data, houseId);
+      const d = describe(data, houseId, country.starts?.[houseId]);
       if (d === null) continue;
       grid.appendChild(
         card(
