@@ -43,6 +43,13 @@ export interface Dataset {
   people: Person[];
   parentage: Parentage[];
   unions: Union[];
+  countries?: Country[];
+}
+
+export interface Country {
+  name: string;
+  color: string;
+  houses: HouseId[];
 }
 
 export type Point = { x: number; y: number };

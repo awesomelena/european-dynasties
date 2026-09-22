@@ -1,5 +1,5 @@
 import { readFile, writeFile } from "node:fs/promises";
-import type { Dataset, House, Parentage, Person, Union } from "../src/types";
+import type { Country, Dataset, House, Parentage, Person, Union } from "../src/types";
 
 type Pair = { s: string; o: string; oLabel: string };
 type RawPerson = { label: string; birth: string[]; death: string[]; sex: string[] };
@@ -161,10 +161,17 @@ async function main() {
   // pomoćne mape
   const housesOf = new Map<string, string[]>();
   const houseLabel = new Map<string, string>();
+  const canonicalByLabel = new Map<string, string>();
+
   for (const h of raw.houses) {
+    if (!canonicalByLabel.has(h.oLabel)) canonicalByLabel.set(h.oLabel, h.o);
+  }
+
+  for (const h of raw.houses) {
+    const id = canonicalByLabel.get(h.oLabel)!;
+    houseLabel.set(id, h.oLabel);
     if (!housesOf.has(h.s)) housesOf.set(h.s, []);
-    housesOf.get(h.s)!.push(h.o);
-    houseLabel.set(h.o, h.oLabel);
+    if (!housesOf.get(h.s)!.includes(id)) housesOf.get(h.s)!.push(id);
   }
   const fatherOf = new Map<string, string>();
   for (const f of raw.fathers) fatherOf.set(f.s, f.o);
@@ -276,14 +283,32 @@ async function main() {
   for (const p of people) count.set(p.houseBirth, (count.get(p.houseBirth) ?? 0) + 1);
 
   const houses: House[] = [...count.keys()]
-    .sort((a, b) => count.get(b)! - count.get(a)!)
-    .map((id, i) =>
-      id === "unknown"
-        ? { id, name: { en: "Unknown" }, color: "#9a9a9a" }
-        : { id, name: { en: houseLabel.get(id) ?? id }, ...PALETTE[i % PALETTE.length] }
-    );
+  .sort((a, b) => count.get(b)! - count.get(a)!)
+  .map((id, i) =>
+    id === "unknown"
+      ? { id, name: { en: "Unknown" }, color: "#9a9a9a" }
+      : { id, name: { en: houseLabel.get(id) ?? id }, ...PALETTE[i % PALETTE.length] }
+  );
 
-  const dataset: Dataset = { houses, people, parentage, unions };
+  // 6. države
+  const countryConfig: { name: string; color: string; houses: string[] }[] =
+    JSON.parse(await readFile("scripts/countries.json", "utf8"));
+  const usedHouses = new Set(houses.map((h) => h.id));
+
+  const countries: Country[] = countryConfig.map((c) => {
+    const ids: string[] = [];
+    for (const label of c.houses) {
+      const id = canonicalByLabel.get(label);
+      if (id === undefined || !usedHouses.has(id)) {
+        console.log(`  ${c.name}: house not found in data: ${label}`);
+        continue;
+      }
+      ids.push(id);
+    }
+    return { name: c.name, color: c.color, houses: ids };
+  });
+
+  const dataset: Dataset = { houses, people, parentage, unions, countries };
   await writeFile(`public/data/${name}.json`, JSON.stringify(dataset));
 
   console.log(

@@ -6,6 +6,8 @@ import "./styles/canvas.css";
 import "./styles/search.css";
 import "./styles/legend.css";
 import "./styles/tree.css";
+import "./styles/home.css";
+import { createHome } from "./ui/home";
 import { assignColors } from "./render/colors";
 import { createLegend } from "./ui/legend";
 import type { Person, PersonId, Box, HouseId } from "./types";
@@ -172,7 +174,16 @@ async function main() {
 
   createSearch(data.people, (id) => render(id));
 
+  const home = createHome(data, (id) => render(id));
+
+  const homeButton = document.createElement("button");
+  homeButton.className = "home-button";
+  homeButton.textContent = "Dynasties";
+  homeButton.addEventListener("click", () => home.show());
+  document.body.appendChild(homeButton);
+
   render("Q9439");
+  home.show();
 }
 
 main();

@@ -1,0 +1,90 @@
+.home {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  display: none;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: auto;
+  background: rgba(244, 244, 240, 0.97);
+  font-family: var(--font-bio);
+}
+
+.home-inner {
+  width: min(960px, 100% - 32px);
+  padding: 48px 0;
+}
+
+.home h1 {
+  margin: 0 0 var(--space);
+  font-size: 40px;
+}
+
+.home h2 {
+  margin: 0 0 calc(var(--space) * 2);
+}
+
+.home-sub {
+  margin: 0 0 calc(var(--space) * 4);
+  color: #555;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: calc(var(--space) * 2);
+}
+
+.home-card {
+  text-align: left;
+  font: inherit;
+  padding: calc(var(--space) * 2);
+  background: var(--argent);
+  border: var(--border) solid var(--sable);
+  border-top: 8px solid var(--accent, var(--sable));
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+
+.home-card:hover {
+  background: #fff;
+  transform: translateY(-2px);
+}
+
+.home-card h3 {
+  margin: 0 0 4px;
+  font-size: 18px;
+}
+
+.home-card p {
+  margin: 2px 0;
+  font-size: 13px;
+  color: #555;
+}
+
+.home-back {
+  margin-bottom: calc(var(--space) * 2);
+  padding: 0;
+  font: inherit;
+  color: var(--azure);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.home-button {
+  position: fixed;
+  top: calc(var(--space) * 2);
+  right: calc(var(--space) * 2);
+  z-index: 25;
+  padding: var(--space) calc(var(--space) * 1.5);
+  font-family: var(--font-bio);
+  font-size: 15px;
+  background: var(--argent);
+  border: var(--border) solid var(--sable);
+  cursor: pointer;
+}
+
+.home-button:hover {
+  background: var(--or);
+}
