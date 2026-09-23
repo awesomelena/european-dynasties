@@ -143,3 +143,38 @@ export function showHouse(
 
   panel.style.display = "block";
 }
+
+export function showRelationship(
+  from: Person,
+  to: Person,
+  steps: { person: Person; relation: string }[] | null,
+  onSelect: (id: PersonId) => void
+) {
+  startPanel(`${from.name.en} → ${to.name.en}`);
+
+  if (steps === null) {
+    addText("No family connection found in the data.");
+  } else {
+    addText(`${steps.length - 1} ${steps.length === 2 ? "step" : "steps"}`);
+    const list = document.createElement("ol");
+    list.className = "relation-path";
+    for (const { person, relation } of steps) {
+      const item = document.createElement("li");
+      if (relation !== "") {
+        const label = document.createElement("span");
+        label.className = "relation-label";
+        label.textContent = relation;
+        item.appendChild(label);
+      }
+      const link = document.createElement("button");
+      link.className = "bio-link";
+      link.textContent = `${person.name.en} (${bornText(person)}–${person.died ?? ""})`;
+      link.addEventListener("click", () => onSelect(person.id));
+      item.appendChild(link);
+      list.appendChild(item);
+    }
+    panel.appendChild(list);
+  }
+
+  panel.style.display = "block";
+}

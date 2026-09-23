@@ -11,6 +11,9 @@ import "./styles/legend.css";
 import "./styles/tree.css";
 import "./styles/home.css";
 import "./styles/loading.css";
+import "./styles/banner.css";
+import { findPath } from "./data/relations";
+import { showBanner, hideBanner } from "./ui/banner";
 import { createHome } from "./ui/home";
 import { assignColors } from "./render/colors";
 import { createLegend } from "./ui/legend";
@@ -29,7 +32,7 @@ import { showMenu, type MenuItem } from "./ui/menu";
 import { select } from "d3-selection";
 import { zoom, zoomIdentity, zoomTransform } from "d3-zoom";
 import { createSearch } from "./ui/search";
-import { showBio, showHouse } from "./ui/bio";
+import { showBio, showHouse, showRelationship } from "./ui/bio";
 import { createRuler } from "./render/ruler";
 import { hideLoading, nextFrame, setStatus, showError } from "./ui/loading";
 import "./styles/pixel.css";
@@ -53,6 +56,38 @@ async function main() {
     });
   }
 
+  function relationWord(relation: string, person: Person): string {
+    const f = person.sex === "f";
+    if (relation === "parent") return f ? "mother" : "father";
+    if (relation === "child") return f ? "daughter" : "son";
+    if (relation === "spouse") return f ? "wife" : "husband";
+    return "";
+  }
+
+  function startRelationPick(id: PersonId) {
+    pickFrom = id;
+    showBanner(`Choose someone to compare with ${personById.get(id)!.name.en} · Esc to cancel`, () => {
+      pickFrom = null;
+    });
+  }
+
+  function finishRelationPick(toId: PersonId) {
+    const fromId = pickFrom!;
+    pickFrom = null;
+    hideBanner();
+
+    const path = findPath(family, fromId, toId);
+    const steps =
+      path === null
+        ? null
+        : path.map((s) => {
+          const person = personById.get(s.id)!;
+          return { person, relation: relationWord(s.relation, person) };
+        });
+
+    showRelationship(personById.get(fromId)!, personById.get(toId)!, steps, (id) => navigate(id));
+  }
+
   const svg = document.createElementNS(SVG_NS, "svg");
   svg.classList.add("canvas");
   const world = document.createElementNS(SVG_NS, "g");
@@ -62,6 +97,7 @@ async function main() {
   const updateRuler = createRuler(svg, world);
   let currentOrigin = 0;
   let currentFocus: PersonId | null = null;
+  let pickFrom: PersonId | null = null;
   let suppressClick = false;
   let lastLongPress = 0;
 
@@ -107,6 +143,11 @@ async function main() {
   function openMenuFor(person: Person, x: number, y: number) {
     const items: MenuItem[] = [{ label: "Biography", action: () => openBio(person.id) }];
 
+    items.push({
+      label: `How is ${person.name.en} related to…?`,
+      action: () => startRelationPick(person.id),
+    });
+
     if (person.houseBirth !== "unknown") {
       items.push({
         label: `Members of ${houseName(data, person.houseBirth)}`,
@@ -151,6 +192,12 @@ async function main() {
       if (suppressClick) {
         suppressClick = false;
         e.stopPropagation();
+        return;
+      }
+
+      if (pickFrom !== null) {
+        e.stopPropagation();
+        finishRelationPick(person.id);
         return;
       }
 
@@ -341,7 +388,9 @@ async function main() {
 
   }
 
-  const search = createSearch(data.people, (id) => navigate(id));
+  const search = createSearch(data.people, (id) =>
+    pickFrom !== null ? finishRelationPick(id) : navigate(id)
+  );
 
   document.addEventListener("keydown", (e) => {
     if ((e.target as HTMLElement).closest("input, textarea")) return;

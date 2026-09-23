@@ -63,3 +63,21 @@
   color: var(--azure);
   font-size: 12px;
 }
+
+.relation-path {
+  list-style: none;
+  margin: var(--space) 0;
+  padding: 0;
+}
+
+.relation-path li {
+  display: flex;
+  flex-direction: column;
+  padding: 4px 0 4px calc(var(--space) * 1.5);
+  border-left: var(--border) solid var(--sable);
+}
+
+.relation-label {
+  font-size: 12px;
+  opacity: 0.6;
+}
