@@ -35,7 +35,7 @@ import { hideLoading, nextFrame, setStatus, showError } from "./ui/loading";
 import "./styles/pixel.css";
 import "./styles/mobile.css";
 
-async function main() { 
+async function main() {
   setStatus("Loading data…");
   const data = await loadData();
   setStatus("Loading fonts…");
@@ -176,7 +176,14 @@ async function main() {
       e.stopPropagation();
       if (Date.now() - lastLongPress < 1000) return;
       hideTooltip();
-      openMenuFor(person, e.clientX, e.clientY);
+
+      const fromKeyboard = e.clientX === 0 && e.clientY === 0;
+      if (fromKeyboard) {
+        const r = g.getBoundingClientRect();
+        openMenuFor(person, r.right, r.top);
+      } else {
+        openMenuFor(person, e.clientX, e.clientY);
+      }
     });
 
     let pressTimer: number | undefined;
@@ -203,6 +210,14 @@ async function main() {
     });
     g.addEventListener("pointerup", cancelPress);
     g.addEventListener("pointercancel", cancelPress);
+
+    g.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        if (person.id === currentFocus) openBio(person.id);
+        else navigate(person.id);
+      }
+    });
   }
 
   function applyHighlight(house: HouseId | null) {
@@ -231,6 +246,31 @@ async function main() {
       const people = (line.dataset.people ?? "").split(" ");
       line.classList.toggle("related", id !== null && people.includes(id));
     }
+  }
+
+  function relative(id: PersonId, key: string): PersonId | undefined {
+    const person = personById.get(id)!;
+    const parents = family.parentsByChild.get(id) ?? [];
+
+    switch (key) {
+      case "ArrowUp":
+        return (
+          parents.find((p) => personById.get(p)?.houseBirth === person.houseBirth) ?? parents[0]
+        );
+      case "ArrowDown":
+        return (family.childrenOf.get(id) ?? [])[0];
+      case "ArrowLeft":
+      case "ArrowRight": {
+        if (parents.length === 0) return undefined;
+        const siblings = family.childrenOf.get(parents[0]) ?? [];
+        const i = siblings.indexOf(id);
+        return siblings[i + (key === "ArrowLeft" ? -1 : 1)];
+      }
+      case "s":
+      case "S":
+        return (family.spousesOf.get(id) ?? [])[0];
+    }
+    return undefined;
   }
 
   function openHouse(houseId: HouseId) {
@@ -295,11 +335,31 @@ async function main() {
       fitToView(lastWidth, lastHeight);
     }
 
+    const focusedNode = world.querySelector<SVGGElement>(`.person[data-id="${focusId}"]:not(.ghost)`);
+    focusedNode?.focus({ preventScroll: true });
     updateLegend(colors, data);
 
   }
 
-  createSearch(data.people, (id) => navigate(id));
+  const search = createSearch(data.people, (id) => navigate(id));
+
+  document.addEventListener("keydown", (e) => {
+    if ((e.target as HTMLElement).closest("input, textarea")) return;
+    if (home.isOpen()) return;
+
+    if (e.key === "/") {
+      e.preventDefault();
+      search.focus();
+      return;
+    }
+
+    if (currentFocus === null) return;
+    const next = relative(currentFocus, e.key);
+    if (next !== undefined) {
+      e.preventDefault();
+      navigate(next);
+    }
+  });
 
   const home = createHome(data, (id) => navigate(id));
 

@@ -117,6 +117,11 @@ export function createSearch(people: Person[], onSelect: (id: PersonId) => void)
       choose(results[active].person.id);
     } else if (e.key === "Escape") {
       clear();
+      input.blur();
     }
   });
+
+  return {
+    focus: () => input.focus(),
+  };
 }

@@ -24,6 +24,10 @@ const LINE_SAMPLES = `
     <svg width="36" height="18"><rect x="3" y="3" width="30" height="12" fill="var(--azure)" stroke="var(--gules)" stroke-width="3"/></svg>
     Fill: born into · Border: married into
   </div>
+  <h4>Keys</h4>
+  <div class="legend-row">↑ parent · ↓ eldest child</div>
+  <div class="legend-row">← → siblings · S spouse</div>
+  <div class="legend-row">/ search · Enter biography</div>
 `;
 
 export function createLegend(

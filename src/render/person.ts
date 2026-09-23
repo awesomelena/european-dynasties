@@ -1,5 +1,6 @@
 import type { HouseId, Person, Box, HouseStyle } from "../types";
 import { SVG_NS, NODE_H, NODE_PAD, FONT_NAME, FONT_TITLE, UNKNOWN_STYLE, NAME_Y_ALONE, NAME_Y_WITH_TITLE, TITLE_Y } from "../constants";
+import { bornText } from "./tooltip";
 
 export function drawPerson(
   svg: SVGGElement,
@@ -13,6 +14,13 @@ export function drawPerson(
 
   g.classList.add("person");
   g.dataset.id = person.id;
+
+  g.setAttribute("tabindex", "0");
+  g.setAttribute("role", "button");
+  const years = `${bornText(person)}-${person.died ?? ""}`;
+  const label = person.displayTitle !== undefined ? `, ${person.displayTitle}` : "";
+  g.setAttribute("aria-label", `${person.name.en}, ${years}${label}`);
+
   if (opts.ghost) g.classList.add("ghost");
   g.dataset.houses = [person.houseBirth, person.houseMarriage ?? ""].join(" ");
 

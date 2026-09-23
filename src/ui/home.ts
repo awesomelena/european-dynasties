@@ -136,5 +136,9 @@ export function createHome(data: Dataset, onPick: (id: PersonId) => void) {
     if (e.key === "Escape") hide();
   });
 
-  return { show, hide };
+  return {
+    show,
+    hide,
+    isOpen: () => overlay.style.display === "flex",
+  };
 }

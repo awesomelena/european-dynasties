@@ -44,3 +44,17 @@
 .hovering .line:not(.related) {
   opacity: 0.12;
 }
+
+.person:focus {
+  outline: none;
+}
+
+.person:focus-visible {
+  outline: 3px solid var(--or);
+  outline-offset: 6px;
+}
+
+.person:focus-visible {
+  outline: 2px dashed var(--sable);
+  outline-offset: 6px;
+}
