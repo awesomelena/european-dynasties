@@ -1,0 +1,36 @@
+.about {
+  z-index: 45;
+}
+
+.about-inner {
+  max-width: 720px;
+  line-height: 1.6;
+}
+
+.about-inner h2 {
+  margin: calc(var(--space) * 4) 0 var(--space);
+  font-family: var(--font-ui);
+  font-size: 16px;
+  font-weight: normal;
+}
+
+.about-inner p,
+.about-inner li {
+  font-size: 15px;
+}
+
+.about-inner ul {
+  padding-left: calc(var(--space) * 2.5);
+}
+
+.about-inner li {
+  margin: 4px 0;
+}
+
+.about-inner a {
+  color: var(--azure);
+}
+
+.home-about-link {
+  margin-top: calc(var(--space) * 4);
+}

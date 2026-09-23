@@ -98,7 +98,7 @@ function card(title: string, lines: string[], accent: string, onClick: () => voi
   return button;
 }
 
-export function createHome(data: Dataset, onPick: (id: PersonId) => void) {
+export function createHome(data: Dataset, onPick: (id: PersonId) => void, onAbout: () => void) {
   const overlay = document.createElement("div");
   overlay.className = "home";
 
@@ -114,6 +114,11 @@ export function createHome(data: Dataset, onPick: (id: PersonId) => void) {
 
   const content = document.createElement("div");
   inner.append(title, subtitle, content);
+  const aboutLink = document.createElement("button");
+  aboutLink.className = "home-back home-about-link";
+  aboutLink.textContent = "About the data →";
+  aboutLink.addEventListener("click", onAbout);
+  inner.appendChild(aboutLink);
   overlay.appendChild(inner);
   document.body.appendChild(overlay);
 

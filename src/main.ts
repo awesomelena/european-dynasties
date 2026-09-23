@@ -12,6 +12,8 @@ import "./styles/tree.css";
 import "./styles/home.css";
 import "./styles/loading.css";
 import "./styles/banner.css";
+import "./styles/about.css";
+import { createAbout } from "./ui/about";
 import { computeAncestry } from "./layout/ancestry";
 import { findPath } from "./data/relations";
 import { showBanner, hideBanner } from "./ui/banner";
@@ -424,7 +426,8 @@ async function main() {
     }
   });
 
-  const home = createHome(data, (id) => navigate(id));
+  const about = createAbout(data);
+  const home = createHome(data, (id) => navigate(id), () => about.show());
 
   const topButtons = document.createElement("div");
   topButtons.className = "top-buttons";
