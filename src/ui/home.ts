@@ -11,6 +11,7 @@ type Dynasty = {
   from: number;
   to: string;
   entry: Person;
+  toYear: number | null;
 };
 
 function describe(data: Dataset, houseId: HouseId, startId?: PersonId): Dynasty | null {
@@ -25,6 +26,8 @@ function describe(data: Dataset, houseId: HouseId, startId?: PersonId): Dynasty 
   }
   const living = members.some((p) => p.died === null && p.born > 1920);
 
+  const lastBorn = members[members.length - 1].born;
+
   return {
     id: houseId,
     name: houseName(data, houseId),
@@ -32,14 +35,46 @@ function describe(data: Dataset, houseId: HouseId, startId?: PersonId): Dynasty 
     from: members[0].born,
     to: living ? "present" : String(lastDeath),
     entry:
-    (startId !== undefined ? data.people.find((p) => p.id === startId) : undefined) ??
-    members.find(isSovereign) ??
-    members.find((p) => p.displayTitle !== undefined) ??
-    members[0],
+      (startId !== undefined ? data.people.find((p) => p.id === startId) : undefined) ??
+      members.find(isSovereign) ??
+      members.find((p) => p.displayTitle !== undefined) ??
+      members[0],
+    toYear: living ? null : Math.max(lastDeath, lastBorn),
   };
 }
 
-function card(title: string, lines: string[], accent: string, onClick: () => void) {
+const TIMELINE_START = 950;
+const TIMELINE_END = new Date().getFullYear();
+const TIMELINE_TICKS = [1000, 1500, 2000];
+
+function percent(year: number): number {
+  return ((year - TIMELINE_START) / (TIMELINE_END - TIMELINE_START)) * 100;
+}
+
+function createTimeline(): HTMLElement {
+  const track = document.createElement("div");
+  track.className = "home-timeline";
+  for (const year of TIMELINE_TICKS) {
+    const tick = document.createElement("div");
+    tick.className = "home-timeline-tick";
+    tick.style.left = `${percent(year)}%`;
+    track.appendChild(tick);
+  }
+  return track;
+}
+
+function addBar(track: HTMLElement, from: number, to: number | null, color: string) {
+  const bar = document.createElement("div");
+  bar.className = "home-timeline-bar";
+  const start = Math.max(from, TIMELINE_START);
+  const end = to ?? TIMELINE_END;
+  bar.style.left = `${percent(start)}%`;
+  bar.style.width = `${Math.max(1, percent(end) - percent(start))}%`;
+  bar.style.background = color;
+  track.appendChild(bar);
+}
+
+function card(title: string, lines: string[], accent: string, onClick: () => void, extra?: HTMLElement) {
   const button = document.createElement("button");
   button.className = "home-card";
   button.style.setProperty("--accent", accent);
@@ -56,6 +91,8 @@ function card(title: string, lines: string[], accent: string, onClick: () => voi
     p.textContent = line;
     button.appendChild(p);
   }
+
+  if (extra !== undefined) button.appendChild(extra);
 
   button.addEventListener("click", onClick);
   return button;
@@ -87,9 +124,14 @@ export function createHome(data: Dataset, onPick: (id: PersonId) => void) {
     for (const country of data.countries ?? []) {
       if (country.houses.length === 0) continue;
       const count = country.houses.length;
+      const timeline = createTimeline();
+      for (const houseId of country.houses) {
+        const d = describe(data, houseId, country.starts?.[houseId]);
+        if (d !== null) addBar(timeline, d.from, d.toYear, country.color);
+      }
       grid.appendChild(
         card(country.name, [`${count} ${count === 1 ? "dynasty" : "dynasties"}`], country.color, () =>
-          showCountry(country)
+          showCountry(country), timeline
         )
       );
     }
@@ -112,6 +154,8 @@ export function createHome(data: Dataset, onPick: (id: PersonId) => void) {
     for (const houseId of country.houses) {
       const d = describe(data, houseId, country.starts?.[houseId]);
       if (d === null) continue;
+      const timeline = createTimeline();
+      addBar(timeline, d.from, d.toYear, country.color);
       grid.appendChild(
         card(
           d.name,

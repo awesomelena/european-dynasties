@@ -99,3 +99,27 @@
 .home-card-head h3 {
   margin: 0;
 }
+
+.home-timeline {
+  position: relative;
+  height: 8px;
+  margin-top: var(--space);
+  background: rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.25);
+}
+
+.home-timeline-bar {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  opacity: 0.85;
+}
+
+.home-timeline-tick {
+  position: absolute;
+  top: -3px;
+  bottom: -3px;
+  width: 1px;
+  background: var(--sable);
+  opacity: 0.35;
+}
