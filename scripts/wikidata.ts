@@ -18,10 +18,10 @@ export async function sparql(query: string): Promise<Row[]> {
   try {
     return JSON.parse(await readFile(file, "utf8"));
   } catch {
-    
+
   }
 
-    for (let attempt = 1; attempt <= 6; attempt++) {
+  for (let attempt = 1; attempt <= 6; attempt++) {
     let response: Response;
     try {
       response = await fetch(ENDPOINT, {
@@ -93,6 +93,24 @@ export async function pairs(ids: string[], prop: string): Promise<Pair[]> {
   return result;
 }
 
+export async function parentLinks(ids: string[], prop: "P22" | "P25"): Promise<Pair[]> {
+  const result: Pair[] = [];
+  for (const part of chunks(ids, 100)) {
+    const rows = await sparql(`
+      SELECT ?s ?o WHERE {
+        VALUES ?s { ${values(part)} }
+                ?s p:${prop} ?st .
+        ?st ps:${prop} ?o ;
+            a wikibase:BestRank .
+        FILTER NOT EXISTS { ?st pq:P1039 ?kinship . }
+      }`);
+    for (const r of rows) {
+      result.push({ s: qid(r.s!.value), o: qid(r.o!.value), oLabel: "" });
+    }
+  }
+  return result;
+}
+
 export type RawMarriage = {
   s: string;
   o: string;
@@ -150,8 +168,22 @@ export async function basics(ids: string[]): Promise<Record<string, RawPerson>> 
     const rows = await sparql(`
       SELECT ?p ?pLabel ?birth ?death ?sex WHERE {
         VALUES ?p { ${values(part)} }
-        OPTIONAL { ?p wdt:P569 ?birth . }
-        OPTIONAL { ?p wdt:P570 ?death . }
+        OPTIONAL {
+          ?p p:P569 ?bs .
+          ?bs psv:P569 ?bv ;
+              wikibase:rank ?br .
+          ?bv wikibase:timeValue ?birth ;
+              wikibase:timePrecision ?bp .
+          FILTER(?bp >= 9 && ?br != wikibase:DeprecatedRank)
+        }
+        OPTIONAL {
+          ?p p:P570 ?ds .
+          ?ds psv:P570 ?dv ;
+              wikibase:rank ?dr .
+          ?dv wikibase:timeValue ?death ;
+              wikibase:timePrecision ?dp .
+          FILTER(?dp >= 9 && ?dr != wikibase:DeprecatedRank)
+        }
         OPTIONAL { ?p wdt:P21 ?sex . }
         SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
       }`);

@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "transform": "tsx scripts/transform.ts",
     "fetch:europe": "tsx scripts/fetch-europe.ts",
-    "test": "vitest run"
+    "test": "vitest run",
+    "validate": "tsx scripts/validate.ts"
   },
   "devDependencies": {
     "@types/d3-selection": "^3.0.12",

@@ -1,6 +1,6 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import {
-  articles, basics, childrenViaParents, chunks, pairs, positions, qid, sparql, values, marriages
+  articles, basics, childrenViaParents, chunks, pairs, positions, qid, sparql, values, marriages, parentLinks
 } from "./wikidata";
 
 const HOPS = 1;
@@ -61,8 +61,8 @@ async function main() {
   console.log(`Details for ${ids.length} people (this will take a while)...`);
   const people = await basics(ids);
   console.log("  fathers, mothers...");
-  const fathers = await pairs(ids, "P22");
-  const mothers = await pairs(ids, "P25");
+  const fathers = await parentLinks(ids, "P22");
+  const mothers = await parentLinks(ids, "P25");
   console.log("  marriages, houses...");
   const marriageList = await marriages(ids);
   const houses = await pairs(ids, "P53");

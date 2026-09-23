@@ -1,0 +1,9 @@
+{
+  "people": {},
+  "removeParentage": [],
+  "addParentage": [],
+  "removeUnions": [
+    { "a": "Q53449", "b": "Q15728323" },
+    { "a": "Q53449", "b": "Q16453722" }
+  ]
+}
