@@ -1,6 +1,10 @@
 {
   "people": {},
-  "removeParentage": [],
+  "removeParentage": [
+    { "parent": "Q127318", "child": "Q132440" },
+    { "parent": "Q57536", "child": "Q236184" },
+    { "parent": "Q57536", "child": "Q170398" }
+  ],
   "addParentage": [],
   "removeUnions": [
     { "a": "Q53449", "b": "Q15728323" },
