@@ -1,5 +1,6 @@
 import type { Country, Dataset, HouseId, Person, PersonId } from "../types";
 import { houseName } from "../render/tooltip";
+import { isSovereign } from "../data/people";
 
 type Dynasty = {
   id: HouseId;
@@ -9,13 +10,6 @@ type Dynasty = {
   to: string;
   entry: Person;
 };
-
-const SOVEREIGN = /\b(king|queen|emperor|empress|tsar|tsarina|grand prince|grand duke|grand duchess|despot)\b/i;
-
-function isSovereign(p: Person): boolean {
-  const t = p.displayTitle;
-  return t !== undefined && SOVEREIGN.test(t) && !/consort/i.test(t);
-}
 
 function describe(data: Dataset, houseId: HouseId, startId?: PersonId): Dynasty | null {
   const members = data.people
