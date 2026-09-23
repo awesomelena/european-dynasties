@@ -58,3 +58,8 @@
   outline: 2px dashed var(--sable);
   outline-offset: 6px;
 }
+
+.shield {
+  flex-shrink: 0;
+  display: block;
+}

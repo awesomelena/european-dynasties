@@ -36,13 +36,6 @@
   margin: 3px 0;
 }
 
-.legend-swatch {
-  width: 16px;
-  height: 16px;
-  flex-shrink: 0;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-}
-
 .legend-row[data-house] {
   cursor: pointer;
   padding: 2px 4px;

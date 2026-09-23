@@ -2,6 +2,7 @@ import type { Dataset, HouseId, HouseStyle } from "../types";
 import { houseName } from "../render/tooltip";
 import { OTHER_STYLE } from "../constants";
 import { registerLayer } from "./layers";
+import { shield } from "../render/shield";
 
 const LINE_SAMPLES = `
   <h4>Lines</h4>
@@ -81,9 +82,7 @@ export function createLegend(
       if (others > 0) {
         const row = document.createElement("div");
         row.className = "legend-row";
-        const swatch = document.createElement("span");
-        swatch.className = "legend-swatch";
-        swatch.style.background = OTHER_STYLE.color;
+        const swatch = shield(OTHER_STYLE.color);
         const name = document.createElement("span");
         name.textContent = `${others} other ${others === 1 ? "house" : "houses"}`;
         row.append(swatch, name);
@@ -92,9 +91,7 @@ export function createLegend(
       
       const row = document.createElement("div");
       row.className = "legend-row";
-      const swatch = document.createElement("span");
-      swatch.className = "legend-swatch";
-      swatch.style.background = style.color;
+      const swatch = shield(style.color);
       const name = document.createElement("span");
       name.textContent = id === "unknown" ? "Unknown" : houseName(data, id);
       row.append(swatch, name);
@@ -102,7 +99,7 @@ export function createLegend(
       if (id !== "unknown") {
         const more = document.createElement("button");
         more.className = "legend-more";
-        more.textContent = "›";
+        more.textContent = ">";
         more.title = "Show all members";
         more.addEventListener("click", (e) => {
           e.stopPropagation();

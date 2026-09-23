@@ -88,3 +88,14 @@
 .home-button:hover {
   background: var(--or);
 }
+
+.home-card-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space);
+  margin-bottom: 4px;
+}
+
+.home-card-head h3 {
+  margin: 0;
+}

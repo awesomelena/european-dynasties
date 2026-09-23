@@ -2,6 +2,7 @@ import type { Country, Dataset, HouseId, Person, PersonId } from "../types";
 import { houseName } from "../render/tooltip";
 import { isSovereign } from "../data/people";
 import { registerLayer } from "./layers";
+import { shield } from "../render/shield";
 
 type Dynasty = {
   id: HouseId;
@@ -43,9 +44,12 @@ function card(title: string, lines: string[], accent: string, onClick: () => voi
   button.className = "home-card";
   button.style.setProperty("--accent", accent);
 
+  const head = document.createElement("div");
+  head.className = "home-card-head";
   const heading = document.createElement("h3");
   heading.textContent = title;
-  button.appendChild(heading);
+  head.append(shield(accent, 3), heading);
+  button.appendChild(head);
 
   for (const line of lines) {
     const p = document.createElement("p");
@@ -111,7 +115,7 @@ export function createHome(data: Dataset, onPick: (id: PersonId) => void) {
       grid.appendChild(
         card(
           d.name,
-          [`${d.from}–${d.to}`, `${d.members} members`, `Start with ${d.entry.name.en}`],
+          [`${d.from}-${d.to}`, `${d.members} members`, `Start with ${d.entry.name.en}`],
           country.color,
           () => {
             hide();
