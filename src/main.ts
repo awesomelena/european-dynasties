@@ -159,6 +159,14 @@ async function main() {
       }
     });
 
+    g.addEventListener(
+      "touchend",
+      (e) => {
+        if (suppressClick) e.preventDefault();
+      },
+      { passive: false }
+    );
+
     g.addEventListener("contextmenu", (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -181,7 +189,7 @@ async function main() {
         suppressClick = true;
         lastLongPress = Date.now();
         hideTooltip();
-        openMenuFor(person, startX, startY);
+        openMenuFor(person, startX + 16, startY - 16);
       }, 500);
     });
 
