@@ -39,7 +39,7 @@ function drawLine(
     return;
   }
 
-  line.style.strokeWidth = "2";
+  line.style.strokeWidth = "1.5";
   tag(line, people);
   svg.appendChild(line);
 }

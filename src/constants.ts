@@ -31,3 +31,4 @@ export const TITLE_Y = 35;
 export const BASE_YEAR = 1800;
 export const YEAR_PX = 8;
 export const TOP_MARGIN = 40;
+export const ANCESTOR_GENERATIONS = 5;

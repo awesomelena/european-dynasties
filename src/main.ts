@@ -12,6 +12,7 @@ import "./styles/tree.css";
 import "./styles/home.css";
 import "./styles/loading.css";
 import "./styles/banner.css";
+import { computeAncestry } from "./layout/ancestry";
 import { findPath } from "./data/relations";
 import { showBanner, hideBanner } from "./ui/banner";
 import { createHome } from "./ui/home";
@@ -98,6 +99,8 @@ async function main() {
   let currentOrigin = 0;
   let currentFocus: PersonId | null = null;
   let pickFrom: PersonId | null = null;
+  type Mode = "family" | "ancestors";
+  let currentMode: Mode = "family";
   let suppressClick = false;
   let lastLongPress = 0;
 
@@ -326,23 +329,32 @@ async function main() {
 
   const updateLegend = createLegend(applyHighlight, openHouse);
 
-  function navigate(id: PersonId) {
-    if (location.hash === `#${id}`) {
-      render(id);
-    } else {
-      location.hash = id;
-    }
+  function parseHash(): { id: PersonId; mode: Mode } | null {
+    const [id, mode] = location.hash.slice(1).split("/");
+    if (!personById.has(id)) return null;
+    return { id, mode: mode === "ancestors" ? "ancestors" : "family" };
   }
 
-  function render(focusId: PersonId) {
+  function navigate(id: PersonId, mode: Mode = currentMode) {
+    const hash = mode === "ancestors" ? `#${id}/ancestors` : `#${id}`;
+    if (location.hash === hash) render(id, mode);
+    else location.hash = hash;
+  }
+
+  function render(focusId: PersonId, mode: Mode) {
     currentFocus = focusId;
+    currentMode = mode;
+    modeButton.textContent = mode === "ancestors" ? "Family" : "Ancestors";
 
     document.title = `${personById.get(focusId)!.name.en} · European Dynasties`;
 
     world.replaceChildren();
     hideTooltip();
 
-    const layout = computeLayout(family, focusId, widths);
+    const layout =
+      mode === "ancestors"
+        ? computeAncestry(family, focusId, widths)
+        : computeLayout(family, focusId, widths);
 
     currentOrigin = layout.origin;
 
@@ -375,12 +387,14 @@ async function main() {
       }
     }
 
-    const focusBox = layout.positions.get(focusId);
-    if (focusBox !== undefined) {
-      centerOn(focusBox);
-    } else {
-      fitToView(lastWidth, lastHeight);
+    for (const ghost of layout.ghosts) {
+      const person = personById.get(ghost.id)!;
+      attach(drawPerson(world, colors, person, ghost, { ghost: true }), person);
     }
+
+    const focusBox = layout.positions.get(focusId);
+    if (mode === "family" && focusBox !== undefined) centerOn(focusBox);
+    else fitToView(lastWidth, lastHeight);
 
     const focusedNode = world.querySelector<SVGGElement>(`.person[data-id="${focusId}"]:not(.ghost)`);
     focusedNode?.focus({ preventScroll: true });
@@ -412,25 +426,38 @@ async function main() {
 
   const home = createHome(data, (id) => navigate(id));
 
+  const topButtons = document.createElement("div");
+  topButtons.className = "top-buttons";
+
+  const modeButton = document.createElement("button");
+  modeButton.className = "home-button";
+  modeButton.addEventListener("click", () => {
+    if (currentFocus !== null) {
+      navigate(currentFocus, currentMode === "ancestors" ? "family" : "ancestors");
+    }
+  });
+
   const homeButton = document.createElement("button");
   homeButton.className = "home-button";
   homeButton.textContent = "Dynasties";
   homeButton.addEventListener("click", () => home.show());
-  document.body.appendChild(homeButton);
+
+  topButtons.append(modeButton, homeButton);
+  document.body.appendChild(topButtons);
 
   window.addEventListener("hashchange", () => {
-    const id = location.hash.slice(1);
-    if (personById.has(id)) {
+    const target = parseHash();
+    if (target !== null) {
       home.hide();
-      render(id);
+      render(target.id, target.mode);
     }
   });
 
-  const initial = location.hash.slice(1);
-  if (personById.has(initial)) {
-    render(initial);
+  const initial = parseHash();
+  if (initial !== null) {
+    render(initial.id, initial.mode);
   } else {
-    render("Q9439");
+    render("Q9439", "family");
     home.show();
   }
 

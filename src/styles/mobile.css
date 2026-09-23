@@ -5,10 +5,6 @@
 }
 
 @media (max-width: 700px) {
-  .search {
-    width: calc(100vw - 150px);
-  }
-
   .home-button {
     padding: 6px 10px;
     font-size: 12px;
@@ -41,5 +37,15 @@
 
   .home-inner {
     padding: 24px 0;
+  }
+
+  .search {
+    width: calc(100vw - 32px);
+  }
+
+  .top-buttons {
+    top: 70px;
+    right: auto;
+    left: calc(var(--space) * 2);
   }
 }

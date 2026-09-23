@@ -13,6 +13,8 @@ export function assignColors(
     }
   }
 
+  for (const g of layout.ghosts) visible.push(g.id);
+
   const count = new Map<HouseId, number>();
   const bump = (h: HouseId | null) => {
     if (h !== null) count.set(h, (count.get(h) ?? 0) + 1);

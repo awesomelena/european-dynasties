@@ -47,6 +47,11 @@ body {
   box-shadow: 4px 4px 0 var(--or);
 }
 
-.canvas rect, .canvas line, .canvas polyline {
+.canvas rect, .canvas polyline {
   shape-rendering: crispEdges;
+}
+
+.canvas line {
+  shape-rendering: crispEdges;
+  vector-effect: non-scaling-stroke;
 }

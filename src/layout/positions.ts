@@ -15,6 +15,7 @@ export type LayoutBlock = {
 export type Layout = {
   positions: Map<PersonId, Box>;
   blocks: LayoutBlock[];
+  ghosts: PlacedBox[];
   origin: number;
 };
 
@@ -39,7 +40,7 @@ type Ctx = {
   widthCache: Map<string, number>;
 };
 
-function yearToY(year: number): number {
+export function yearToY(year: number): number {
   return (year - BASE_YEAR) * YEAR_PX;
 }
 
@@ -228,5 +229,5 @@ export function computeLayout(
     return { person, spouses, children };
   });
 
-  return { positions, blocks, origin: minY };
+  return { positions, blocks, ghosts: [], origin: minY };
 }
