@@ -3,6 +3,7 @@ import { houseName } from "../render/tooltip";
 import { OTHER_STYLE } from "../constants";
 import { registerLayer } from "./layers";
 import { shield } from "../render/shield";
+import { crownMarkup } from "../render/crown";
 
 const LINE_SAMPLES = `
   <h4>Lines</h4>
@@ -25,6 +26,10 @@ const LINE_SAMPLES = `
   <div class="legend-row">
     <svg width="36" height="18"><rect x="3" y="3" width="30" height="12" fill="var(--azure)" stroke="var(--gules)" stroke-width="3"/></svg>
     Fill: born into · Border: married into
+  </div>
+    <div class="legend-row">
+    ${crownMarkup()}
+    Reigned as monarch
   </div>
   <h4>Keys</h4>
   <div class="legend-row">↑ parent · ↓ eldest child</div>

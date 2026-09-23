@@ -1,6 +1,8 @@
 import type { HouseId, Person, Box, HouseStyle } from "../types";
 import { SVG_NS, NODE_H, NODE_PAD, FONT_NAME, FONT_TITLE, UNKNOWN_STYLE, NAME_Y_ALONE, NAME_Y_WITH_TITLE, TITLE_Y } from "../constants";
 import { bornText } from "./tooltip";
+import { CROWN_H, CROWN_W, drawCrown } from "./crown";
+import { isSovereign } from "../data/people";
 
 export function drawPerson(
   svg: SVGGElement,
@@ -83,6 +85,11 @@ export function drawPerson(
     sub.style.opacity = "0.85";
     sub.textContent = title;
     g.appendChild(sub);
+  }
+
+  if (isSovereign(person)) {
+    const pixel = 2;
+    drawCrown(g, pos.x + pos.w - CROWN_W * pixel - 6, pos.y - CROWN_H * pixel + 4, pixel);
   }
 
   svg.appendChild(g);
