@@ -10,6 +10,7 @@ import "./styles/search.css";
 import "./styles/legend.css";
 import "./styles/tree.css";
 import "./styles/home.css";
+import "./styles/loading.css";
 import { createHome } from "./ui/home";
 import { assignColors } from "./render/colors";
 import { createLegend } from "./ui/legend";
@@ -30,15 +31,18 @@ import { zoom, zoomIdentity, zoomTransform } from "d3-zoom";
 import { createSearch } from "./ui/search";
 import { showBio, showHouse } from "./ui/bio";
 import { createRuler } from "./render/ruler";
+import { hideLoading, nextFrame, setStatus, showError } from "./ui/loading";
 import "./styles/pixel.css";
 import "./styles/mobile.css";
 
-async function main() {
+async function main() { 
+  setStatus("Loading data…");
   const data = await loadData();
-  const family = buildFamily(data);
-
+  setStatus("Loading fonts…");
   await Promise.all([document.fonts.load(FONT_NAME), document.fonts.load(FONT_TITLE)]);
-
+  setStatus("Measuring names…");
+  await nextFrame();
+  const family = buildFamily(data);
   const widths = new Map<PersonId, number>(data.people.map((p) => [p.id, nodeWidth(p)]));
   const { personById } = family;
 
@@ -322,6 +326,10 @@ async function main() {
   }
 
   window.addEventListener("resize", () => updateRuler(zoomTransform(svg), currentOrigin));
+  hideLoading();
 }
 
-main();
+main().catch((err) => {
+  console.error(err);
+  showError("Could not load the dynasties. Check your connection and try again.");
+});
