@@ -44,7 +44,7 @@ export function drawPerson(
     shadow.setAttribute("y", String(pos.y + 4));
     shadow.setAttribute("width", String(pos.w));
     shadow.setAttribute("height", String(NODE_H));
-    shadow.style.fill = "var(--sable)";
+    shadow.style.fill = "var(--shadow-color)";
     g.appendChild(shadow);
   }
 
@@ -65,7 +65,7 @@ export function drawPerson(
   }
   g.appendChild(rect);
 
-  const textColor = colors.get(person.houseBirth)?.textColor ?? "var(--argent)";
+  const textColor = colors.get(person.houseBirth)?.textColor ?? "var(--on-tincture)";
   const title = person.displayTitle;
 
   const name = document.createElementNS(SVG_NS, "text");

@@ -61,7 +61,7 @@
 }
 
 .legend-more:hover {
-  color: var(--azure);
+  color: var(--link);
 }
 
 .legend summary {

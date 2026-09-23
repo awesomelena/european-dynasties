@@ -23,7 +23,7 @@
   border: none;
   padding: 2px 0;
   font: inherit;
-  color: var(--azure);
+  color: var(--link);
   text-decoration: underline;
   cursor: pointer;
 }
@@ -60,7 +60,7 @@
 }
 
 .bio-wiki a {
-  color: var(--azure);
+  color: var(--link);
   font-size: 12px;
 }
 

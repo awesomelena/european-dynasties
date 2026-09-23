@@ -18,7 +18,7 @@
     height: 60vh;
     border-left: none;
     border-top: var(--border) solid var(--sable);
-    box-shadow: 0 -4px 0 var(--sable);
+    box-shadow: 0 -4px 0 var(--shadow-color);
   }
 
   .legend {

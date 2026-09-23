@@ -26,7 +26,7 @@
 
 .home-sub {
   margin: 0 0 calc(var(--space) * 4);
-  color: #555;
+  color: var(--muted);
 }
 
 .home-grid {
@@ -59,14 +59,14 @@
 .home-card p {
   margin: 2px 0;
   font-size: 13px;
-  color: #555;
+  color: var(--muted);
 }
 
 .home-back {
   margin-bottom: calc(var(--space) * 2);
   padding: 0;
   font: inherit;
-  color: var(--azure);
+  color: var(--link);
   background: none;
   border: none;
   cursor: pointer;

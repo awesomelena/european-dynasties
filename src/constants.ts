@@ -5,10 +5,10 @@ export const PALETTE: HouseStyle[] = [
   { color: "var(--gules)" },
   { color: "var(--vert)" },
   { color: "var(--purpure)" },
-  { color: "var(--sable)" },
-  { color: "var(--or)", textColor: "var(--sable)" },
   { color: "var(--tenne)" },
   { color: "var(--murrey)" },
+  { color: "var(--tincture-sable)" },
+  { color: "var(--or)", textColor: "var(--tincture-sable)" },
 ];
 
 export const UNKNOWN_STYLE: HouseStyle = { color: "#9a9a9a" };
@@ -24,7 +24,7 @@ export const SIBLING_GAP = 30;
 export const UP = 1;
 export const DOWN = 2;
 export const MIN_GENERATION_GAP = 140;
-export const OTHER_STYLE: HouseStyle = { color: "#cfcfc4", textColor: "var(--sable)" };
+export const OTHER_STYLE: HouseStyle = { color: "#cfcfc4", textColor: "var(--tincture-sable)" };
 export const NAME_Y_WITH_TITLE = 18;
 export const NAME_Y_ALONE = 27;
 export const TITLE_Y = 35;
