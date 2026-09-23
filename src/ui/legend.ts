@@ -32,7 +32,7 @@ export function createLegend(
 ){
   const details = document.createElement("details");
   details.className = "legend";
-  details.open = true;
+  details.open = !window.matchMedia("(max-width: 700px)").matches;
 
   const summary = document.createElement("summary");
   summary.textContent = "Legend";

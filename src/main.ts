@@ -3,7 +3,7 @@ import "@fontsource/pixelify-sans";
 
 import "./styles/tokens.css";
 import "./styles/tooltip.css";
-import "./styles/menu.css";     
+import "./styles/menu.css";
 import "./styles/bio.css";
 import "./styles/canvas.css";
 import "./styles/search.css";
@@ -17,20 +17,21 @@ import type { Person, PersonId, Box, HouseId } from "./types";
 import { SVG_NS, NODE_H, FONT_NAME, FONT_TITLE } from "./constants";
 import { nodeWidth } from "./render/measure";
 import { loadData } from "./data/loader";
-import { buildFamily } from "./data/family";  
+import { buildFamily } from "./data/family";
 import { computeLayout } from "./layout/positions";
 import { drawUnions, drawParentage } from "./render/lines";
 import { drawPerson } from "./render/person";
 import {
   showTooltip, moveTooltip, hideTooltip, personLines, houseName,
 } from "./render/tooltip";
-import { showMenu, type MenuItem } from "./ui/menu"; 
+import { showMenu, type MenuItem } from "./ui/menu";
 import { select } from "d3-selection";
 import { zoom, zoomIdentity, zoomTransform } from "d3-zoom";
 import { createSearch } from "./ui/search";
 import { showBio, showHouse } from "./ui/bio";
 import { createRuler } from "./render/ruler";
 import "./styles/pixel.css";
+import "./styles/mobile.css";
 
 async function main() {
   const data = await loadData();
@@ -57,6 +58,8 @@ async function main() {
   const updateRuler = createRuler(svg, world);
   let currentOrigin = 0;
   let currentFocus: PersonId | null = null;
+  let suppressClick = false;
+  let lastLongPress = 0;
 
   const zoomer = zoom<SVGSVGElement, unknown>()
     .scaleExtent([0.05, 3])
@@ -97,22 +100,56 @@ async function main() {
   }
   document.body.appendChild(controls);
 
+  function openMenuFor(person: Person, x: number, y: number) {
+    const items: MenuItem[] = [{ label: "Biography", action: () => openBio(person.id) }];
+
+    if (person.houseBirth !== "unknown") {
+      items.push({
+        label: `Members of ${houseName(data, person.houseBirth)}`,
+        action: () => openHouse(person.houseBirth),
+      });
+    }
+
+    for (const spouseId of family.spousesOf.get(person.id) ?? []) {
+      const spouse = personById.get(spouseId)!;
+      if (spouse.houseBirth === person.houseBirth) continue;
+      items.push({
+        label: `Open ${houseName(data, spouse.houseBirth)} tree (${spouse.name.en})`,
+        action: () => navigate(spouse.id),
+      });
+    }
+
+    showMenu(items, x, y);
+  }
+
   function attach(g: SVGGElement, person: Person) {
-    g.addEventListener("mouseenter", (e) => {
+    g.addEventListener("pointerenter", (e) => {
+      if (e.pointerType !== "mouse") return;
       setHover(person.id);
       const hint =
-      person.id === currentFocus
-        ? "click for biography · right-click for more"
-        : "click to centre · right-click for more";
+        person.id === currentFocus
+          ? "click for biography · right-click for more"
+          : "click to centre · right-click for more";
       showTooltip(personLines(data, person), e.clientX, e.clientY, hint);
     });
-    g.addEventListener("mousemove", (e) => moveTooltip(e.clientX, e.clientY));
-    g.addEventListener("mouseleave", () => {
+
+    g.addEventListener("pointermove", (e) => {
+      if (e.pointerType === "mouse") moveTooltip(e.clientX, e.clientY);
+    });
+
+    g.addEventListener("pointerleave", (e) => {
+      if (e.pointerType !== "mouse") return;
       setHover(null);
       hideTooltip();
     });
 
     g.addEventListener("click", (e) => {
+      if (suppressClick) {
+        suppressClick = false;
+        e.stopPropagation();
+        return;
+      }
+
       e.stopPropagation();
       hideTooltip();
       if (person.id === currentFocus) {
@@ -125,28 +162,35 @@ async function main() {
     g.addEventListener("contextmenu", (e) => {
       e.preventDefault();
       e.stopPropagation();
+      if (Date.now() - lastLongPress < 1000) return;
       hideTooltip();
+      openMenuFor(person, e.clientX, e.clientY);
+    });
 
-      const items: MenuItem[] = [{ label: "Biography", action: () => openBio(person.id) }];
+    let pressTimer: number | undefined;
+    let startX = 0;
+    let startY = 0;
+    const cancelPress = () => window.clearTimeout(pressTimer);
 
-      if (person.houseBirth !== "unknown") {
-        items.push({
-          label: `Members of ${houseName(data, person.houseBirth)}`,
-          action: () => openHouse(person.houseBirth),
-        });
-      }
+    g.addEventListener("pointerdown", (e) => {
+      if (e.pointerType !== "touch") return;
+      suppressClick = false;
+      startX = e.clientX;
+      startY = e.clientY;
+      pressTimer = window.setTimeout(() => {
+        suppressClick = true;
+        lastLongPress = Date.now();
+        hideTooltip();
+        openMenuFor(person, startX, startY);
+      }, 500);
+    });
 
-      for (const spouseId of family.spousesOf.get(person.id) ?? []) {
-        const spouse = personById.get(spouseId)!;
-        if (spouse.houseBirth === person.houseBirth) continue;
-        items.push({
-        label: `Open ${houseName(data, spouse.houseBirth)} tree (${spouse.name.en})`,
-        action: () => navigate(spouse.id),
-      });
-    }
-
-  showMenu(items, e.clientX, e.clientY);
-});
+    g.addEventListener("pointermove", (e) => {
+      if (e.pointerType !== "touch") return;
+      if (Math.hypot(e.clientX - startX, e.clientY - startY) > 10) cancelPress();
+    });
+    g.addEventListener("pointerup", cancelPress);
+    g.addEventListener("pointercancel", cancelPress);
   }
 
   function applyHighlight(house: HouseId | null) {
@@ -193,9 +237,9 @@ async function main() {
 
   function render(focusId: PersonId) {
     currentFocus = focusId;
-    
+
     document.title = `${personById.get(focusId)!.name.en} · European Dynasties`;
-    
+
     world.replaceChildren();
     hideTooltip();
 
@@ -240,7 +284,7 @@ async function main() {
     }
 
     updateLegend(colors, data);
-  
+
   }
 
   createSearch(data.people, (id) => navigate(id));

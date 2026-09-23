@@ -1,0 +1,45 @@
+.canvas {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+@media (max-width: 700px) {
+  .search {
+    width: calc(100vw - 150px);
+  }
+
+  .home-button {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+
+  .bio {
+    top: auto;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: 60vh;
+    border-left: none;
+    border-top: var(--border) solid var(--sable);
+    box-shadow: 0 -4px 0 var(--sable);
+  }
+
+  .legend {
+    max-width: calc(100vw - 100px);
+    max-height: 40vh;
+  }
+
+  .zoom-controls button {
+    width: 36px;
+    height: 36px;
+  }
+
+  .home h1 {
+    font-size: 24px;
+  }
+
+  .home-inner {
+    padding: 24px 0;
+  }
+}

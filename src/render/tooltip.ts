@@ -28,8 +28,13 @@ export function showTooltip(lines: string[], x: number, y: number, hint?: string
 }
 
 export function moveTooltip(x: number, y: number) {
-  tip.style.left = `${x + 12}px`;
-  tip.style.top = `${y + 12}px`;
+  const rect = tip.getBoundingClientRect();
+  let left = x + 12;
+  let top = y + 12;
+  if (left + rect.width > window.innerWidth - 8) left = x - rect.width - 12;
+  if (top + rect.height > window.innerHeight - 8) top = y - rect.height - 12;
+  tip.style.left = `${left}px`;
+  tip.style.top = `${top}px`;
 }
 
 export function hideTooltip() {
