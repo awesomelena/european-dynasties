@@ -2,6 +2,7 @@ import type { Dataset, HouseId, Person, PersonId } from "../types";
 import type { Family } from "../data/family";
 import { houseName, personLines, bornText } from "../render/tooltip";
 import { fetchSummary } from "./wiki";
+import { registerLayer } from "./layers";
 
 const panel = document.createElement("aside");
 panel.className = "bio";
@@ -12,8 +13,10 @@ export function hideBio() {
   panel.style.display = "none";
 }
 
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") hideBio();
+registerLayer({
+  priority: 60,
+  isOpen: () => panel.style.display === "block",
+  close: hideBio,
 });
 
 function startPanel(title: string) {

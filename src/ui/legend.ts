@@ -1,6 +1,7 @@
 import type { Dataset, HouseId, HouseStyle } from "../types";
 import { houseName } from "../render/tooltip";
 import { OTHER_STYLE } from "../constants";
+import { registerLayer } from "./layers";
 
 const LINE_SAMPLES = `
   <h4>Lines</h4>
@@ -56,8 +57,10 @@ export function createLegend(
     onHighlight(active);
   }
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && active !== null) setActive(null);
+  registerLayer({
+    priority: 40,
+    isOpen: () => active !== null,
+    close: () => setActive(null),
   });
 
   return function update(colors: Map<HouseId, HouseStyle>, data: Dataset) {

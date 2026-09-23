@@ -116,6 +116,7 @@ export function createSearch(people: Person[], onSelect: (id: PersonId) => void)
     } else if (e.key === "Enter" && active >= 0) {
       choose(results[active].person.id);
     } else if (e.key === "Escape") {
+      e.stopPropagation();
       clear();
       input.blur();
     }

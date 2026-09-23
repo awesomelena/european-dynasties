@@ -1,3 +1,5 @@
+import { registerLayer } from "./layers";
+
 export type MenuItem = { label: string; action: () => void };
 
 const menu = document.createElement("div");
@@ -29,8 +31,10 @@ export function hideMenu() {
 }
 
 document.addEventListener("click", hideMenu);
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") hideMenu();
+registerLayer({
+  priority: 100,
+  isOpen: () => menu.style.display !== "none",
+  close: hideMenu,
 });
 
 document.addEventListener("contextmenu", hideMenu);

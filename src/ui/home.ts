@@ -1,6 +1,7 @@
 import type { Country, Dataset, HouseId, Person, PersonId } from "../types";
 import { houseName } from "../render/tooltip";
 import { isSovereign } from "../data/people";
+import { registerLayer } from "./layers";
 
 type Dynasty = {
   id: HouseId;
@@ -132,8 +133,10 @@ export function createHome(data: Dataset, onPick: (id: PersonId) => void) {
     overlay.style.display = "none";
   }
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") hide();
+  registerLayer({
+    priority: 80,
+    isOpen: () => overlay.style.display === "flex",
+    close: hide,
   });
 
   return {
