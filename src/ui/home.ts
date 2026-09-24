@@ -3,6 +3,7 @@ import { houseName } from "../render/tooltip";
 import { isSovereign } from "../data/people";
 import { registerLayer } from "./layers";
 import { shield } from "../render/shield";
+import { createThemeButton } from "./theme";
 
 type Dynasty = {
   id: HouseId;
@@ -114,6 +115,9 @@ export function createHome(data: Dataset, onPick: (id: PersonId) => void, onAbou
 
   const content = document.createElement("div");
   inner.append(title, subtitle, content);
+  const themeButton = createThemeButton();
+  themeButton.classList.add("home-theme");
+  inner.appendChild(themeButton);
   const aboutLink = document.createElement("button");
   aboutLink.className = "home-back home-about-link";
   aboutLink.textContent = "About the data →";

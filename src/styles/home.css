@@ -13,6 +13,7 @@
 .home-inner {
   width: min(960px, 100% - 32px);
   padding: 48px 0;
+  position: relative;
 }
 
 .home h1 {
@@ -127,4 +128,10 @@
   z-index: 25;
   display: flex;
   gap: var(--space);
+}
+
+.home-theme {
+  position: absolute;
+  top: 0;
+  right: 0;
 }

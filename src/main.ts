@@ -14,7 +14,7 @@ import "./styles/loading.css";
 import "./styles/banner.css";
 import "./styles/about.css";
 import { createAbout } from "./ui/about";
-import { currentTheme, setTheme } from "./ui/theme";
+import { createThemeButton } from "./ui/theme";
 import { computeAncestry } from "./layout/ancestry";
 import { findPath } from "./data/relations";
 import { showBanner, hideBanner } from "./ui/banner";
@@ -487,17 +487,7 @@ async function main() {
   homeButton.textContent = "Dynasties";
   homeButton.addEventListener("click", () => home.show());
 
-  const themeButton = document.createElement("button");
-  themeButton.className = "home-button";
-  const updateThemeButton = () => {
-    themeButton.textContent = currentTheme() === "dark" ? "☀" : "☾";
-    themeButton.title = currentTheme() === "dark" ? "Light mode" : "Night mode";
-  };
-  updateThemeButton();
-  themeButton.addEventListener("click", () => {
-    setTheme(currentTheme() === "dark" ? "light" : "dark");
-    updateThemeButton();
-  });
+  const themeButton = createThemeButton();
 
   topButtons.append(themeButton, modeButton, homeButton);
   document.body.appendChild(topButtons);
