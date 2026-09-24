@@ -26,7 +26,7 @@ import { SVG_NS, NODE_H, FONT_NAME, FONT_TITLE } from "./constants";
 import { nodeWidth } from "./render/measure";
 import { loadData } from "./data/loader";
 import { buildFamily } from "./data/family";
-import { computeLayout } from "./layout/positions";
+import { computeLayout, type Layout } from "./layout/positions";
 import { drawUnions, drawParentage } from "./render/lines";
 import { drawPerson } from "./render/person";
 import {
@@ -106,6 +106,8 @@ async function main() {
   let currentMode: Mode = "family";
   let suppressClick = false;
   let lastLongPress = 0;
+  const motion = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let lastLayout: Layout | null = null;
 
   const zoomer = zoom<SVGSVGElement, unknown>()
     .scaleExtent([0.05, 3])
@@ -127,6 +129,33 @@ async function main() {
     const x = svg.clientWidth / 2 - (box.x + box.w / 2) * k;
     const y = svg.clientHeight / 2 - (box.y + NODE_H / 2) * k;
     select(svg).call(zoomer.transform, zoomIdentity.translate(x, y).scale(k));
+  }
+
+  function animateChange(
+    before: Map<PersonId, [number, number]>,
+    drawn: { id: PersonId; g: SVGGElement; box: Box }[]
+  ) {
+    const t = zoomTransform(svg);
+
+    for (const { id, g, box } of drawn) {
+      const old = before.get(id);
+      if (old === undefined) {
+        g.animate([{ opacity: 0, offset: 0 }], { duration: 350, delay: 150, fill: "backwards" });
+        continue;
+      }
+      const [nx, ny] = t.apply([box.x, box.y]);
+      const dx = (old[0] - nx) / t.k;
+      const dy = (old[1] - ny) / t.k;
+      if (Math.abs(dx) < 1 && Math.abs(dy) < 1) continue;
+      g.animate(
+        [{ transform: `translate(${dx}px, ${dy}px)` }, { transform: "translate(0px, 0px)" }],
+        { duration: 500, easing: "cubic-bezier(0.2, 0.8, 0.2, 1)" }
+      );
+    }
+
+    for (const el of world.querySelectorAll<SVGElement>(".line, .person.ghost")) {
+      el.animate([{ opacity: 0, offset: 0 }], { duration: 300, delay: 400, fill: "backwards" });
+    }
   }
 
   let lastWidth = 0;
@@ -351,6 +380,12 @@ async function main() {
 
     document.title = `${personById.get(focusId)!.name.en} · European Dynasties`;
 
+    const before = new Map<PersonId, [number, number]>();
+    if (motion && lastLayout !== null) {
+      const t = zoomTransform(svg);
+      for (const [id, box] of lastLayout.positions) before.set(id, t.apply([box.x, box.y]));
+    }
+
     world.replaceChildren();
     hideTooltip();
 
@@ -377,9 +412,12 @@ async function main() {
     drawUnions(world, layout);
     drawParentage(world, layout);
 
+    const drawn: { id: PersonId; g: SVGGElement; box: Box }[] = [];
     for (const [id, box] of layout.positions) {
       const person = personById.get(id)!;
-      attach(drawPerson(world, colors, person, box, { focus: id === focusId }), person);
+      const g = drawPerson(world, colors, person, box, { focus: id === focusId });
+      attach(g, person);
+      drawn.push({ id, g, box });
     }
 
     for (const b of layout.blocks) {
@@ -402,6 +440,9 @@ async function main() {
     const focusedNode = world.querySelector<SVGGElement>(`.person[data-id="${focusId}"]:not(.ghost)`);
     focusedNode?.focus({ preventScroll: true });
     updateLegend(colors, data);
+
+    if (motion && lastLayout !== null) animateChange(before, drawn);
+    lastLayout = layout;
 
   }
 
