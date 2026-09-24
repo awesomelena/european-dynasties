@@ -10,7 +10,7 @@ XOXO Gossip Girl
 
 ## Features
 
-- **Around 10,000 people from 40+ dynasties** - the great powers and the Balkans, from the Capetians and Rurikids to the Windsors and Karađorđevićs, including Byzantium.
+- **Around 13,000 people from 60+ dynasties** - the great powers, the Balkans, Scandinavia and the Low Countries, from the Capetians and Rurikids to the Windsors and Karađorđevićs, including Byzantium.
 - **Start page by country.** Pick a country, then one of its dynasties, and the tree opens at that dynasty's first ruler.
 - **Genealogy-specific layout.** A custom layout algorithm guarantees the rules family trees need: spouses stand next to each other, children are grouped by marriage and ordered by birth, and a child is always drawn below its parents.
 - **Multiple marriages.** Everyone's spouses are shown, in order of marriage. Divorces and annulments are drawn as dashed lines.

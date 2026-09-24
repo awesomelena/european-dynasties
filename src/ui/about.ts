@@ -32,7 +32,7 @@ export function createAbout(data: Dataset) {
     <p>Family relations, dates, houses and titles come from <a href="https://www.wikidata.org/" target="_blank" rel="noopener">Wikidata</a>, the free knowledge base behind Wikipedia. Biographies and portraits are loaded from <a href="https://en.wikipedia.org/" target="_blank" rel="noopener">Wikipedia</a> when a biography is opened.</p>
 
     <h2>What is included</h2>
-    <p>The data starts from the members of the ruling houses of the great European powers and the Balkans, including Byzantium, and from the holders of their royal and imperial titles, born from the 10th century onward. From each of them it follows one step of family relations - parents, children and spouses - so that families are complete around every ruler.</p>
+    <p>The data starts from the members of the ruling houses of the great European powers, the Balkans, including Byzantium, Scandinavia, the Low Countries, Monaco and Liechtenstein and from the holders of their royal and imperial titles, born from the 10th century onward. From each of them it follows one step of family relations - parents, children and spouses - so that families are complete around every ruler.</p>
 
     <h2>How the data is prepared</h2>
     <ul>

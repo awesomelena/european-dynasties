@@ -1,36 +1,226 @@
 [
-  { "name": "France", "color": "var(--azure)",
-    "houses": ["Capetian dynasty", "House of Valois", "House of Bourbon", "House of Bourbon in France", "House of Bonaparte"] },
-  { "name": "England & Britain", "color": "var(--gules)",
-    "houses": ["House of Plantagenet", "House of Tudor", "House of Stuart", "House of Hanover", "House of Saxe-Coburg and Gotha", { "house": "House of Windsor", "start": "Q269412" }] },
-  { "name": "Holy Roman Empire", "color": "var(--or)",
-    "houses": ["Salian dynasty", "House of Luxembourg", "House of Habsburg", "House of Habsburg-Lorraine"] },
-  { "name": "Austria", "color": "var(--gules)",
-    "houses": ["House of Habsburg", "House of Habsburg-Lorraine"] },
-  { "name": "Germany & Prussia", "color": "var(--sable)",
-    "houses": ["House of Hohenzollern", "House of Wittelsbach", "House of Wettin"] },
-  { "name": "Russia", "color": "var(--vert)",
-    "houses": ["Rurikids", "House of Romanov", "Holstein-Gottorp-Romanov"] },
-  { "name": "Spain", "color": "var(--or)",
-    "houses": ["House of Trastámara", "House of Habsburg", "Spanish House of Bourbon"] },
-  { "name": "Hungary", "color": "var(--vert)",
-    "houses": ["Árpád dynasty", "Capetian House of Anjou", "House of Luxembourg", "Jagiellonian dynasty", "House of Habsburg"] },
-  { "name": "Byzantium", "color": "var(--purpure)",
-    "houses": ["Komnenos", "Angelos", "Palaiologos"] },
-  { "name": "Serbia", "color": "var(--gules)",
-    "houses": ["Nemanjić dynasty", "Lazarević dynasty", "Branković dynasty", "House of Obrenović", "House of Karađorđević"] },
-  { "name": "Bulgaria", "color": "var(--vert)",
-    "houses": ["Asen dynasty", "House of Shishman"] },
-  { "name": "Croatia", "color": "var(--gules)",
-    "houses": ["Trpimirović dynasty"] },
-  { "name": "Bosnia", "color": "var(--azure)",
-    "houses": ["House of Kotromanić"] },
-  { "name": "Montenegro", "color": "var(--gules)",
-    "houses": ["House of Petrović-Njegoš"] },
-  { "name": "Romania", "color": "var(--azure)",
-    "houses": ["House of Hohenzollern-Sigmaringen"] },
-  { "name": "Greece", "color": "var(--azure)",
-    "houses": ["House of Glücksburg"] },
-  { "name": "Yugoslavia", "color": "var(--azure)",
-    "houses": ["House of Karađorđević"] }
+  {
+    "name": "France",
+    "color": "var(--azure)",
+    "houses": [
+      "Capetian dynasty",
+      "House of Valois",
+      "House of Bourbon",
+      "House of Bourbon in France",
+      "House of Bonaparte"
+    ]
+  },
+  {
+    "name": "England & Britain",
+    "color": "var(--gules)",
+    "houses": [
+      "House of Plantagenet",
+      "House of Tudor",
+      "House of Stuart",
+      "House of Hanover",
+      "House of Saxe-Coburg and Gotha",
+      {
+        "house": "House of Windsor",
+        "start": "Q269412"
+      }
+    ]
+  },
+  {
+    "name": "Holy Roman Empire",
+    "color": "var(--or)",
+    "houses": [
+      "Salian dynasty",
+      "House of Luxembourg",
+      "House of Habsburg",
+      "House of Habsburg-Lorraine"
+    ]
+  },
+  {
+    "name": "Austria",
+    "color": "var(--gules)",
+    "houses": [
+      "House of Habsburg",
+      "House of Habsburg-Lorraine"
+    ]
+  },
+  {
+    "name": "Germany & Prussia",
+    "color": "var(--sable)",
+    "houses": [
+      "House of Hohenzollern",
+      "House of Wittelsbach",
+      "House of Wettin"
+    ]
+  },
+  {
+    "name": "Russia",
+    "color": "var(--vert)",
+    "houses": [
+      "Rurikids",
+      "House of Romanov",
+      "Holstein-Gottorp-Romanov"
+    ]
+  },
+  {
+    "name": "Spain",
+    "color": "var(--or)",
+    "houses": [
+      "House of Trastámara",
+      "House of Habsburg",
+      "Spanish House of Bourbon"
+    ]
+  },
+  {
+    "name": "Hungary",
+    "color": "var(--vert)",
+    "houses": [
+      "Árpád dynasty",
+      "Capetian House of Anjou",
+      "House of Luxembourg",
+      "Jagiellonian dynasty",
+      "House of Habsburg"
+    ]
+  },
+  {
+    "name": "Byzantium",
+    "color": "var(--purpure)",
+    "houses": [
+      "Komnenos",
+      "Angelos",
+      "Palaiologos"
+    ]
+  },
+  {
+    "name": "Serbia",
+    "color": "var(--gules)",
+    "houses": [
+      "Nemanjić dynasty",
+      "Lazarević dynasty",
+      "Branković dynasty",
+      "House of Obrenović",
+      "House of Karađorđević"
+    ]
+  },
+  {
+    "name": "Bulgaria",
+    "color": "var(--vert)",
+    "houses": [
+      "Asen dynasty",
+      "House of Shishman",
+      "House of Saxe-Coburg and Gotha-Koháry (Bulgaria)"
+    ]
+  },
+  {
+    "name": "Croatia",
+    "color": "var(--gules)",
+    "houses": [
+      "Trpimirović dynasty"
+    ]
+  },
+  {
+    "name": "Bosnia",
+    "color": "var(--azure)",
+    "houses": [
+      "House of Kotromanić"
+    ]
+  },
+  {
+    "name": "Montenegro",
+    "color": "var(--gules)",
+    "houses": [
+      "House of Petrović-Njegoš"
+    ]
+  },
+  {
+    "name": "Romania",
+    "color": "var(--azure)",
+    "houses": [
+      "House of Hohenzollern-Sigmaringen"
+    ]
+  },
+  {
+    "name": "Greece",
+    "color": "var(--azure)",
+    "houses": [
+      "House of Glücksburg"
+    ]
+  },
+  {
+    "name": "Yugoslavia",
+    "color": "var(--azure)",
+    "houses": [
+      "House of Karađorđević"
+    ]
+  },
+  {
+    "name": "Denmark",
+    "color": "var(--gules)",
+    "houses": [
+      "House of Estridsen",
+      "House of Oldenburg",
+      "House of Glücksburg"
+    ]
+  },
+  {
+    "name": "Norway",
+    "color": "var(--murrey)",
+    "houses": [
+      "Fairhair dynasty",
+      "House of Sverre",
+      "House of Oldenburg",
+      "House of Bernadotte",
+      "House of Glücksburg"
+    ]
+  },
+  {
+    "name": "Sweden",
+    "color": "var(--azure)",
+    "houses": [
+      "House of Munsö",
+      "House of Stenkil",
+      "House of Sverker",
+      "House of Eric",
+      "House of Bjelbo",
+      "House of Vasa",
+      "House of Palatinate-Zweibrücken",
+      "House of Holstein-Gottorp",
+      "House of Bernadotte"
+    ]
+  },
+  {
+    "name": "Netherlands",
+    "color": "var(--tenne)",
+    "houses": [
+      "House of Orange-Nassau"
+    ]
+  },
+  {
+    "name": "Belgium",
+    "color": "var(--or)",
+    "houses": [
+      "House of Saxe-Coburg and Gotha"
+    ]
+  },
+  {
+    "name": "Luxembourg",
+    "color": "var(--azure)",
+    "houses": [
+      "House of Luxembourg",
+      "House of Nassau-Weilburg"
+    ]
+  },
+  {
+    "name": "Monaco",
+    "color": "var(--gules)",
+    "houses": [
+      "House of Grimaldi"
+    ]
+  },
+  {
+    "name": "Liechtenstein",
+    "color": "var(--purpure)",
+    "houses": [
+      "House of Liechtenstein"
+    ]
+  }
 ]

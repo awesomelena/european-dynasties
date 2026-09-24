@@ -12,6 +12,8 @@ function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+class FatalError extends Error { }
+
 export async function sparql(query: string): Promise<Row[]> {
   const key = createHash("sha1").update(query).digest("hex");
   const file = `${CACHE_DIR}/${key}.json`;
@@ -22,9 +24,8 @@ export async function sparql(query: string): Promise<Row[]> {
   }
 
   for (let attempt = 1; attempt <= 6; attempt++) {
-    let response: Response;
     try {
-      response = await fetch(ENDPOINT, {
+      const response = await fetch(ENDPOINT, {
         method: "POST",
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -33,30 +34,30 @@ export async function sparql(query: string): Promise<Row[]> {
         },
         body: new URLSearchParams({ query }),
       });
+
+      if (response.ok) {
+        const rows: Row[] = (await response.json()).results.bindings;
+        await mkdir(CACHE_DIR, { recursive: true });
+        await writeFile(file, JSON.stringify(rows));
+        await sleep(2000);
+        return rows;
+      }
+
+      if (response.status >= 500 || response.status === 429) {
+        const retryAfter = Number(response.headers.get("retry-after"));
+        const wait = retryAfter > 0 ? retryAfter * 1000 : attempt * 10000;
+        console.log(`  WikiData ${response.status}, retrying in ${wait / 1000}s...`);
+        await sleep(wait);
+        continue;
+      }
+
+      throw new FatalError(`WikiData ${response.status}: ${await response.text()}`);
     } catch (err) {
+      if (err instanceof FatalError) throw err;
       const wait = attempt * 10000;
       console.log(`  Network error (${(err as Error).message}), retrying in ${wait / 1000}s...`);
       await sleep(wait);
-      continue;
     }
-
-    if (response.ok) {
-      const rows: Row[] = (await response.json()).results.bindings;
-      await mkdir(CACHE_DIR, { recursive: true });
-      await writeFile(file, JSON.stringify(rows));
-      await sleep(1000);
-      return rows;
-    }
-
-    if (response.status >= 500 || response.status === 429) {
-      const retryAfter = Number(response.headers.get("retry-after"));
-      const wait = retryAfter > 0 ? retryAfter * 1000 : attempt * 10000;
-      console.log(`  WikiData ${response.status}, retrying in ${wait / 1000}s...`);
-      await sleep(wait);
-      continue;
-    }
-
-    throw new Error(`WikiData ${response.status}: ${await response.text()}`);
   }
   throw new Error("WikiData: too many failed attempts");
 }
@@ -84,7 +85,7 @@ export async function pairs(ids: string[], prop: string): Promise<Pair[]> {
       SELECT ?s ?o ?oLabel WHERE {
         VALUES ?s { ${values(part)} }
         ?s wdt:${prop} ?o .
-        SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+        SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul,de,fr,nl,sv,da,nb,it,es,pl,ru,hu,cs,sr,hr,bg,el". }
       }`);
     for (const r of rows) {
       result.push({ s: qid(r.s!.value), o: qid(r.o!.value), oLabel: r.oLabel?.value ?? "" });
@@ -130,7 +131,7 @@ export async function marriages(ids: string[]): Promise<RawMarriage[]> {
         OPTIONAL { ?st pq:P580 ?start . }
         OPTIONAL { ?st pq:P582 ?end . }
         OPTIONAL { ?st pq:P1534 ?cause . }
-        SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+        SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul,de,fr,nl,sv,da,nb,it,es,pl,ru,hu,cs,sr,hr,bg,el". }
       }`);
     for (const r of rows) {
       result.push({
@@ -185,7 +186,7 @@ export async function basics(ids: string[]): Promise<Record<string, RawPerson>> 
           FILTER(?dp >= 9 && ?dr != wikibase:DeprecatedRank)
         }
         OPTIONAL { ?p wdt:P21 ?sex . }
-        SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+        SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul,de,fr,nl,sv,da,nb,it,es,pl,ru,hu,cs,sr,hr,bg,el". }
       }`);
     for (const r of rows) {
       const id = qid(r.p!.value);
@@ -216,7 +217,7 @@ export async function positions(ids: string[]): Promise<RawPosition[]> {
         ?st ps:P39 ?pos .
         OPTIONAL { ?st pq:P580 ?start . }
         OPTIONAL { ?st pq:P582 ?end . }
-        SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+        SERVICE wikibase:label { bd:serviceParam wikibase:language "en,mul,de,fr,nl,sv,da,nb,it,es,pl,ru,hu,cs,sr,hr,bg,el". }
       }`);
     for (const r of rows) {
       result.push({
